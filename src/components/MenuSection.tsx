@@ -1,0 +1,169 @@
+import React from 'react';
+import { ArrowRight, Utensils, Sparkles } from 'lucide-react';
+import { AppMode } from '../types';
+
+interface MenuSectionProps {
+  onOpenMenu: () => void;
+  onOpenDish: (dishId: string) => void;
+  mode?: AppMode;
+}
+
+export const MenuSection: React.FC<MenuSectionProps> = ({ onOpenMenu, onOpenDish, mode = 'lunch' }) => {
+  const isNight = mode === 'night';
+
+  return (
+    <section 
+      id="our-menus-section" 
+      className={`py-20 lg:py-28 px-4 sm:px-6 lg:px-12 transition-colors duration-700 ${
+        isNight ? 'bg-[#000000] text-[#f5f1ea]' : 'bg-[#ffffff] text-[#1a1d22]'
+      }`}
+    >
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+        
+        {/* Left 2x2 Photo Grid (Authentic Persian Culinary Dishes) */}
+        <div className="lg:col-span-7 grid grid-cols-2 gap-3 sm:gap-4 md:gap-5">
+          
+          {/* Top-Left: Persian Saffron Barberry Rice & Crispy Tahdig (Zereshk Polo) */}
+          <div 
+            onClick={() => onOpenDish('item-7')}
+            className={`group relative aspect-square rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 ${
+              isNight 
+                ? 'bg-[#0a0a0a] border border-[#2a2a2a] shadow-[0_15px_40px_rgba(0,0,0,0.95)] ring-1 ring-white/10 hover:border-[#d4a359]/70 hover:shadow-[0_20px_50px_rgba(212,163,89,0.15)]' 
+                : 'bg-[#ece7df] shadow-[0_10px_30px_rgba(0,0,0,0.1)]'
+            }`}
+          >
+            <img
+              src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=800&q=80"
+              alt="Persian Saffron Rice with Barberries (Zereshk Polo)"
+              className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out ${
+                isNight ? 'filter contrast-[1.08] brightness-[1.05] saturate-[1.05]' : ''
+              }`}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
+              <span className="text-[#f5d79e] text-[10px] uppercase tracking-widest font-bold font-['Raleway']">Royal Specialty</span>
+              <span className="text-white text-sm font-serif font-medium">Zereshk Polo &amp; Saffron Basmati</span>
+            </div>
+          </div>
+
+          {/* Top-Right: Salad Shirazi & Sabzi Khordan */}
+          <div 
+            onClick={() => onOpenDish('item-2')}
+            className={`group relative aspect-square rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 ${
+              isNight 
+                ? 'bg-[#0a0a0a] border border-[#2a2a2a] shadow-[0_15px_40px_rgba(0,0,0,0.95)] ring-1 ring-white/10 hover:border-[#d4a359]/70 hover:shadow-[0_20px_50px_rgba(212,163,89,0.15)]' 
+                : 'bg-[#ece7df] shadow-[0_10px_30px_rgba(0,0,0,0.1)]'
+            }`}
+          >
+            <img
+              src="https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80"
+              alt="Salad Shirazi with Persian Cucumbers, Heirloom Tomatoes & Fresh Mint"
+              className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out ${
+                isNight ? 'filter contrast-[1.08] brightness-[1.05] saturate-[1.05]' : ''
+              }`}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
+              <span className="text-[#f5d79e] text-[10px] uppercase tracking-widest font-bold font-['Raleway']">Persian Heritage</span>
+              <span className="text-white text-sm font-serif font-medium">Salad Shirazi &amp; Sabzi Khordan</span>
+            </div>
+          </div>
+
+          {/* Bottom-Left: Charbroiled Flame Kababs on Skewers */}
+          <div 
+            onClick={() => onOpenDish('item-4')}
+            className={`group relative aspect-square rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 ${
+              isNight 
+                ? 'bg-[#0a0a0a] border border-[#2a2a2a] shadow-[0_15px_40px_rgba(0,0,0,0.95)] ring-1 ring-white/10 hover:border-[#d4a359]/70 hover:shadow-[0_20px_50px_rgba(212,163,89,0.15)]' 
+                : 'bg-[#ece7df] shadow-[0_10px_30px_rgba(0,0,0,0.1)]'
+            }`}
+          >
+            <img
+              src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80"
+              alt="Persian Charbroiled Flame Kabab Koobideh & Joojeh Skewers"
+              className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out ${
+                isNight ? 'filter contrast-[1.08] brightness-[1.05] saturate-[1.05]' : ''
+              }`}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
+              <span className="text-[#f5d79e] text-[10px] uppercase tracking-widest font-bold font-['Raleway']">Flame Charcoal Grill</span>
+              <span className="text-white text-sm font-serif font-medium">Soltani &amp; Koobideh Kababs</span>
+            </div>
+          </div>
+
+          {/* Bottom-Right: Kashk-e Bademjan & Warm Persian Sangak */}
+          <div 
+            onClick={() => onOpenDish('item-1')}
+            className={`group relative aspect-square rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 ${
+              isNight 
+                ? 'bg-[#0a0a0a] border border-[#2a2a2a] shadow-[0_15px_40px_rgba(0,0,0,0.95)] ring-1 ring-white/10 hover:border-[#d4a359]/70 hover:shadow-[0_20px_50px_rgba(212,163,89,0.15)]' 
+                : 'bg-[#ece7df] shadow-[0_10px_30px_rgba(0,0,0,0.1)]'
+            }`}
+          >
+            <img
+              src="https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=800&q=80"
+              alt="Kashk-e Bademjan Smoked Eggplant with Toasted Sangak Flatbread"
+              className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out ${
+                isNight ? 'filter contrast-[1.08] brightness-[1.05] saturate-[1.05]' : ''
+              }`}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
+              <span className="text-[#f5d79e] text-[10px] uppercase tracking-widest font-bold font-['Raleway']">Signature Mazzeh</span>
+              <span className="text-white text-sm font-serif font-medium">Kashk-e Bademjan &amp; Sangak</span>
+            </div>
+          </div>
+
+        </div>
+
+        {/* Right Content Column */}
+        <div className="lg:col-span-5 flex flex-col items-center lg:items-start text-center lg:text-left space-y-6">
+          
+          <div className="space-y-1">
+            {/* Script gold: "Check out" */}
+            <h3 className={`font-script text-4xl sm:text-5xl md:text-6xl font-normal leading-tight ${
+              isNight ? 'text-[#f3cf8a]' : 'text-[#c6924b]'
+            }`}>
+              Check out
+            </h3>
+            {/* Serif bold title: "Our Menus" */}
+            <h2 className={`font-serif text-4xl sm:text-5xl md:text-6xl font-normal tracking-tight ${
+              isNight ? 'text-[#ffffff]' : 'text-[#1a1c20]'
+            }`}>
+              Persian Menus
+            </h2>
+          </div>
+
+          {/* Minimalist ornament divider */}
+          <div className="flex items-center justify-center lg:justify-start space-x-2 py-1 text-[#c6924b]">
+            <span className="w-6 h-[1px] bg-[#c6924b]/40"></span>
+            <span className="text-xs">✦</span>
+            <span className="w-6 h-[1px] bg-[#c6924b]/40"></span>
+          </div>
+
+          {/* Body Paragraph */}
+          <p className={`text-base sm:text-lg leading-relaxed font-light max-w-md ${
+            isNight ? 'text-[#d1d5db]' : 'text-[#555e6b]'
+          }`}>
+            Pull up a chair and experience our royal saffron banquets, flame-charred skewered meats, slow-simmered Ghormeh Sabzi stews, and traditional Persian mazzeh crafted with imported spices and California freshness.
+          </p>
+
+          {/* Link: View the Food Menu */}
+          <div className="pt-2">
+            <button
+              id="menu-view-food-menu-btn"
+              onClick={onOpenMenu}
+              className={`group inline-flex items-center space-x-2 text-xs uppercase tracking-[0.25em] font-semibold border-b pb-1 transition-all duration-300 cursor-pointer ${
+                isNight 
+                  ? 'text-[#f3cf8a] hover:text-white border-[#f3cf8a]/70' 
+                  : 'text-[#8c6227] hover:text-[#212429] border-[#c6924b]'
+              }`}
+            >
+              <span>Explore Persian Menu</span>
+              <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+  );
+};
