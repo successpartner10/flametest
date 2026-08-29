@@ -77,24 +77,24 @@ export const MenuModal: React.FC<MenuModalProps> = ({
           </div>
 
           <div className="flex items-center space-x-3">
-            {/* Quick Mode Switcher */}
-            <div className="hidden sm:flex items-center bg-[#21272f] p-1 rounded-full border border-[#37414e]">
+            {/* Quick Mode Switcher - Compact */}
+            <div className="hidden sm:flex items-center bg-[#21272f] p-0.5 rounded-full border border-[#37414e]">
               <button
                 onClick={() => onToggleMode('lunch')}
-                className={`px-3 py-1 text-xs rounded-full transition-all flex items-center space-x-1 ${
-                  mode === 'lunch' ? 'bg-[#d4731f] text-white font-medium shadow' : 'text-[#8b98a5]'
+                className={`px-2.5 py-0.5 text-[10px] rounded-full transition-all flex items-center space-x-1 font-bold ${
+                  mode === 'lunch' ? 'bg-[#d4731f] text-white shadow-sm' : 'text-[#8b98a5] hover:text-white'
                 }`}
               >
-                <Sun size={12} />
+                <Sun size={10} />
                 <span>Lunch</span>
               </button>
               <button
                 onClick={() => onToggleMode('night')}
-                className={`px-3 py-1 text-xs rounded-full transition-all flex items-center space-x-1 ${
-                  mode === 'night' ? 'bg-[#6b152d] text-white font-medium shadow' : 'text-[#8b98a5]'
+                className={`px-2.5 py-0.5 text-[10px] rounded-full transition-all flex items-center space-x-1 font-bold ${
+                  mode === 'night' ? 'bg-[#6b152d] text-white shadow-sm' : 'text-[#8b98a5] hover:text-white'
                 }`}
               >
-                <Moon size={12} />
+                <Moon size={10} />
                 <span>Night</span>
               </button>
             </div>

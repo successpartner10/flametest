@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowRight, Play, Flame, Sparkles, Utensils } from 'lucide-r
 import { STORY_SLIDES } from '../data/mockData';
 import { AppMode } from '../types';
 import { FlameLogo } from './FlameLogo';
+import { RevealOnScroll } from './RevealOnScroll';
 
 interface MadieStoriesSectionProps {
   onOpenStory: (slideIndex: number) => void;
@@ -35,16 +36,17 @@ export const MadieStoriesSection: React.FC<MadieStoriesSectionProps> = ({
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center relative z-10">
         
         {/* Left Column: Persian Flame Crest + Quote + Carousel Controls */}
-        <div className="lg:col-span-5 flex flex-col items-center lg:items-start text-center lg:text-left space-y-7">
+        <RevealOnScroll 
+          direction="up" 
+          delay={0}
+          duration={800}
+          className="lg:col-span-5 flex flex-col items-center lg:items-start text-center lg:text-left space-y-7"
+        >
           
-          {/* Authentic Persian Emblem & Flame Logo */}
-          <div className="flex flex-col items-center lg:items-start space-y-3">
-            <div className="p-3.5 rounded-2xl bg-[#2b0612] border border-[#831f3b]/60 shadow-[0_10px_30px_rgba(0,0,0,0.6)]">
-              <FlameLogo variant="color-emblem" size="md" />
-            </div>
-
-            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#3d0917]/80 border border-[#831f3b]/60 text-[#f5d79e] text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em]">
-              <Sparkles size={12} className="text-[#f5d79e]" />
+          {/* Authentic Persian Culinary Badge */}
+          <div className="flex flex-col items-center lg:items-start space-y-2">
+            <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-[#3d0917]/90 border border-[#831f3b]/70 text-[#f5d79e] text-[11px] sm:text-xs font-['Raleway'] font-black uppercase tracking-[0.2em] shadow-lg">
+              <Sparkles size={13} className="text-[#f5d79e]" />
               <span>Persian Culinary Stories</span>
             </div>
           </div>
@@ -84,10 +86,15 @@ export const MadieStoriesSection: React.FC<MadieStoriesSectionProps> = ({
             </span>
           </div>
 
-        </div>
+        </RevealOnScroll>
 
         {/* Right Column: Layered 3D Swipable Card Stack */}
-        <div className="lg:col-span-7 flex items-center justify-center py-4 lg:py-6">
+        <RevealOnScroll 
+          direction="up" 
+          delay={200}
+          duration={850}
+          className="lg:col-span-7 flex items-center justify-center py-4 lg:py-6"
+        >
           <div className="relative w-72 sm:w-84 md:w-96 aspect-[3/4] max-w-full">
             
             {/* Render stacked cards with rotational offsets */}
@@ -167,7 +174,7 @@ export const MadieStoriesSection: React.FC<MadieStoriesSectionProps> = ({
             })}
 
           </div>
-        </div>
+        </RevealOnScroll>
 
       </div>
 

@@ -9,6 +9,7 @@ import { MENU_ITEMS } from './data/mockData';
 import { Header } from './components/Header';
 import { HeroSection } from './components/HeroSection';
 import { StorySection } from './components/StorySection';
+import { MenuMatrixSection } from './components/MenuMatrixSection';
 import { MadieStoriesSection } from './components/MadieStoriesSection';
 import { MenuSection } from './components/MenuSection';
 import { CulinarySection } from './components/CulinarySection';
@@ -20,6 +21,9 @@ import { StoriesModal } from './components/StoriesModal';
 import { BagDrawer } from './components/BagDrawer';
 import { FunctionsModal } from './components/FunctionsModal';
 import { AboutModal } from './components/AboutModal';
+import { TicketModal } from './components/TicketModal';
+import { CateringModal } from './components/CateringModal';
+import { ScrollProgressBar } from './components/ScrollProgressBar';
 
 export default function App() {
   // Mode state: 'lunch' (☀️ Lunch Hub) or 'night' (🌙 Cabaret & Night)
@@ -36,15 +40,19 @@ export default function App() {
   const [isBagOpen, setIsBagOpen] = useState(false);
   const [isFunctionsOpen, setIsFunctionsOpen] = useState(false);
   const [isAboutOpen, setIsAboutOpen] = useState(false);
+  const [isTicketsOpen, setIsTicketsOpen] = useState(false);
+  const [isCateringOpen, setIsCateringOpen] = useState(false);
+  const [selectedEventTitle, setSelectedEventTitle] = useState("Arand & Shahyar Ghanbari Live in Concert");
+  const [selectedEventDate, setSelectedEventDate] = useState("Saturday, September 12, 2026");
 
   // Story state
   const [selectedStoryIndex, setSelectedStoryIndex] = useState(0);
   const [highlightDishId, setHighlightDishId] = useState<string | null>(null);
 
-  // Cart / Bag state (Pre-seeded with 1 dish as shown with the red badge '1' in the reference screenshot)
+  // Cart / Bag state
   const [cart, setCart] = useState<CartItem[]>([
     {
-      item: MENU_ITEMS[3], // Hand-Rolled Truffle Tagliatelle
+      item: MENU_ITEMS[3],
       quantity: 1,
     }
   ]);
@@ -91,27 +99,52 @@ export default function App() {
     setIsStoriesOpen(true);
   };
 
-  // Bottom Navigation tab selector (Home, Live Entertainment, Dine-In, Lunch, Dinner, Contact Us)
+  // Open ticket checkout
+  const handleOpenTickets = (eventTitle?: string, eventDate?: string) => {
+    if (eventTitle) setSelectedEventTitle(eventTitle);
+    if (eventDate) setSelectedEventDate(eventDate);
+    setIsTicketsOpen(true);
+  };
+
+  // Navigation handlers
+  const handleOpenLunch = () => {
+    setMode('lunch');
+    setMenuInitialCategory('lunch');
+    setIsMenuOpen(true);
+  };
+
+  const handleOpenDinner = () => {
+    setMode('night');
+    setMenuInitialCategory('kababs');
+    setIsMenuOpen(true);
+  };
+
+  const handleOpenOrderOnline = () => {
+    setIsBagOpen(true);
+  };
+
+  const handleOpenCatering = () => {
+    setIsCateringOpen(true);
+  };
+
+  // Bottom Navigation tab selector (Home, Live Events, Order Online, Lunch, Dinner)
   const handleBottomNavigate = (action: BottomNavAction) => {
-    setActiveBottomAction(action);
     if (action === 'home') {
+      setActiveBottomAction('home');
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (action === 'entertainment') {
+    } else if (action === 'live-events') {
+      setActiveBottomAction('live-events');
       setSelectedStoryIndex(0);
       setIsStoriesOpen(true);
-    } else if (action === 'dine-in') {
-      setIsReserveOpen(true);
+    } else if (action === 'order-online') {
+      setActiveBottomAction('order-online');
+      setIsBagOpen(true);
     } else if (action === 'lunch') {
-      setMenuInitialCategory('lunch');
-      setIsMenuOpen(true);
+      setActiveBottomAction('lunch');
+      handleOpenLunch();
     } else if (action === 'dinner') {
-      setMenuInitialCategory('night');
-      setIsMenuOpen(true);
-    } else if (action === 'contact') {
-      const el = document.getElementById('find-us-footer');
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth' });
-      }
+      setActiveBottomAction('dinner');
+      handleOpenDinner();
     }
   };
 
@@ -127,7 +160,10 @@ export default function App() {
       mode === 'night' ? 'night-atmosphere' : 'lunch-atmosphere'
     }`}>
       
-      {/* Fixed Top Header (Home, Live Entertainment, Dine in, Online Orders, Reserve a space, Contact | 45-deg Ticket ribbon) */}
+      {/* Dynamic Gold Scroll Progress Indicator */}
+      <ScrollProgressBar />
+
+      {/* Fixed Top Header */}
       <Header
         mode={mode}
         onToggleMode={(newMode) => setMode(newMode)}
@@ -147,10 +183,10 @@ export default function App() {
         cartCount={totalCartCount}
       />
 
-      {/* Main Editorial Screens matching the Reference Mockup */}
+      {/* Main Editorial Screens */}
       <main className="relative">
         
-        {/* 1. Hero Section ("The true taste of Flame International • 2026 •") */}
+        {/* 1. Hero Section ("The true taste of Flame International") */}
         <HeroSection
           mode={mode}
           onExploreMenu={() => setIsMenuOpen(true)}
@@ -158,34 +194,44 @@ export default function App() {
           onScrollToStory={scrollToStory}
         />
 
-        {/* 2. Discover Our Story (Persian Live Events & Heritage + September 12 Concert Poster) */}
+        {/* 2. Four Images Matrix: Lunch, Dinner, Online Order, Catering */}
+        <MenuMatrixSection
+          mode={mode}
+          onOpenLunch={handleOpenLunch}
+          onOpenDinner={handleOpenDinner}
+          onOpenOrderOnline={handleOpenOrderOnline}
+          onOpenCatering={handleOpenCatering}
+        />
+
+        {/* 3. Discover Our Story (Persian Live Events & Heritage + September 12 Concert Poster + Ticket Links) */}
         <StorySection
           mode={mode}
           onLearnMore={() => setIsAboutOpen(true)}
           onReserve={() => setIsReserveOpen(true)}
+          onOpenTickets={handleOpenTickets}
         />
 
-        {/* 3. Madie Section (Burgundy wave + French Bulldog vector + draggable 3D story card stack) */}
+        {/* 4. Madie Section (Burgundy wave + French Bulldog vector + draggable 3D story card stack) */}
         <MadieStoriesSection
           onOpenStory={handleOpenStory}
           mode={mode}
         />
 
-        {/* 4. Check out Our Menus (2x2 food photo grid + "Check out Our Menus" narrative) */}
+        {/* 5. Check out Our Menus (2x2 food photo grid + "Check out Our Menus" narrative) */}
         <MenuSection
           mode={mode}
           onOpenMenu={() => setIsMenuOpen(true)}
           onOpenDish={handleOpenDish}
         />
 
-        {/* 5. Culinary Delightful (Gourmet quenelles + spun caramel sugar dessert + "Culinary Delightful") */}
+        {/* 6. Culinary Delightful (Gourmet quenelles + spun caramel sugar dessert + "Culinary Delightful") */}
         <CulinarySection
           mode={mode}
           onMakeReservation={() => setIsReserveOpen(true)}
           onOpenDish={handleOpenDish}
         />
 
-        {/* 6. Footer & Los Angeles Map (Emblem + ENCUÉNTRANOS EN Los Angeles + 6 Easy Buttons + Interactive Zoom Map & hours) */}
+        {/* 7. Footer & Los Angeles Map (Emblem + ENCUÉNTRANOS EN Los Angeles + 6 Easy Buttons + Interactive Zoom Map & hours) */}
         <FooterSection
           mode={mode}
           onScrollToTop={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
@@ -233,12 +279,26 @@ export default function App() {
         }}
       />
 
+      {/* Concert & Live Stage Ticket Modal */}
+      <TicketModal
+        isOpen={isTicketsOpen}
+        onClose={() => setIsTicketsOpen(false)}
+        initialEventTitle={selectedEventTitle}
+        initialEventDate={selectedEventDate}
+      />
+
+      {/* Catering & Private Events Modal */}
+      <CateringModal
+        isOpen={isCateringOpen}
+        onClose={() => setIsCateringOpen(false)}
+      />
+
       {/* Live Stories Fullscreen Viewer */}
       <StoriesModal
         isOpen={isStoriesOpen}
         onClose={() => {
           setIsStoriesOpen(false);
-          if (activeBottomAction === 'entertainment') setActiveBottomAction('home');
+          if (activeBottomAction === 'live-events') setActiveBottomAction('home');
         }}
         initialSlideIndex={selectedStoryIndex}
         onOrderDish={(dish) => {
@@ -283,3 +343,4 @@ export default function App() {
     </div>
   );
 }
+

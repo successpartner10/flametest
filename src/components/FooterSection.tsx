@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
-  MapPin, Clock, Phone, Mail, Instagram, Facebook, Navigation, ExternalLink, 
-  Heart, Globe, Star, Plus, Minus, RotateCcw, Home, UtensilsCrossed, Sparkles, 
-  CalendarCheck, Users, Info, Compass
+  MapPin, Clock, Phone, Mail, Instagram, Facebook, Linkedin, Navigation, ExternalLink, 
+  Heart, Globe, Star, Plus, Minus, RotateCcw, Compass, Car, MessageCircle, ArrowRight,
+  Route, CheckCircle2, AlertCircle, LocateFixed
 } from 'lucide-react';
 import { AppMode } from '../types';
 import { FlameLogo } from './FlameLogo';
+import { RevealOnScroll } from './RevealOnScroll';
 
 interface FooterSectionProps {
   onOpenReserve: () => void;
@@ -17,6 +18,46 @@ interface FooterSectionProps {
   mode?: AppMode;
 }
 
+// Helper: Calculate distance in miles between two coordinates (Haversine Formula)
+function calculateDistanceMiles(lat1: number, lon1: number, lat2: number, lon2: number): number {
+  const R = 3958.8; // Earth radius in miles
+  const dLat = (lat2 - lat1) * (Math.PI / 180);
+  const dLon = (lon2 - lon1) * (Math.PI / 180);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
+
+// Helper: Format travel time in minutes to hours and minutes if >= 60 mins
+function formatTravelTime(minutes: number): string {
+  if (minutes < 60) {
+    return `${minutes} mins`;
+  }
+  const hours = Math.floor(minutes / 60);
+  const remainingMins = minutes % 60;
+  const hourText = hours === 1 ? '1 hour' : `${hours} hours`;
+  if (remainingMins === 0) {
+    return hourText;
+  }
+  const minText = remainingMins === 1 ? '1 min' : `${remainingMins} mins`;
+  return `${hourText}, ${minText}`;
+}
+
+// Preset origin locations for quick route calculations on the street map
+const ROUTE_ORIGINS = [
+  { id: 'santa-monica', name: 'Santa Monica Pier', distance: '3.9 mi', minutes: 11, traffic: 'Smooth (🟢)', linePath: 'M 0 175 L 255 175 L 255 140' },
+  { id: 'beverly-hills', name: 'Beverly Hills', distance: '4.2 mi', minutes: 13, traffic: 'Light (🟢)', linePath: 'M 500 175 L 255 175 L 255 140' },
+  { id: 'ucla', name: 'Westwood / UCLA', distance: '1.8 mi', minutes: 6, traffic: 'Smooth (🟢)', linePath: 'M 255 0 L 255 140' },
+  { id: 'culver-city', name: 'Culver City / Arts', distance: '4.8 mi', minutes: 12, traffic: 'Smooth (🟢)', linePath: 'M 180 350 L 180 180 L 255 180 L 255 130' },
+  { id: 'century-city', name: 'Century City', distance: '2.7 mi', minutes: 8, traffic: 'Smooth (🟢)', linePath: 'M 500 175 L 255 175 L 255 140' },
+  { id: 'lax', name: 'LAX Airport', distance: '10.5 mi', minutes: 18, traffic: 'Moderate (🟡)', linePath: 'M 100 350 L 100 175 L 255 175 L 255 140' },
+  { id: 'brentwood', name: 'Brentwood Village', distance: '2.3 mi', minutes: 7, traffic: 'Smooth (🟢)', linePath: 'M 0 100 L 255 100 L 255 140' },
+  { id: 'dtla', name: 'Downtown LA', distance: '12.4 mi', minutes: 22, traffic: 'Normal (🟢)', linePath: 'M 500 175 L 255 175 L 255 140' },
+];
+
 export const FooterSection: React.FC<FooterSectionProps> = ({
   onOpenReserve,
   onOpenFunctions,
@@ -26,12 +67,22 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
   onOpenAbout,
   mode = 'lunch',
 }) => {
-  // Map zoom level: 1 = Regional (HWY 405), 2 = District (Sawtelle + West LA), 3 = Corridor (Corinth to Sawtelle), 4 = Ultra Close-Up (11330 Building & Patio)
+  // Map zoom level: 1 = Super Regional (West LA & Freeways), 2 = Regional (HWY 405 & Arteries), 3 = District (Sawtelle + Corinth), 4 = Corridor Focus, 5 = Close-Up
   const [zoomLevel, setZoomLevel] = useState<number>(3);
-  const isNight = mode === 'night';
+  
+  // Directions state
+  const [selectedOriginId, setSelectedOriginId] = useState<string>('santa-monica');
+  const [customOrigin, setCustomOrigin] = useState<string>('');
+  const [gpsData, setGpsData] = useState<{ distance: string; time: string; coords: string } | null>(null);
+  const [isLocating, setIsLocating] = useState<boolean>(false);
+  const [locationStatus, setLocationStatus] = useState<string | null>(null);
+
+  const activeOrigin = ROUTE_ORIGINS.find(o => o.id === selectedOriginId) || ROUTE_ORIGINS[0];
+  const displayDistance = gpsData && customOrigin ? gpsData.distance : activeOrigin.distance;
+  const displayTime = gpsData && customOrigin ? gpsData.time : formatTravelTime(activeOrigin.minutes);
 
   const handleZoomIn = () => {
-    setZoomLevel((prev) => Math.min(prev + 1, 4));
+    setZoomLevel((prev) => Math.min(prev + 1, 5));
   };
 
   const handleZoomOut = () => {
@@ -42,459 +93,812 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
     setZoomLevel(3);
   };
 
+  // Helper for dynamic route line overlay over the actual street map
+  const getRoutePathForZoom = (zoom: number, originId: string) => {
+    if (zoom === 1) {
+      switch (originId) {
+        case 'santa-monica': return 'M 0 170 L 255 170 L 255 125';
+        case 'beverly-hills': return 'M 500 170 L 255 170 L 255 125';
+        case 'ucla': return 'M 345 0 L 345 170 L 255 170 L 255 125';
+        case 'culver-city': return 'M 220 350 L 220 170 L 255 170 L 255 125';
+        case 'century-city': return 'M 460 170 L 255 170 L 255 125';
+        case 'lax': return 'M 345 350 L 345 170 L 255 170 L 255 125';
+        case 'brentwood': return 'M 60 70 L 60 170 L 255 170 L 255 125';
+        case 'dtla': return 'M 500 300 L 345 300 L 345 170 L 255 170 L 255 125';
+        default: return 'M 0 170 L 255 170 L 255 125';
+      }
+    } else if (zoom === 2) {
+      switch (originId) {
+        case 'santa-monica': return 'M 0 165 L 250 165 L 250 115';
+        case 'beverly-hills': return 'M 500 165 L 250 165 L 250 115';
+        case 'ucla': return 'M 345 0 L 345 165 L 250 165 L 250 115';
+        case 'culver-city': return 'M 190 350 L 190 165 L 250 165 L 250 115';
+        case 'century-city': return 'M 480 165 L 250 165 L 250 115';
+        case 'lax': return 'M 345 350 L 345 165 L 250 165 L 250 115';
+        case 'brentwood': return 'M 60 65 L 60 165 L 250 165 L 250 115';
+        case 'dtla': return 'M 500 165 L 250 165 L 250 115';
+        default: return 'M 0 165 L 250 165 L 250 115';
+      }
+    } else if (zoom === 3) {
+      switch (originId) {
+        case 'santa-monica': return 'M 0 160 L 250 160 L 250 110';
+        case 'beverly-hills': return 'M 500 160 L 250 160 L 250 110';
+        case 'ucla': return 'M 250 0 L 250 110';
+        case 'culver-city': return 'M 115 350 L 115 160 L 250 160 L 250 110';
+        case 'century-city': return 'M 500 160 L 250 160 L 250 110';
+        case 'lax': return 'M 115 350 L 115 160 L 250 160 L 250 110';
+        case 'brentwood': return 'M 115 0 L 115 160 L 250 160 L 250 110';
+        case 'dtla': return 'M 500 160 L 250 160 L 250 110';
+        default: return 'M 0 160 L 250 160 L 250 110';
+      }
+    } else if (zoom === 4) {
+      switch (originId) {
+        case 'santa-monica': return 'M 0 180 L 250 180 L 250 120';
+        case 'beverly-hills': return 'M 500 180 L 250 180 L 250 120';
+        case 'ucla': return 'M 250 0 L 250 120';
+        case 'culver-city': return 'M 85 350 L 85 180 L 250 180 L 250 120';
+        case 'century-city': return 'M 500 180 L 250 180 L 250 120';
+        case 'lax': return 'M 85 350 L 85 180 L 250 180 L 250 120';
+        case 'brentwood': return 'M 85 0 L 85 180 L 250 180 L 250 120';
+        case 'dtla': return 'M 500 180 L 250 180 L 250 120';
+        default: return 'M 0 180 L 250 180 L 250 120';
+      }
+    } else {
+      // zoomLevel === 5 (Close-Up)
+      switch (originId) {
+        case 'santa-monica': return 'M 0 190 L 250 190 L 250 135';
+        case 'beverly-hills': return 'M 500 190 L 250 190 L 250 135';
+        case 'ucla': return 'M 250 0 L 250 135';
+        case 'culver-city': return 'M 50 350 L 50 190 L 250 190 L 250 135';
+        case 'century-city': return 'M 500 190 L 250 190 L 250 135';
+        case 'lax': return 'M 50 350 L 50 190 L 250 190 L 250 135';
+        case 'brentwood': return 'M 50 0 L 50 190 L 250 190 L 250 135';
+        case 'dtla': return 'M 500 190 L 250 190 L 250 135';
+        default: return 'M 0 190 L 250 190 L 250 135';
+      }
+    }
+  };
+
+  const handleUseCurrentLocation = () => {
+    if (!navigator.geolocation) {
+      setLocationStatus('Geolocation is not supported in this browser. Click "Open Live Google Navigation" below!');
+      return;
+    }
+
+    setIsLocating(true);
+    setLocationStatus('Accessing device GPS coordinates...');
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const userLat = position.coords.latitude;
+        const userLon = position.coords.longitude;
+        const distMiles = calculateDistanceMiles(userLat, userLon, 34.0416, -118.4552);
+        
+        let estMins = Math.max(3, Math.round(distMiles * 2.2 + 2));
+        if (distMiles < 0.5) estMins = 2;
+        else if (distMiles > 60) estMins = Math.round(distMiles * 1.1 + 10);
+
+        const distStr = `${distMiles.toFixed(1)} mi`;
+        const timeStr = formatTravelTime(estMins);
+        const coordsStr = `${userLat.toFixed(3)}, ${userLon.toFixed(3)}`;
+
+        setGpsData({ distance: distStr, time: timeStr, coords: coordsStr });
+        setCustomOrigin(`Your Current GPS Location (${distStr})`);
+        setIsLocating(false);
+        setLocationStatus(`GPS Locked! ~${distStr} to Flame (${timeStr} drive).`);
+      },
+      (error) => {
+        setIsLocating(false);
+        if (error.code === 1) {
+          setLocationStatus('GPS permission blocked. Tap "Open Live Google Navigation" below to route directly!');
+        } else if (error.code === 2) {
+          setLocationStatus('GPS signal unavailable. Tap "Open Live Google Navigation" below.');
+        } else {
+          setLocationStatus('GPS request timed out. Tap "Open Live Google Navigation" below.');
+        }
+      },
+      { enableHighAccuracy: true, timeout: 12000, maximumAge: 60000 }
+    );
+  };
+
   return (
-    <footer id="find-us-footer" className="relative bg-[#180309] text-[#f7e8ea] pt-16 pb-28 px-4 sm:px-6 lg:px-12 overflow-hidden border-t border-[#4d0c1e]/60 font-['Raleway']">
+    <footer id="find-us-footer" className="relative bg-[#180309] text-[#f7e8ea] pt-20 sm:pt-28 pb-28 px-4 sm:px-6 lg:px-12 overflow-hidden font-['Raleway']">
       
+      {/* Curved Architectural Top Wave Transition matching user mockup - No black line */}
+      <div className="absolute top-0 left-0 right-0 pointer-events-none overflow-hidden leading-none z-10">
+        <svg 
+          viewBox="0 0 1440 100" 
+          fill="none" 
+          xmlns="http://www.w3.org/2000/svg"
+          preserveAspectRatio="none"
+          className={`w-full h-10 sm:h-16 md:h-20 transition-colors duration-700 ${
+            mode === 'night' ? 'text-[#000000]' : 'text-[#ffffff]'
+          }`}
+        >
+          <path 
+            d="M 0,0 L 1440,0 L 1440,28 C 860,10 380,95 0,55 Z" 
+            fill="currentColor" 
+          />
+        </svg>
+      </div>
+
       {/* Subtle Warm Amber Ambiance */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(212,163,89,0.1),transparent_70%)] pointer-events-none" />
 
       <div className="max-w-6xl mx-auto flex flex-col items-center relative z-10">
         
         {/* Prominent Official Flame International Color Logo Header */}
-        <div className="text-center mb-8 flex flex-col items-center">
+        <RevealOnScroll direction="up" delay={0} duration={800} className="text-center mb-8 flex flex-col items-center">
           <div className="mb-5 hover:scale-105 transition-transform duration-300 cursor-pointer">
             <FlameLogo variant="color-full" size="xl" />
           </div>
 
-          <span className="text-[10px] sm:text-xs tracking-[0.3em] text-[#f5a7b8] uppercase font-['Raleway'] font-bold block mb-0.5">
+          <span className="text-xs sm:text-sm tracking-[0.3em] text-[#f5a7b8] uppercase font-['Raleway'] font-medium block mb-1">
             FIND US / VISIT US
           </span>
-          <h2 className="font-['Raleway'] text-base sm:text-lg text-white/90 font-bold tracking-wider uppercase">
-            ON <span className="text-[#f3cf8a] font-extrabold ml-1">SANTA MONICA BOULEVARD</span>
+          <h2 className="font-['Raleway'] text-lg sm:text-2xl text-white font-medium tracking-wider uppercase">
+            ON <span className="text-[#f3cf8a] font-semibold ml-1">SANTA MONICA BOULEVARD</span>
           </h2>
-          <p className="text-[11px] sm:text-xs text-[#f3cfd6]/80 mt-1 max-w-md mx-auto font-normal">
-            11330 Santa Monica Blvd, West Los Angeles • Between Corinth Ave &amp; Sawtelle Blvd
+          <p className="text-base sm:text-lg text-white font-normal mt-2 font-['Raleway']">
+            11330 Santa Monica Blvd, West Los Angeles, CA 90025
           </p>
-        </div>
-
-        {/* Map & Location Card with Interactive Zoom Levels & Precise Geography */}
-        <div className="w-full max-w-4xl bg-[#1c030b]/90 border border-[#6b152d]/60 rounded-3xl p-6 sm:p-8 backdrop-blur-md shadow-[0_25px_60px_rgba(0,0,0,0.6)] grid grid-cols-1 md:grid-cols-12 gap-8 items-center font-['Raleway']">
           
-          {/* Left: Interactive Santa Monica Blvd Map */}
-          <div className="md:col-span-7 relative h-80 sm:h-96 rounded-2xl overflow-hidden bg-[#24050f] border border-[#5c1125] p-2 select-none">
+          {/* Valet Parking Info Pill directly below Address */}
+          <div className="mt-3 inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-[#3d0a1c]/95 border border-[#831f3b] text-sm text-[#f3cf8a] font-medium shadow-lg">
+            <Car size={18} className="text-[#f3cf8a] shrink-0" />
+            <span>Complimentary Guest Valet Parking at Main Entrance</span>
+          </div>
+        </RevealOnScroll>
+
+        {/* Unified 2-Column Responsive Layout: Map Functionality Grouped Together (Left) vs Hours & Contact (Right) */}
+        <RevealOnScroll direction="up" delay={150} duration={850} className="w-full max-w-6xl">
+          <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-7 items-start font-['Raleway']">
             
-            {/* Floating Map Zoom Navigation Bar (+ / - / Reset) */}
-            <div className="absolute top-4 right-4 z-20 flex flex-col items-end space-y-1.5">
-              <div className="bg-[#121619]/95 backdrop-blur-md border border-[#5c1125] rounded-xl p-1 shadow-lg flex flex-col space-y-1">
-                <button
-                  onClick={handleZoomIn}
-                  disabled={zoomLevel === 4}
-                  className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold transition-all ${
-                    zoomLevel === 4 ? 'text-white/30 cursor-not-allowed' : 'text-[#f5d79e] hover:bg-[#3d0818] cursor-pointer'
-                  }`}
-                  title="Zoom In (+)"
-                  aria-label="Zoom In"
-                >
-                  <Plus size={15} />
-                </button>
-                <button
-                  onClick={handleZoomOut}
-                  disabled={zoomLevel === 1}
-                  className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold transition-all ${
-                    zoomLevel === 1 ? 'text-white/30 cursor-not-allowed' : 'text-[#f5d79e] hover:bg-[#3d0818] cursor-pointer'
-                  }`}
-                  title="Zoom Out (-)"
-                  aria-label="Zoom Out"
-                >
-                  <Minus size={15} />
-                </button>
-                <button
-                  onClick={handleResetZoom}
-                  className="w-7 h-7 rounded-lg flex items-center justify-center text-[#f5a7b8] hover:bg-[#3d0818] transition-all cursor-pointer"
-                  title="Reset Map View"
-                  aria-label="Reset Map"
-                >
-                  <RotateCcw size={12} />
-                </button>
-              </div>
-
-              {/* Zoom Level Indicator Pill */}
-              <div className="bg-[#121619]/90 backdrop-blur-md border border-[#5c1125] px-2.5 py-0.5 rounded-full text-[10px] font-['Raleway'] font-bold text-[#d4a359] tracking-widest uppercase">
-                {zoomLevel === 1 && '📍 REGIONAL (I-405 FWY)'}
-                {zoomLevel === 2 && '📍 WEST LA DISTRICT'}
-                {zoomLevel === 3 && '📍 CORINTH & SAWTELLE'}
-                {zoomLevel === 4 && '📍 11330 FLAME BUILDING'}
-              </div>
-            </div>
-
-            {/* Map Vector Graphic Rendering with ALL CAPS SANS-SERIF Typography */}
-            <div className="w-full h-full relative rounded-xl overflow-hidden bg-[#24050f]">
+            {/* ========================================================================= */}
+            {/* 🗺️ LEFT COLUMN (lg:col-span-7): UNIFIED STREET MAP & DIRECTIONS MODULE */}
+            {/* ========================================================================= */}
+            <div className="lg:col-span-7">
               
-              {/* ZOOM LEVEL 1: REGIONAL FREEWAY OVERVIEW (I-405 & WEST LA) */}
-              {zoomLevel === 1 && (
-                <svg viewBox="0 0 500 350" className="w-full h-full font-['Raleway',sans-serif]">
-                  <rect width="500" height="350" fill="#1b030b" />
-                  
-                  {/* Highway 405 (San Diego Freeway) */}
-                  <path d="M 330 0 L 355 350" stroke="#7a1c35" strokeWidth="26" />
-                  <path d="M 330 0 L 355 350" stroke="#330815" strokeWidth="20" />
-                  <path d="M 330 0 L 355 350" stroke="#d4a359" strokeWidth="2" strokeDasharray="6 6" />
-
-                  {/* Interstate 405 Blue/Red Shield Badge */}
-                  <g transform="translate(340, 45)">
-                    <rect x="-16" y="-12" width="32" height="24" rx="4" fill="#003366" stroke="#ffffff" strokeWidth="1.5" />
-                    <rect x="-16" y="-12" width="32" height="8" rx="2" fill="#cc0000" />
-                    <text x="0" y="6" fill="#ffffff" fontSize="10" fontWeight="900" textAnchor="middle" letterSpacing="0.05em">405</text>
-                  </g>
-                  <text x="365" y="100" fill="#f5a7b8" fontSize="9" fontWeight="800" letterSpacing="0.12em">SAN DIEGO FWY (I-405)</text>
-
-                  {/* Major East-West Arteries */}
-                  {/* Wilshire Blvd */}
-                  <path d="M 0 70 L 500 50" stroke="#68152c" strokeWidth="10" />
-                  <text x="25" y="62" fill="#f3cf8a" fontSize="9.5" fontWeight="800" letterSpacing="0.1em">WILSHIRE BLVD ➔</text>
-
-                  {/* Santa Monica Blvd (CA-2) - Primary Corridor */}
-                  <path d="M 0 170 L 500 150" stroke="#9e2343" strokeWidth="18" />
-                  <path d="M 0 170 L 500 150" stroke="#24050f" strokeWidth="12" />
-                  <text x="20" y="158" fill="#ffffff" fontSize="10.5" fontWeight="900" letterSpacing="0.12em">★ SANTA MONICA BLVD (ROUTE 66 / CA-2)</text>
-
-                  {/* Olympic Blvd (South) */}
-                  <path d="M 0 270 L 500 250" stroke="#68152c" strokeWidth="10" />
-                  <text x="25" y="262" fill="#f3cf8a" fontSize="9.5" fontWeight="800" letterSpacing="0.1em">OLYMPIC BLVD ➔</text>
-
-                  {/* North-South Major Roads */}
-                  {/* Sepulveda Blvd */}
-                  <path d="M 385 0 L 410 350" stroke="#521324" strokeWidth="8" />
-                  <text x="395" y="325" fill="#f5d79e" fontSize="8.5" fontWeight="700" letterSpacing="0.1em">SEPULVEDA BLVD</text>
-
-                  {/* Westwood / UCLA Direction */}
-                  <text x="300" y="25" fill="#f3cf8a" fontSize="8.5" fontWeight="800" letterSpacing="0.1em">↑ TO UCLA &amp; WESTWOOD</text>
-
-                  {/* Pacific Ocean / Santa Monica Pier Direction */}
-                  <text x="15" y="25" fill="#f3cf8a" fontSize="8.5" fontWeight="800" letterSpacing="0.1em">← TO SANTA MONICA BEACH &amp; PIER</text>
-
-                  {/* Destination Label Box */}
-                  <g transform="translate(195, 110)">
-                    <rect x="-10" y="-16" width="145" height="42" rx="6" fill="#121619" stroke="#d4a359" strokeWidth="1.5" />
-                    <text x="62" y="2" fill="#ffffff" fontSize="10.5" fontWeight="900" letterSpacing="0.08em" textAnchor="middle">FLAME INTERNATIONAL ★</text>
-                    <text x="62" y="16" fill="#f3cf8a" fontSize="8.5" fontWeight="700" letterSpacing="0.06em" textAnchor="middle">11330 SANTA MONICA BLVD</text>
-                  </g>
-                </svg>
-              )}
-
-              {/* ZOOM LEVEL 2: DISTRICT LEVEL (SAWTELLE JAPANTOWN & WEST LA CIVIC) */}
-              {zoomLevel === 2 && (
-                <svg viewBox="0 0 500 350" className="w-full h-full font-['Raleway',sans-serif]">
-                  <rect width="500" height="350" fill="#1b030b" />
-
-                  {/* Sawtelle Corridor & Japantown District */}
-                  <rect x="310" y="40" width="85" height="260" rx="4" fill="#300613" stroke="#68152c" strokeWidth="1.5" strokeDasharray="4 4" />
-                  <text x="352" y="65" fill="#f5a7b8" fontSize="9" fontWeight="900" letterSpacing="0.1em" textAnchor="middle">SAWTELLE</text>
-                  <text x="352" y="78" fill="#f3cf8a" fontSize="8" fontWeight="700" letterSpacing="0.08em" textAnchor="middle">JAPANTOWN ARTS</text>
-
-                  {/* West LA Civic Center Plaza */}
-                  <rect x="130" y="195" width="125" height="85" rx="4" fill="#2d0612" stroke="#521324" strokeWidth="1.5" />
-                  <text x="192" y="235" fill="#f5a7b8" fontSize="9" fontWeight="900" letterSpacing="0.08em" textAnchor="middle">WEST LA CIVIC CENTER</text>
-                  <text x="192" y="248" fill="#d1d5db" fontSize="7.5" fontWeight="700" letterSpacing="0.05em" textAnchor="middle">&amp; REGIONAL LIBRARY</text>
-
-                  {/* Streets Grid */}
-                  {/* Purdue Ave */}
-                  <path d="M 90 0 L 90 350" stroke="#521324" strokeWidth="8" />
-                  <text x="75" y="325" fill="#f5d79e" fontSize="8" fontWeight="800" letterSpacing="0.1em" transform="rotate(-90 75 325)">PURDUE AVENUE ➔</text>
-
-                  {/* Corinth Ave (Direct West Boundary) */}
-                  <path d="M 180 0 L 180 350" stroke="#7a1c35" strokeWidth="12" />
-                  <path d="M 180 0 L 180 350" stroke="#24050f" strokeWidth="8" />
-                  <text x="165" y="325" fill="#f3cf8a" fontSize="9" fontWeight="900" letterSpacing="0.1em" transform="rotate(-90 165 325)">← CORINTH AVE (WEST)</text>
-
-                  {/* Sawtelle Blvd (Direct East Boundary) */}
-                  <path d="M 330 0 L 330 350" stroke="#7a1c35" strokeWidth="12" />
-                  <path d="M 330 0 L 330 350" stroke="#24050f" strokeWidth="8" />
-                  <text x="345" y="325" fill="#f3cf8a" fontSize="9" fontWeight="900" letterSpacing="0.1em" transform="rotate(90 345 325)">SAWTELLE BLVD (EAST) →</text>
-
-                  {/* Beloit Ave */}
-                  <path d="M 425 0 L 425 350" stroke="#521324" strokeWidth="8" />
-                  <text x="440" y="325" fill="#f5d79e" fontSize="8" fontWeight="800" letterSpacing="0.1em" transform="rotate(90 440 325)">BELOIT AVENUE</text>
-
-                  {/* Santa Monica Blvd Wide Roadway */}
-                  <path d="M 0 160 L 500 150" stroke="#9e2343" strokeWidth="22" />
-                  <path d="M 0 160 L 500 150" stroke="#121619" strokeWidth="16" />
-                  <path d="M 0 160 L 500 150" stroke="#d4a359" strokeWidth="1.5" strokeDasharray="8 8" />
-                  <text x="15" y="152" fill="#ffffff" fontSize="9.5" fontWeight="900" letterSpacing="0.12em">SANTA MONICA BOULEVARD (CA-2)</text>
-
-                  {/* 11330 Flame International Lot */}
-                  <rect x="215" y="100" width="80" height="48" rx="4" fill="#4d0c1e" stroke="#d4a359" strokeWidth="2" />
-                  <text x="255" y="120" fill="#ffffff" fontSize="9.5" fontWeight="900" letterSpacing="0.06em" textAnchor="middle">FLAME INT'L ★</text>
-                  <text x="255" y="134" fill="#f3cf8a" fontSize="7.5" fontWeight="700" letterSpacing="0.04em" textAnchor="middle">11330 SANTA MONICA</text>
-                </svg>
-              )}
-
-              {/* ZOOM LEVEL 3: CORRIDOR FOCUS (CORINTH AVE TO SAWTELLE BLVD) */}
-              {zoomLevel === 3 && (
-                <svg viewBox="0 0 500 350" className="w-full h-full font-['Raleway',sans-serif]">
-                  <rect width="500" height="350" fill="#1b030b" />
-
-                  {/* Western Boundary: CORINTH AVE */}
-                  <path d="M 100 0 L 100 350" stroke="#7a1c35" strokeWidth="20" />
-                  <path d="M 100 0 L 100 350" stroke="#2a0612" strokeWidth="14" />
-                  <text x="82" y="60" fill="#f3cf8a" fontSize="9.5" fontWeight="900" letterSpacing="0.12em" transform="rotate(-90 82 60)">
-                    ← CORINTH AVE (WEST)
-                  </text>
-
-                  {/* Eastern Boundary: SAWTELLE BLVD */}
-                  <path d="M 400 0 L 400 350" stroke="#7a1c35" strokeWidth="20" />
-                  <path d="M 400 0 L 400 350" stroke="#2a0612" strokeWidth="14" />
-                  <text x="420" y="60" fill="#f3cf8a" fontSize="9.5" fontWeight="900" letterSpacing="0.12em" transform="rotate(90 420 60)">
-                    SAWTELLE BLVD (EAST) →
-                  </text>
-
-                  {/* Primary Street: SANTA MONICA BLVD (CA-2) */}
-                  <path d="M 0 180 L 500 170" stroke="#8b1c37" strokeWidth="32" />
-                  <path d="M 0 180 L 500 170" stroke="#20030a" strokeWidth="26" />
-                  <path d="M 0 180 L 500 170" stroke="#d4a359" strokeWidth="2" strokeDasharray="8 8" />
-
-                  {/* Santa Monica Blvd Street Label */}
-                  <text x="125" y="176" fill="#ffffff" fontSize="10" fontWeight="900" letterSpacing="0.14em">
-                    SANTA MONICA BOULEVARD (CA-2)
-                  </text>
-
-                  {/* NORTH SIDE BUILDINGS: FLAME INTERNATIONAL IN CENTER */}
-                  {/* 11330 Flame International Lot */}
-                  <g>
-                    <rect x="180" y="65" width="150" height="98" rx="6" fill="#3d0a1c" stroke="#d4a359" strokeWidth="2" />
-                    <rect x="190" y="74" width="130" height="66" rx="4" fill="#5c1125" stroke="#a32b4b" strokeWidth="1" />
-                    
-                    <text x="255" y="94" fill="#ffffff" fontSize="11" fontWeight="900" letterSpacing="0.08em" textAnchor="middle">11330 SANTA MONICA BLVD</text>
-                    <text x="255" y="110" fill="#f3cf8a" fontSize="10" fontWeight="800" letterSpacing="0.06em" textAnchor="middle">FLAME INTERNATIONAL ★</text>
-                    <text x="255" y="124" fill="#f5a7b8" fontSize="7.5" fontWeight="700" letterSpacing="0.05em" textAnchor="middle">PERSIAN BANQUET, GRILL &amp; STAGE</text>
-                    
-                    {/* Patio Banner */}
-                    <rect x="205" y="144" width="100" height="15" rx="3" fill="#d4a359" />
-                    <text x="255" y="155" fill="#000000" fontSize="8" fontWeight="900" letterSpacing="0.08em" textAnchor="middle">OUTDOOR SAFFRON PATIO</text>
-                  </g>
-
-                  {/* South-West Block: West LA Civic Center */}
-                  <g>
-                    <rect x="135" y="215" width="115" height="55" rx="4" fill="#20040c" stroke="#68152c" strokeWidth="1.5" />
-                    <text x="192" y="238" fill="#f5a7b8" fontSize="8.5" fontWeight="900" letterSpacing="0.08em" textAnchor="middle">WEST LA CIVIC CENTER</text>
-                    <text x="192" y="252" fill="#d1d5db" fontSize="7.5" fontWeight="700" letterSpacing="0.05em" textAnchor="middle">&amp; PUBLIC LIBRARY</text>
-                  </g>
-
-                  {/* South-East Block: Nuart / Cultural Hub */}
-                  <g>
-                    <rect x="260" y="215" width="115" height="55" rx="4" fill="#20040c" stroke="#68152c" strokeWidth="1.5" />
-                    <text x="317" y="238" fill="#f5a7b8" fontSize="8.5" fontWeight="900" letterSpacing="0.08em" textAnchor="middle">NUART CINEMA &amp; SHOPS</text>
-                    <text x="317" y="252" fill="#d1d5db" fontSize="7.5" fontWeight="700" letterSpacing="0.05em" textAnchor="middle">WEST LA HISTORIC DISTRICT</text>
-                  </g>
-                </svg>
-              )}
-
-              {/* ZOOM LEVEL 4: ULTRA CLOSE-UP STREET DETAIL (11330 SANTA MONICA BLVD) */}
-              {zoomLevel === 4 && (
-                <svg viewBox="0 0 500 350" className="w-full h-full font-['Raleway',sans-serif]">
-                  <rect width="500" height="350" fill="#1b030b" />
-
-                  {/* Left Street Boundary: Corinth Ave */}
-                  <path d="M 60 0 L 60 350" stroke="#7a1c35" strokeWidth="28" />
-                  <path d="M 60 0 L 60 350" stroke="#330815" strokeWidth="22" />
-                  <text x="42" y="45" fill="#f3cf8a" fontSize="9.5" fontWeight="900" letterSpacing="0.12em" transform="rotate(-90 42 45)">← CORINTH AVE (WEST)</text>
-
-                  {/* Right Street Boundary: Sawtelle Blvd */}
-                  <path d="M 440 0 L 440 350" stroke="#7a1c35" strokeWidth="28" />
-                  <path d="M 440 0 L 440 350" stroke="#330815" strokeWidth="22" />
-                  <text x="460" y="45" fill="#f3cf8a" fontSize="9.5" fontWeight="900" letterSpacing="0.12em" transform="rotate(90 460 45)">SAWTELLE BLVD (EAST) →</text>
-
-                  {/* Santa Monica Blvd Wide Roadway */}
-                  <path d="M 0 190 L 500 170" stroke="#8b1c37" strokeWidth="44" />
-                  <path d="M 0 190 L 500 170" stroke="#2a0612" strokeWidth="38" />
-                  <path d="M 0 190 L 500 170" stroke="#d4a359" strokeWidth="2" strokeDasharray="10 10" />
-
-                  {/* Roadway Street Name Stamp */}
-                  <text x="135" y="160" fill="#f3cf8a" fontSize="10.5" fontWeight="900" letterSpacing="0.14em">
-                    SANTA MONICA BOULEVARD (CA-2)
-                  </text>
-
-                  {/* 11330 FLAME INTERNATIONAL MAIN COMPLEX */}
-                  <g>
-                    {/* Property Boundary */}
-                    <rect x="105" y="35" width="290" height="110" rx="6" fill="#3d0a1c" stroke="#d4a359" strokeWidth="2.5" />
-                    
-                    {/* Main Dining Room & Cabaret Stage */}
-                    <rect x="115" y="44" width="180" height="92" rx="4" fill="#5c1125" stroke="#a32b4b" strokeWidth="1" />
-                    <text x="205" y="68" fill="#ffffff" fontSize="12" fontWeight="900" letterSpacing="0.08em" textAnchor="middle">FLAME INTERNATIONAL ★</text>
-                    <text x="205" y="84" fill="#f3cf8a" fontSize="9" fontWeight="800" letterSpacing="0.06em" textAnchor="middle">11330 SANTA MONICA BLVD</text>
-                    <text x="205" y="100" fill="#f5a7b8" fontSize="7.5" fontWeight="700" letterSpacing="0.05em" textAnchor="middle">FLAME CHARCOAL GRILL • LIVE PERSIAN STAGE</text>
-                    <text x="205" y="118" fill="#4ade80" fontSize="8" fontWeight="800" letterSpacing="0.06em" textAnchor="middle">OPEN DAILY: 11:30 AM – 11:00 PM</text>
-
-                    {/* Saffron Garden Patio */}
-                    <rect x="305" y="44" width="80" height="92" rx="4" fill="#400b1a" stroke="#d4a359" strokeWidth="1.5" strokeDasharray="4 4" />
-                    <text x="345" y="74" fill="#f3cf8a" fontSize="9.5" fontWeight="900" letterSpacing="0.08em" textAnchor="middle">SAFFRON</text>
-                    <text x="345" y="88" fill="#f3cf8a" fontSize="9.5" fontWeight="900" letterSpacing="0.08em" textAnchor="middle">PATIO</text>
-                    <text x="345" y="106" fill="#f5a7b8" fontSize="7.5" fontWeight="700" letterSpacing="0.05em" textAnchor="middle">OUTDOOR DINING</text>
-
-                    {/* Valet & Main Entrance */}
-                    <rect x="175" y="138" width="80" height="15" rx="3" fill="#d4a359" />
-                    <text x="215" y="149" fill="#000000" fontSize="7.5" fontWeight="900" letterSpacing="0.08em" textAnchor="middle">VALET &amp; ENTRANCE</text>
-                  </g>
-
-                  {/* South Side of Santa Monica Blvd: West LA Municipal Plaza */}
-                  <rect x="105" y="235" width="290" height="78" rx="6" fill="#24050f" stroke="#5c1125" strokeWidth="1.5" />
-                  <text x="250" y="265" fill="#f5a7b8" fontSize="9.5" fontWeight="900" letterSpacing="0.08em" textAnchor="middle">WEST LA CIVIC PLAZA &amp; REGIONAL LIBRARY</text>
-                  <text x="250" y="282" fill="#d1d5db" fontSize="8" fontWeight="700" letterSpacing="0.06em" textAnchor="middle">1645 CORINTH AVE • DIRECTLY ACROSS FROM FLAME</text>
-                </svg>
-              )}
-
-              {/* ELEVATED PIN MARKER */}
-              <div 
-                className={`absolute z-10 pointer-events-none transition-all duration-300 ${
-                  zoomLevel === 1 ? 'top-[34%] left-[45%]' : 
-                  zoomLevel === 2 ? 'top-[38%] left-[50%]' : 
-                  zoomLevel === 3 ? 'top-[20%] left-[47%]' : 
-                  'top-[10%] left-[46%]'
-                }`}
-              >
-                {/* Glowing Pulse Ring at ground contact */}
-                <div className="absolute top-[32px] left-[14px] transform -translate-x-1/2 -translate-y-1/2">
-                  <div className="w-6 h-6 rounded-full bg-[#d4a359]/40 animate-ping" />
-                  <div className="w-3 h-3 rounded-full bg-[#d4a359] absolute top-1.5 left-1.5 shadow-[0_0_12px_#d4a359]" />
-                </div>
-
-                {/* Elevated Floating Pin Head */}
-                <div className="relative -top-2 flex flex-col items-center animate-bounce">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#b8863b] to-[#f3cf8a] text-black font-bold flex items-center justify-center shadow-[0_4px_18px_rgba(212,163,89,0.9)] border-2 border-white">
-                    <MapPin size={16} className="fill-black text-black" />
+              <div className="bg-[#1c030b]/90 border border-[#6b152d]/70 rounded-3xl p-4 sm:p-6 backdrop-blur-md shadow-[0_20px_50px_rgba(0,0,0,0.6)] space-y-3.5">
+                
+                {/* Estimate Time From - Origin Selector Chips */}
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs sm:text-sm uppercase font-medium tracking-widest text-[#f5a7b8] flex items-center space-x-1.5">
+                      <Route size={16} className="text-[#f3cf8a]" />
+                      <span>Estimate Time From:</span>
+                    </span>
+                    <span className="text-xs text-[#f5d79e] font-normal">Select start point or GPS</span>
                   </div>
-                  <div className="w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[7px] border-t-[#b8863b] -mt-[1px]" />
+                  
+                  <div className="flex flex-wrap items-center gap-2">
+                    {/* 1st Option: GPS Button */}
+                    <button
+                      onClick={handleUseCurrentLocation}
+                      disabled={isLocating}
+                      className={`px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-medium transition-all cursor-pointer font-['Raleway'] flex items-center space-x-1.5 border shadow-sm ${
+                        customOrigin
+                          ? 'bg-gradient-to-r from-[#d4a359] to-[#f3cf8a] text-black border-[#d4a359] shadow-md scale-105 ring-2 ring-[#d4a359]/40'
+                          : 'bg-[#400918] hover:bg-[#5e1026] text-[#f5d79e] border-[#a32b4b] hover:border-[#d4a359]'
+                      }`}
+                    >
+                      <LocateFixed size={14} className={isLocating ? 'animate-spin' : 'text-[#f3cf8a]'} />
+                      <span>{isLocating ? 'Locating...' : 'Use My GPS'}</span>
+                    </button>
+
+                    {/* Presets */}
+                    {ROUTE_ORIGINS.map((origin) => (
+                      <button
+                        key={origin.id}
+                        onClick={() => {
+                          setSelectedOriginId(origin.id);
+                          setCustomOrigin('');
+                          setLocationStatus(null);
+                        }}
+                        className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-medium transition-all cursor-pointer font-['Raleway'] border ${
+                          selectedOriginId === origin.id && !customOrigin
+                            ? 'bg-gradient-to-r from-[#d4a359] to-[#f3cf8a] text-black border-[#d4a359] shadow-md scale-105 font-semibold'
+                            : 'bg-[#280510] text-[#e2e8f0] hover:bg-[#3d0818] border-[#5c1125]'
+                        }`}
+                      >
+                        {origin.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Map Viewport Area with Street Names & Route Overlay Line */}
+                <div className="relative h-84 sm:h-96 rounded-2xl overflow-hidden bg-[#24050f] border border-[#5c1125] p-2 select-none">
+                  
+                  {/* Floating Map Zoom Navigation Bar (+ / - / Reset) */}
+                  <div className="absolute top-4 right-4 z-20 flex flex-col items-end space-y-1.5">
+                    <div className="bg-[#121619]/95 backdrop-blur-md border border-[#d4a359]/70 rounded-xl p-1.5 shadow-2xl flex flex-col items-center space-y-1 ring-1 ring-[#d4a359]/40">
+                      <span className="text-[9px] font-['Raleway'] font-medium text-[#d4a359] tracking-wider uppercase px-1">NAV</span>
+                      <button
+                        onClick={handleZoomIn}
+                        disabled={zoomLevel === 5}
+                        className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-medium transition-all ${
+                          zoomLevel === 5 ? 'text-white/20 bg-white/5 cursor-not-allowed' : 'text-[#f5d79e] bg-[#280510] hover:bg-[#d4a359] hover:text-black border border-[#68152c] cursor-pointer shadow-md'
+                        }`}
+                        title="Zoom In (+)"
+                        aria-label="Zoom In (+)"
+                      >
+                        <Plus size={16} strokeWidth={2.5} />
+                      </button>
+                      <button
+                        onClick={handleZoomOut}
+                        disabled={zoomLevel === 1}
+                        className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-medium transition-all ${
+                          zoomLevel === 1 ? 'text-white/20 bg-white/5 cursor-not-allowed' : 'text-[#f5d79e] bg-[#280510] hover:bg-[#d4a359] hover:text-black border border-[#68152c] cursor-pointer shadow-md'
+                        }`}
+                        title="Zoom Out (-)"
+                        aria-label="Zoom Out (-)"
+                      >
+                        <Minus size={16} strokeWidth={2.5} />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Map Vector Graphic Rendering with ALL CAPS SANS-SERIF Typography */}
+                  <div className="w-full h-full relative rounded-xl overflow-hidden bg-[#24050f]">
+                    
+                    {/* ZOOM LEVEL 1: SUPER REGIONAL OVERVIEW (GREATER WEST LA & FREEWAYS) */}
+                    {zoomLevel === 1 && (
+                      <svg viewBox="0 0 500 350" className="w-full h-full font-['Raleway',sans-serif]">
+                        <rect width="500" height="350" fill="#1b030b" />
+                        
+                        {/* Freeway: I-405 (San Diego Freeway) */}
+                        <path d="M 345 0 L 345 350" stroke="#003366" strokeWidth="44" />
+                        <path d="M 345 0 L 345 350" stroke="#1d4ed8" strokeWidth="38" opacity="0.3" />
+                        <path d="M 345 0 L 345 350" stroke="#25050e" strokeWidth="28" />
+                        
+                        {/* I-405 Shield Badges */}
+                        <g transform="translate(345, 34)">
+                          <rect x="-18" y="-12" width="36" height="24" rx="4" fill="#003366" stroke="#ffffff" strokeWidth="1.8" />
+                          <rect x="-18" y="-12" width="36" height="8" rx="2" fill="#cc0000" />
+                          <text x="0" y="7" fill="#ffffff" fontSize="11" fontWeight="700" textAnchor="middle">405</text>
+                        </g>
+                        <g transform="translate(345, 260)">
+                          <rect x="-16" y="-10" width="32" height="20" rx="3" fill="#003366" stroke="#ffffff" strokeWidth="1.5" />
+                          <rect x="-16" y="-10" width="32" height="7" rx="2" fill="#cc0000" />
+                          <text x="0" y="5" fill="#ffffff" fontSize="9.5" fontWeight="700" textAnchor="middle">405</text>
+                        </g>
+                        <text x="345" y="160" fill="#60a5fa" fontSize="9" fontWeight="700" letterSpacing="0.12em" transform="rotate(90 345 160)" textAnchor="middle">INTERSTATE 405 (SAN DIEGO FWY)</text>
+
+                        {/* Freeway: I-10 (Santa Monica Freeway) */}
+                        <path d="M 0 305 L 500 305" stroke="#003366" strokeWidth="36" />
+                        <path d="M 0 305 L 500 305" stroke="#25050e" strokeWidth="26" />
+                        
+                        {/* I-10 Shield Badge */}
+                        <g transform="translate(45, 305)">
+                          <rect x="-16" y="-11" width="32" height="22" rx="4" fill="#003366" stroke="#ffffff" strokeWidth="1.5" />
+                          <rect x="-16" y="-11" width="32" height="7" rx="2" fill="#cc0000" />
+                          <text x="0" y="6" fill="#ffffff" fontSize="10.5" fontWeight="700" textAnchor="middle">10</text>
+                        </g>
+                        <text x="250" y="309" fill="#93c5fd" fontSize="9" fontWeight="700" letterSpacing="0.1em" textAnchor="middle">INTERSTATE 10 (SANTA MONICA FWY)</text>
+
+                        {/* North-South Major Roads */}
+                        {/* Lincoln Blvd (West) */}
+                        <path d="M 60 0 L 60 305" stroke="#521324" strokeWidth="22" />
+                        <path d="M 60 0 L 60 305" stroke="#1f040b" strokeWidth="16" />
+                        <text x="60" y="150" fill="#f5d79e" fontSize="9" fontWeight="700" letterSpacing="0.08em" transform="rotate(-90 60 150)" textAnchor="middle">LINCOLN BLVD</text>
+
+                        {/* Sawtelle Blvd */}
+                        <path d="M 270 0 L 270 305" stroke="#521324" strokeWidth="22" />
+                        <path d="M 270 0 L 270 305" stroke="#1f040b" strokeWidth="16" />
+                        <text x="270" y="80" fill="#f3cf8a" fontSize="9" fontWeight="700" letterSpacing="0.08em" transform="rotate(-90 270 80)" textAnchor="middle">SAWTELLE BLVD</text>
+
+                        {/* Sepulveda Blvd */}
+                        <path d="M 420 0 L 420 305" stroke="#521324" strokeWidth="22" />
+                        <path d="M 420 0 L 420 305" stroke="#1f040b" strokeWidth="16" />
+                        <text x="420" y="220" fill="#f5d79e" fontSize="9" fontWeight="700" letterSpacing="0.08em" transform="rotate(90 420 220)" textAnchor="middle">SEPULVEDA BLVD</text>
+
+                        {/* East-West Major Arteries */}
+                        {/* Sunset Blvd (North) */}
+                        <path d="M 0 50 L 500 50" stroke="#68152c" strokeWidth="22" />
+                        <path d="M 0 50 L 500 50" stroke="#1f040b" strokeWidth="16" />
+                        <text x="160" y="54" fill="#f3cf8a" fontSize="9.5" fontWeight="700" letterSpacing="0.08em">SUNSET BLVD</text>
+
+                        {/* Wilshire Blvd */}
+                        <path d="M 0 108 L 500 108" stroke="#68152c" strokeWidth="24" />
+                        <path d="M 0 108 L 500 108" stroke="#1f040b" strokeWidth="18" />
+                        <text x="160" y="112" fill="#f3cf8a" fontSize="10" fontWeight="700" letterSpacing="0.08em">WILSHIRE BLVD</text>
+
+                        {/* Santa Monica Blvd (CA-2) - Primary Highlighted Corridor */}
+                        <path d="M 0 170 L 500 170" stroke="#9e2343" strokeWidth="32" />
+                        <path d="M 0 170 L 500 170" stroke="#1c0309" strokeWidth="24" />
+                        <text x="145" y="174" fill="#ffffff" fontSize="10.5" fontWeight="700" letterSpacing="0.1em">SANTA MONICA BLVD (CA-2)</text>
+
+                        {/* Olympic Blvd (South) */}
+                        <path d="M 0 230 L 500 230" stroke="#68152c" strokeWidth="22" />
+                        <path d="M 0 230 L 500 230" stroke="#1f040b" strokeWidth="16" />
+                        <text x="160" y="234" fill="#f3cf8a" fontSize="9.5" fontWeight="700" letterSpacing="0.08em">OLYMPIC BLVD</text>
+
+                        {/* Route Line Overlay (Soft Transparent White Route Overlay) */}
+                        <g>
+                          <path
+                            d={getRoutePathForZoom(1, selectedOriginId)}
+                            fill="none"
+                            stroke="#ffffff"
+                            strokeWidth="6"
+                            strokeLinecap="round"
+                            strokeOpacity="0.55"
+                            className="filter drop-shadow-[0_0_6px_rgba(255,255,255,0.55)] opacity-60"
+                          />
+                        </g>
+
+                        {/* Destination Label Box (Taller, Split Address into 2 lines) */}
+                        <g transform="translate(190, 95)">
+                          <rect x="0" y="0" width="130" height="64" rx="7" fill="#121619" stroke="#d4a359" strokeWidth="2" />
+                          <text x="65" y="18" fill="#ffffff" fontSize="10.5" fontWeight="700" letterSpacing="0.08em" textAnchor="middle">FLAME</text>
+                          <text x="65" y="31" fill="#ffffff" fontSize="9.5" fontWeight="700" letterSpacing="0.08em" textAnchor="middle">INTERNATIONAL</text>
+                          <text x="65" y="46" fill="#f3cf8a" fontSize="10" fontWeight="700" letterSpacing="0.08em" textAnchor="middle">11330</text>
+                          <text x="65" y="58" fill="#f3cf8a" fontSize="8.5" fontWeight="600" letterSpacing="0.06em" textAnchor="middle">SANTA MONICA BLVD</text>
+                        </g>
+                      </svg>
+                    )}
+
+                    {/* ZOOM LEVEL 2: REGIONAL FREEWAY & ARTERIES (I-405 & WEST LA) */}
+                    {zoomLevel === 2 && (
+                      <svg viewBox="0 0 500 350" className="w-full h-full font-['Raleway',sans-serif]">
+                        <rect width="500" height="350" fill="#1b030b" />
+                        
+                        {/* Highway 405 (San Diego Freeway) */}
+                        <path d="M 345 0 L 345 350" stroke="#003366" strokeWidth="48" />
+                        <path d="M 345 0 L 345 350" stroke="#1d4ed8" strokeWidth="40" opacity="0.3" />
+                        <path d="M 345 0 L 345 350" stroke="#25050e" strokeWidth="32" />
+
+                        {/* Interstate 405 Blue/Red Shield Badge */}
+                        <g transform="translate(345, 42)">
+                          <rect x="-20" y="-14" width="40" height="28" rx="5" fill="#003366" stroke="#ffffff" strokeWidth="2" />
+                          <rect x="-20" y="-14" width="40" height="9" rx="2" fill="#cc0000" />
+                          <text x="0" y="8" fill="#ffffff" fontSize="12" fontWeight="700" textAnchor="middle" letterSpacing="0.05em">405</text>
+                        </g>
+                        <g transform="translate(345, 270)">
+                          <rect x="-18" y="-12" width="36" height="24" rx="4" fill="#003366" stroke="#ffffff" strokeWidth="1.8" />
+                          <rect x="-18" y="-12" width="36" height="8" rx="2" fill="#cc0000" />
+                          <text x="0" y="6" fill="#ffffff" fontSize="10.5" fontWeight="700" textAnchor="middle" letterSpacing="0.05em">405</text>
+                        </g>
+                        <text x="345" y="160" fill="#60a5fa" fontSize="10" fontWeight="700" letterSpacing="0.12em" transform="rotate(90 345 160)" textAnchor="middle">I-405 SAN DIEGO FREEWAY</text>
+
+                        {/* North-South Major Roads */}
+                        {/* Sawtelle Blvd */}
+                        <path d="M 210 0 L 210 350" stroke="#521324" strokeWidth="28" />
+                        <path d="M 210 0 L 210 350" stroke="#1f040b" strokeWidth="22" />
+                        <text x="210" y="260" fill="#f3cf8a" fontSize="10" fontWeight="700" letterSpacing="0.08em" transform="rotate(-90 210 260)" textAnchor="middle">SAWTELLE BLVD</text>
+
+                        {/* Sepulveda Blvd */}
+                        <path d="M 425 0 L 425 350" stroke="#521324" strokeWidth="28" />
+                        <path d="M 425 0 L 425 350" stroke="#1f040b" strokeWidth="22" />
+                        <text x="425" y="260" fill="#f5d79e" fontSize="10" fontWeight="700" letterSpacing="0.08em" transform="rotate(90 425 260)" textAnchor="middle">SEPULVEDA BLVD</text>
+
+                        {/* Major East-West Arteries */}
+                        {/* Wilshire Blvd */}
+                        <path d="M 0 65 L 500 65" stroke="#68152c" strokeWidth="28" />
+                        <path d="M 0 65 L 500 65" stroke="#1f040b" strokeWidth="22" />
+                        <text x="130" y="70" fill="#f3cf8a" fontSize="10.5" fontWeight="700" letterSpacing="0.1em">WILSHIRE BLVD</text>
+
+                        {/* Santa Monica Blvd (CA-2) - Primary Corridor */}
+                        <path d="M 0 165 L 500 165" stroke="#9e2343" strokeWidth="38" />
+                        <path d="M 0 165 L 500 165" stroke="#1c0309" strokeWidth="30" />
+                        <text x="125" y="170" fill="#ffffff" fontSize="11.5" fontWeight="700" letterSpacing="0.12em">SANTA MONICA BOULEVARD (CA-2)</text>
+
+                        {/* Olympic Blvd (South) */}
+                        <path d="M 0 265 L 500 265" stroke="#68152c" strokeWidth="28" />
+                        <path d="M 0 265 L 500 265" stroke="#1f040b" strokeWidth="22" />
+                        <text x="130" y="270" fill="#f3cf8a" fontSize="10.5" fontWeight="700" letterSpacing="0.1em">OLYMPIC BLVD</text>
+
+                        {/* Route Line Overlay (Soft Transparent White Route Overlay) */}
+                        <g>
+                          <path
+                            d={getRoutePathForZoom(2, selectedOriginId)}
+                            fill="none"
+                            stroke="#ffffff"
+                            strokeWidth="7"
+                            strokeLinecap="round"
+                            strokeOpacity="0.55"
+                            className="filter drop-shadow-[0_0_6px_rgba(255,255,255,0.55)] opacity-60"
+                          />
+                        </g>
+
+                        {/* Destination Label Box (Taller, Split Address) */}
+                        <g transform="translate(185, 85)">
+                          <rect x="0" y="0" width="130" height="68" rx="7" fill="#121619" stroke="#d4a359" strokeWidth="2.5" />
+                          <text x="65" y="19" fill="#ffffff" fontSize="11.5" fontWeight="700" letterSpacing="0.08em" textAnchor="middle">FLAME</text>
+                          <text x="65" y="33" fill="#ffffff" fontSize="10.5" fontWeight="700" letterSpacing="0.08em" textAnchor="middle">INTERNATIONAL</text>
+                          <text x="65" y="49" fill="#f3cf8a" fontSize="11" fontWeight="700" letterSpacing="0.08em" textAnchor="middle">11330</text>
+                          <text x="65" y="62" fill="#f3cf8a" fontSize="9" fontWeight="600" letterSpacing="0.06em" textAnchor="middle">SANTA MONICA BLVD</text>
+                        </g>
+                      </svg>
+                    )}
+
+                    {/* ZOOM LEVEL 3: DISTRICT LEVEL (SAWTELLE & CORINTH) */}
+                    {zoomLevel === 3 && (
+                      <svg viewBox="0 0 500 350" className="w-full h-full font-['Raleway',sans-serif]">
+                        <rect width="500" height="350" fill="#1b030b" />
+
+                        {/* Streets Grid */}
+                        {/* Sawtelle Blvd (LEFT / WEST) */}
+                        <path d="M 115 0 L 115 350" stroke="#7a1c35" strokeWidth="38" />
+                        <path d="M 115 0 L 115 350" stroke="#22040d" strokeWidth="30" />
+                        <text x="115" y="260" fill="#f3cf8a" fontSize="10.5" fontWeight="700" letterSpacing="0.1em" transform="rotate(-90 115 260)" textAnchor="middle">SAWTELLE BLVD (WEST)</text>
+
+                        {/* Corinth Ave (RIGHT / EAST) */}
+                        <path d="M 370 0 L 370 350" stroke="#7a1c35" strokeWidth="38" />
+                        <path d="M 370 0 L 370 350" stroke="#22040d" strokeWidth="30" />
+                        <text x="370" y="260" fill="#f3cf8a" fontSize="10.5" fontWeight="700" letterSpacing="0.1em" transform="rotate(90 370 260)" textAnchor="middle">CORINTH AVE (EAST)</text>
+
+                        {/* Santa Monica Blvd Wide Roadway */}
+                        <path d="M 0 160 L 500 160" stroke="#9e2343" strokeWidth="46" />
+                        <path d="M 0 160 L 500 160" stroke="#121619" strokeWidth="38" />
+                        <text x="240" y="165" fill="#ffffff" fontSize="12" fontWeight="700" letterSpacing="0.14em" textAnchor="middle">SANTA MONICA BOULEVARD (CA-2)</text>
+
+                        {/* Route Line Overlay (Soft Transparent White Route Overlay) */}
+                        <g>
+                          <path
+                            d={getRoutePathForZoom(3, selectedOriginId)}
+                            fill="none"
+                            stroke="#ffffff"
+                            strokeWidth="8"
+                            strokeLinecap="round"
+                            strokeOpacity="0.55"
+                            className="filter drop-shadow-[0_0_6px_rgba(255,255,255,0.55)] opacity-60"
+                          />
+                        </g>
+
+                        {/* 11330 Flame International Lot (Taller, Split Address) */}
+                        <g transform="translate(190, 70)">
+                          <rect x="0" y="0" width="120" height="78" rx="7" fill="#4d0c1e" stroke="#d4a359" strokeWidth="2.5" />
+                          <rect x="5" y="5" width="110" height="68" rx="5" fill="#5c1125" stroke="#a32b4b" strokeWidth="1" />
+                          <text x="60" y="24" fill="#ffffff" fontSize="12" fontWeight="700" letterSpacing="0.06em" textAnchor="middle">FLAME</text>
+                          <text x="60" y="38" fill="#ffffff" fontSize="11" fontWeight="700" letterSpacing="0.06em" textAnchor="middle">INTERNATIONAL</text>
+                          <text x="60" y="56" fill="#f3cf8a" fontSize="12" fontWeight="700" letterSpacing="0.08em" textAnchor="middle">11330</text>
+                          <text x="60" y="70" fill="#f3cf8a" fontSize="9.5" fontWeight="600" letterSpacing="0.04em" textAnchor="middle">SANTA MONICA BLVD</text>
+                        </g>
+                      </svg>
+                    )}
+
+                    {/* ZOOM LEVEL 4: CORRIDOR FOCUS */}
+                    {zoomLevel === 4 && (
+                      <svg viewBox="0 0 500 350" className="w-full h-full font-['Raleway',sans-serif]">
+                        <rect width="500" height="350" fill="#1b030b" />
+
+                        {/* Western Boundary: SAWTELLE BLVD (ON LEFT) */}
+                        <path d="M 85 0 L 85 350" stroke="#7a1c35" strokeWidth="44" />
+                        <path d="M 85 0 L 85 350" stroke="#22040d" strokeWidth="34" />
+                        <text x="85" y="260" fill="#f3cf8a" fontSize="11" fontWeight="700" letterSpacing="0.12em" transform="rotate(-90 85 260)" textAnchor="middle">
+                          SAWTELLE BLVD (WEST)
+                        </text>
+
+                        {/* Eastern Boundary: CORINTH AVE (ON RIGHT) */}
+                        <path d="M 415 0 L 415 350" stroke="#7a1c35" strokeWidth="44" />
+                        <path d="M 415 0 L 415 350" stroke="#22040d" strokeWidth="34" />
+                        <text x="415" y="260" fill="#f3cf8a" fontSize="11" fontWeight="700" letterSpacing="0.12em" transform="rotate(90 415 260)" textAnchor="middle">
+                          CORINTH AVE (EAST)
+                        </text>
+
+                        {/* Primary Street: SANTA MONICA BLVD (CA-2) */}
+                        <path d="M 0 180 L 500 180" stroke="#8b1c37" strokeWidth="54" />
+                        <path d="M 0 180 L 500 180" stroke="#180208" strokeWidth="44" />
+
+                        {/* Santa Monica Blvd Street Label inside Road */}
+                        <text x="250" y="186" fill="#ffffff" fontSize="13" fontWeight="700" letterSpacing="0.14em" textAnchor="middle">
+                          SANTA MONICA BOULEVARD (CA-2)
+                        </text>
+
+                        {/* NORTH SIDE BUILDING: FLAME INTERNATIONAL (Taller, Split Address) */}
+                        <g transform="translate(175, 60)">
+                          <rect x="0" y="0" width="150" height="102" rx="8" fill="#3d0a1c" stroke="#d4a359" strokeWidth="2.5" />
+                          <rect x="6" y="6" width="138" height="90" rx="6" fill="#5c1125" stroke="#a32b4b" strokeWidth="1.5" />
+                          
+                          <text x="75" y="30" fill="#ffffff" fontSize="13.5" fontWeight="700" letterSpacing="0.08em" textAnchor="middle">FLAME</text>
+                          <text x="75" y="47" fill="#ffffff" fontSize="12.5" fontWeight="700" letterSpacing="0.08em" textAnchor="middle">INTERNATIONAL</text>
+                          <text x="75" y="71" fill="#f3cf8a" fontSize="14" fontWeight="700" letterSpacing="0.08em" textAnchor="middle">11330</text>
+                          <text x="75" y="89" fill="#f3cf8a" fontSize="11" fontWeight="600" letterSpacing="0.06em" textAnchor="middle">SANTA MONICA BLVD</text>
+                        </g>
+
+                        {/* Route Line Overlay (Soft Transparent White Route Overlay) */}
+                        <g>
+                          <path
+                            d={getRoutePathForZoom(4, selectedOriginId)}
+                            fill="none"
+                            stroke="#ffffff"
+                            strokeWidth="9"
+                            strokeLinecap="round"
+                            strokeOpacity="0.55"
+                            className="filter drop-shadow-[0_0_6px_rgba(255,255,255,0.55)] opacity-60"
+                          />
+                        </g>
+                      </svg>
+                    )}
+
+                    {/* ZOOM LEVEL 5: ULTRA CLOSE-UP STREET & BUILDING DETAIL */}
+                    {zoomLevel === 5 && (
+                      <svg viewBox="0 0 500 350" className="w-full h-full font-['Raleway',sans-serif]">
+                        <rect width="500" height="350" fill="#1b030b" />
+
+                        {/* Left Street Boundary: Sawtelle Blvd */}
+                        <path d="M 50 0 L 50 350" stroke="#7a1c35" strokeWidth="48" />
+                        <path d="M 50 0 L 50 350" stroke="#22040d" strokeWidth="40" />
+                        <text x="50" y="250" fill="#f3cf8a" fontSize="11.5" fontWeight="700" letterSpacing="0.12em" transform="rotate(-90 50 250)" textAnchor="middle">SAWTELLE BLVD (WEST)</text>
+
+                        {/* Right Street Boundary: Corinth Ave */}
+                        <path d="M 450 0 L 450 350" stroke="#7a1c35" strokeWidth="48" />
+                        <path d="M 450 0 L 450 350" stroke="#22040d" strokeWidth="40" />
+                        <text x="450" y="250" fill="#f3cf8a" fontSize="11.5" fontWeight="700" letterSpacing="0.12em" transform="rotate(90 450 250)" textAnchor="middle">CORINTH AVE (EAST)</text>
+
+                        {/* Santa Monica Blvd Wide Roadway */}
+                        <path d="M 0 190 L 500 190" stroke="#8b1c37" strokeWidth="60" />
+                        <path d="M 0 190 L 500 190" stroke="#180208" strokeWidth="52" />
+
+                        {/* Roadway Street Name Stamp inside Road */}
+                        <text x="250" y="196" fill="#f3cf8a" fontSize="13.5" fontWeight="700" letterSpacing="0.14em" textAnchor="middle">
+                          SANTA MONICA BOULEVARD (CA-2)
+                        </text>
+
+                        {/* Route Line Overlay (Soft Transparent White Route Overlay) */}
+                        <g>
+                          <path
+                            d={getRoutePathForZoom(5, selectedOriginId)}
+                            fill="none"
+                            stroke="#ffffff"
+                            strokeWidth="10"
+                            strokeLinecap="round"
+                            strokeOpacity="0.55"
+                            className="filter drop-shadow-[0_0_6px_rgba(255,255,255,0.55)] opacity-60"
+                          />
+                        </g>
+
+                        {/* 11330 FLAME INTERNATIONAL MAIN COMPLEX (Taller, Split Address) */}
+                        <g transform="translate(155, 40)">
+                          <rect x="0" y="0" width="190" height="125" rx="9" fill="#3d0a1c" stroke="#d4a359" strokeWidth="3" />
+                          <rect x="7" y="7" width="176" height="111" rx="7" fill="#5c1125" stroke="#a32b4b" strokeWidth="1.5" />
+                          
+                          <text x="95" y="38" fill="#ffffff" fontSize="15" fontWeight="700" letterSpacing="0.08em" textAnchor="middle">FLAME</text>
+                          <text x="95" y="58" fill="#ffffff" fontSize="14" fontWeight="700" letterSpacing="0.08em" textAnchor="middle">INTERNATIONAL</text>
+                          <text x="95" y="88" fill="#f3cf8a" fontSize="16" fontWeight="700" letterSpacing="0.08em" textAnchor="middle">11330</text>
+                          <text x="95" y="108" fill="#f3cf8a" fontSize="12.5" fontWeight="600" letterSpacing="0.06em" textAnchor="middle">SANTA MONICA BLVD</text>
+                        </g>
+                      </svg>
+                    )}
+
+                    {/* ELEVATED FLOATING PIN MARKER */}
+                    <div 
+                      className={`absolute z-10 pointer-events-none transition-all duration-300 ${
+                        zoomLevel === 1 ? 'top-[16%] left-[49%]' : 
+                        zoomLevel === 2 ? 'top-[14%] left-[49%]' : 
+                        zoomLevel === 3 ? 'top-[10%] left-[49%]' : 
+                        zoomLevel === 4 ? 'top-[7%] left-[49%]' : 
+                        'top-[4%] left-[49%]'
+                      }`}
+                    >
+                      {/* Glowing Pulse Ring at ground contact */}
+                      <div className="absolute top-[32px] left-[14px] transform -translate-x-1/2 -translate-y-1/2">
+                        <div className="w-6 h-6 rounded-full bg-[#d4a359]/40 animate-ping" />
+                        <div className="w-3 h-3 rounded-full bg-[#d4a359] absolute top-1.5 left-1.5 shadow-[0_0_12px_#d4a359]" />
+                      </div>
+
+                      {/* Elevated Floating Pin Head */}
+                      <div className="relative -top-2 flex flex-col items-center animate-bounce">
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#b8863b] to-[#f3cf8a] text-black font-medium flex items-center justify-center shadow-[0_4px_18px_rgba(212,163,89,0.9)] border-2 border-white">
+                          <MapPin size={16} className="fill-black text-black" />
+                        </div>
+                        <div className="w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[7px] border-t-[#b8863b] -mt-[1px]" />
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+
+                {/* Integrated Estimated Time & Navigation Action Bar */}
+                <div className="pt-3 border-t border-[#521324] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="flex flex-col items-start space-y-1.5">
+                    {/* Header Label: Estimated Time */}
+                    <span className="text-[11px] sm:text-xs uppercase font-medium tracking-widest text-[#f5a7b8]">
+                      Estimated Time
+                    </span>
+                    
+                    {/* Time (smaller size, e.g. 11 mins) */}
+                    <span className="text-xl sm:text-2xl font-medium text-[#f3cf8a] leading-none">
+                      {displayTime}
+                    </span>
+
+                    {/* Miles / Distance below the time */}
+                    <span className="text-xs sm:text-sm text-[#e2e8f0]/90 font-normal">
+                      {displayDistance}
+                    </span>
+
+                    {/* Smooth Icon Centered / Positioned below the distance */}
+                    <div className="pt-0.5">
+                      <span className="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-green-950/80 border border-green-500/40 text-green-300 text-xs font-medium shadow-sm">
+                        <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse shrink-0"></span>
+                        <span>{customOrigin ? 'Live GPS (🟢)' : activeOrigin.traffic}</span>
+                      </span>
+                    </div>
+
+                    {locationStatus && (
+                      <p className="text-[11px] sm:text-xs text-[#f5d79e] font-normal flex items-center space-x-1 bg-[#280510] px-2.5 py-1 rounded-lg border border-[#6b152d] mt-1">
+                        <CheckCircle2 size={13} className="text-green-400 shrink-0" />
+                        <span className="truncate">{locationStatus}</span>
+                      </p>
+                    )}
+                  </div>
+
+                  <a
+                    href={
+                      gpsData && gpsData.coords
+                        ? `https://www.google.com/maps/dir/?api=1&destination=11330+Santa+Monica+Blvd,+Los+Angeles,+CA+90025&origin=${encodeURIComponent(gpsData.coords)}`
+                        : customOrigin
+                        ? `https://www.google.com/maps/dir/?api=1&destination=11330+Santa+Monica+Blvd,+Los+Angeles,+CA+90025&origin=${encodeURIComponent(customOrigin)}`
+                        : `https://www.google.com/maps/dir/?api=1&destination=11330+Santa+Monica+Blvd,+Los+Angeles,+CA+90025&origin=${encodeURIComponent(activeOrigin.name)}`
+                    }
+                    target="_blank"
+                    rel="noreferrer"
+                    className="py-3 px-5 rounded-xl bg-gradient-to-r from-[#d4a359] via-[#e2b46b] to-[#f3cf8a] text-black font-medium text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center space-x-2 shadow-md hover:brightness-110 active:scale-95 transition-all cursor-pointer shrink-0 self-stretch sm:self-center"
+                  >
+                    <Car size={16} />
+                    <span>Open Live Google Navigation</span>
+                    <ArrowRight size={15} />
+                  </a>
+                </div>
+
+              </div>
+
+            </div>
+
+            {/* ========================================================================= */}
+            {/* 📍 RIGHT COLUMN (lg:col-span-5): HOURS & DIRECT CONTACT CONCIERGE */}
+            {/* ========================================================================= */}
+            <div className="lg:col-span-5 space-y-6">
+              
+              {/* 1. HOURS OF OPERATION CARD */}
+              <div className="bg-[#1c030b]/90 border border-[#6b152d]/60 rounded-3xl p-6 backdrop-blur-md shadow-[0_20px_50px_rgba(0,0,0,0.6)] space-y-4">
+                <div className="flex items-center space-x-2 text-[#d4a359] border-b border-[#521324] pb-3">
+                  <Clock size={20} />
+                  <h4 className="text-sm sm:text-base uppercase tracking-[0.2em] font-['Raleway'] font-medium">Hours of Operation</h4>
+                </div>
+                
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between p-3.5 rounded-2xl bg-[#280510]/90 border border-[#521324]">
+                    <span className="text-white font-normal text-sm sm:text-base">Monday – Sunday:</span>
+                    <span className="text-[#f5d79e] font-medium text-sm sm:text-base font-['Raleway']">11:30 AM – 11:00 PM</span>
+                  </div>
+                  <p className="text-xs sm:text-sm text-[#f5a7b8] leading-relaxed">
+                    Open 7 days a week for Lunch, Dinner, Craft Cocktails, Persian Banquets, and Nightly Live Entertainment.
+                  </p>
                 </div>
               </div>
 
-            </div>
+              {/* 2. DIRECT CONTACT & SOCIAL CONCIERGE CARD */}
+              <div className="bg-[#1c030b]/90 border border-[#6b152d]/60 rounded-3xl p-6 backdrop-blur-md shadow-[0_20px_50px_rgba(0,0,0,0.6)] space-y-4">
+                <div className="flex items-center space-x-2 text-[#d4a359] border-b border-[#521324] pb-3">
+                  <Phone size={20} />
+                  <h4 className="text-sm sm:text-base uppercase tracking-[0.2em] font-['Raleway'] font-medium">Contact &amp; Social</h4>
+                </div>
 
-            {/* Bottom Google Maps Link & Coordinates Bar */}
-            <div className="absolute bottom-4 left-4 right-4 z-20 flex items-center justify-between pointer-events-auto">
-              <a
-                href="https://maps.google.com/?q=11330+Santa+Monica+Blvd,+Los+Angeles,+CA+90025"
-                target="_blank"
-                rel="noreferrer"
-                className="bg-[#121619]/95 hover:bg-[#202730] px-3 py-1.5 rounded-xl border border-[#d4a359]/60 text-[11px] text-white flex items-center space-x-2 transition-all shadow-xl group cursor-pointer"
-              >
-                <Navigation size={13} className="text-[#d4a359] group-hover:scale-110 transition-transform" />
-                <span className="font-semibold font-['Raleway']">11330 Santa Monica Blvd, LA</span>
-                <ExternalLink size={11} className="text-[#d4a359]/70" />
-              </a>
+                {/* Direct Phone Bar */}
+                <a
+                  href="tel:+13104440045"
+                  className="flex items-center justify-between p-4 rounded-2xl bg-[#280510] hover:bg-[#3d0818] border border-[#831f3b] transition-all group cursor-pointer"
+                >
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 rounded-xl bg-[#521324] flex items-center justify-center text-[#d4a359] group-hover:scale-110 transition-transform">
+                      <Phone size={18} />
+                    </div>
+                    <div>
+                      <span className="text-xs text-[#f5a7b8] uppercase font-normal tracking-wider block">Direct Concierge</span>
+                      <span className="text-base sm:text-lg font-medium text-white group-hover:text-[#f3cf8a] transition-colors">(310) 444-0045</span>
+                    </div>
+                  </div>
+                  <span className="text-xs sm:text-sm font-medium text-[#f5d79e] bg-[#521324] px-3 py-1.5 rounded-xl">Call Now</span>
+                </a>
 
-              <div className="hidden sm:flex items-center space-x-1.5 bg-[#121619]/90 px-2.5 py-1 rounded-xl border border-[#5c1125] text-[9px] font-['Raleway'] text-[#f5a7b8]">
-                <Compass size={11} className="text-[#d4a359]" />
-                <span>Between Corinth &amp; Sawtelle</span>
-              </div>
-            </div>
-
-          </div>
-
-          {/* Right: Opening Hours & Contact Information Panel */}
-          <div className="md:col-span-5 space-y-5 text-left font-['Raleway']">
-            <div>
-              <div className="flex items-center space-x-2 text-[#d4a359] mb-2.5">
-                <Clock size={16} />
-                <h4 className="text-xs uppercase tracking-[0.25em] font-['Raleway'] font-bold">Hours of Operation</h4>
-              </div>
-              
-              <ul className="space-y-2 text-sm text-[#f7e0e5] font-normal">
-                <li className="flex items-center justify-between border-b border-[#521324] pb-1.5">
-                  <span className="text-white font-semibold text-xs sm:text-sm">Monday – Sunday:</span>
-                  <span className="text-[#f5d79e] font-bold text-xs sm:text-sm font-['Raleway']">11:30 AM – 11:00 PM</span>
-                </li>
-                <li className="flex items-center justify-between text-xs text-[#f3cfd6] pt-0.5 font-medium">
-                  <span>Seven Days a Week</span>
-                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-[#d4a359]/20 text-[#f5d79e] text-[10px] font-bold">
-                    Open Daily
+                {/* 6 Prominent Social & Messaging Buttons */}
+                <div>
+                  <span className="text-xs sm:text-sm uppercase font-['Raleway'] font-medium tracking-widest text-[#f5a7b8] block mb-3">
+                    Connect &amp; Message Online
                   </span>
-                </li>
-              </ul>
-            </div>
+                  
+                  <div className="grid grid-cols-6 gap-2.5">
+                    {/* 1. Phone */}
+                    <a
+                      href="tel:+13104440045"
+                      className="w-full h-12 rounded-xl bg-[#280510] hover:bg-[#d4a359] text-[#f5d79e] hover:text-black border border-[#831f3b]/70 flex items-center justify-center transition-all duration-300 shadow-md hover:scale-105 active:scale-95 cursor-pointer group"
+                      aria-label="Direct Phone Call"
+                      title="Call: (310) 444-0045"
+                    >
+                      <Phone size={20} className="group-hover:scale-110 transition-transform" />
+                    </a>
 
-            {/* Address & Contact Details */}
-            <div className="space-y-2.5 text-xs text-[#f3cfd6] font-medium">
-              <a
-                href="https://maps.google.com/?q=11330+Santa+Monica+Blvd,+Los+Angeles,+CA+90025"
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-start space-x-2 hover:text-[#f3cf8a] transition-colors group"
-              >
-                <MapPin size={15} className="text-[#d4a359] shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
-                <span className="leading-relaxed font-semibold">11330 Santa Monica Blvd, Los Angeles, CA 90025</span>
-              </a>
-              <div className="flex items-center space-x-2">
-                <Phone size={15} className="text-[#d4a359] shrink-0" />
-                <a href="tel:+13104440045" className="hover:text-[#f3cf8a] transition-colors font-bold tracking-wide">
-                  (310) 444-0045
-                </a>
+                    {/* 2. WhatsApp */}
+                    <a
+                      href="https://wa.me/13104440045"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="w-full h-12 rounded-xl bg-[#280510] hover:bg-[#25D366] text-[#25D366] hover:text-white border border-[#831f3b]/70 flex items-center justify-center transition-all duration-300 shadow-md hover:scale-105 active:scale-95 cursor-pointer group"
+                      aria-label="WhatsApp Concierge"
+                      title="WhatsApp Direct Concierge"
+                    >
+                      <MessageCircle size={20} className="group-hover:scale-110 transition-transform" />
+                    </a>
+
+                    {/* 3. Email */}
+                    <a
+                      href="mailto:contact@flameinternational.com"
+                      className="w-full h-12 rounded-xl bg-[#280510] hover:bg-[#ea4335] text-[#f5d79e] hover:text-white border border-[#831f3b]/70 flex items-center justify-center transition-all duration-300 shadow-md hover:scale-105 active:scale-95 cursor-pointer group"
+                      aria-label="Send Email"
+                      title="Email: contact@flameinternational.com"
+                    >
+                      <Mail size={20} className="group-hover:scale-110 transition-transform" />
+                    </a>
+
+                    {/* 4. Instagram */}
+                    <a
+                      href="https://instagram.com/flameinternational"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="w-full h-12 rounded-xl bg-[#280510] hover:bg-gradient-to-tr hover:from-[#f58529] hover:via-[#dd2a7b] hover:to-[#8134af] text-[#f5d79e] hover:text-white border border-[#831f3b]/70 flex items-center justify-center transition-all duration-300 shadow-md hover:scale-105 active:scale-95 cursor-pointer group"
+                      aria-label="Instagram Profile"
+                      title="Follow on Instagram"
+                    >
+                      <Instagram size={20} className="group-hover:scale-110 transition-transform" />
+                    </a>
+
+                    {/* 5. Facebook */}
+                    <a
+                      href="https://facebook.com/flameinternational"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="w-full h-12 rounded-xl bg-[#280510] hover:bg-[#1877F2] text-[#f5d79e] hover:text-white border border-[#831f3b]/70 flex items-center justify-center transition-all duration-300 shadow-md hover:scale-105 active:scale-95 cursor-pointer group"
+                      aria-label="Facebook Page"
+                      title="Visit Flame on Facebook"
+                    >
+                      <Facebook size={20} className="group-hover:scale-110 transition-transform" />
+                    </a>
+
+                    {/* 6. LinkedIn */}
+                    <a
+                      href="https://linkedin.com/company/flame-international"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="w-full h-12 rounded-xl bg-[#280510] hover:bg-[#0A66C2] text-[#f5d79e] hover:text-white border border-[#831f3b]/70 flex items-center justify-center transition-all duration-300 shadow-md hover:scale-105 active:scale-95 cursor-pointer group"
+                      aria-label="LinkedIn Company Profile"
+                      title="Connect on LinkedIn"
+                    >
+                      <Linkedin size={20} className="group-hover:scale-110 transition-transform" />
+                    </a>
+                  </div>
+                </div>
+
+                {/* Quick Interactive Actions */}
+                <div className="pt-2 grid grid-cols-2 gap-2.5">
+                  <button
+                    onClick={onOpenReserve}
+                    className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-[#d4a359] to-[#f3cf8a] text-black font-medium text-xs sm:text-sm uppercase tracking-wider transition-all hover:brightness-110 active:scale-95 cursor-pointer shadow-md"
+                  >
+                    Reserve Table
+                  </button>
+                  {onOpenMenu && (
+                    <button
+                      onClick={onOpenMenu}
+                      className="w-full py-3 px-4 rounded-xl bg-[#280510] hover:bg-[#3d0818] text-[#f5d79e] border border-[#831f3b] font-medium text-xs sm:text-sm uppercase tracking-wider transition-all active:scale-95 cursor-pointer"
+                    >
+                      Explore Menu
+                    </button>
+                  )}
+                </div>
+
               </div>
-            </div>
 
-            {/* Social Media Connect Links */}
-            <div className="pt-3 border-t border-[#521324]/80">
-              <span className="text-[10px] uppercase font-['Raleway'] font-bold tracking-widest text-[#f5a7b8] block mb-2.5">
-                Connect With Us
-              </span>
-              <div className="flex items-center space-x-2.5">
-                <a
-                  href="https://instagram.com"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-white text-white hover:text-black flex items-center justify-center transition-all shadow-sm hover:scale-110 cursor-pointer"
-                  aria-label="Instagram"
-                  title="Instagram"
-                >
-                  <Instagram size={15} />
-                </a>
-
-                <a
-                  href="https://facebook.com"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-white text-white hover:text-black flex items-center justify-center transition-all shadow-sm hover:scale-110 cursor-pointer"
-                  aria-label="Facebook"
-                  title="Facebook"
-                >
-                  <Facebook size={15} />
-                </a>
-
-                <a
-                  href="https://yelp.com"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-white text-white hover:text-black flex items-center justify-center transition-all shadow-sm hover:scale-110 cursor-pointer"
-                  aria-label="Yelp"
-                  title="Yelp Reviews"
-                >
-                  <Star size={15} />
-                </a>
-
-                <a
-                  href="https://maps.google.com/?q=11330+Santa+Monica+Blvd,+Los+Angeles,+CA+90025"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-white text-white hover:text-black flex items-center justify-center transition-all shadow-sm hover:scale-110 cursor-pointer"
-                  aria-label="Google Maps"
-                  title="Google Maps"
-                >
-                  <Globe size={15} />
-                </a>
-
-                <a
-                  href="mailto:contact@flameinternational.com"
-                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-white text-white hover:text-black flex items-center justify-center transition-all shadow-sm hover:scale-110 cursor-pointer"
-                  aria-label="Email"
-                  title="Email Us"
-                >
-                  <Mail size={15} />
-                </a>
-              </div>
             </div>
 
           </div>
-
-        </div>
+        </RevealOnScroll>
 
         {/* Bottom Credits */}
-        <div className="mt-12 text-center text-xs text-[#f5a7b8]/70 space-y-1.5 font-['Raleway']">
-          <p className="font-semibold">© 2026 Flame International. All rights reserved.</p>
-          <p className="flex items-center justify-center space-x-1 text-[11px] font-medium">
-            <span>Crafted with</span>
-            <Heart size={10} className="text-red-400 fill-red-400 mx-0.5" />
-            <span>in Los Angeles, California</span>
-          </p>
+        <div className="mt-12 text-center text-sm text-[#f5a7b8]/90 font-['Raleway']">
+          <p className="font-normal text-sm sm:text-base text-white/90">© 2026 Flame International. All rights reserved.</p>
         </div>
 
       </div>

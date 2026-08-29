@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ChevronDown, Sparkles, UtensilsCrossed, Calendar, Play, Pause, RefreshCw } from 'lucide-react';
+import { ChevronDown, UtensilsCrossed, Calendar, Play, Pause, RefreshCw, Sparkles } from 'lucide-react';
 import { AppMode } from '../types';
+import { RevealOnScroll } from './RevealOnScroll';
+import { getRotatingHeroMessages, getDayTimeContext } from '../data/greetingsData';
 
 interface HeroSectionProps {
   mode: AppMode;
@@ -52,6 +54,36 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   const [activeSceneIndex, setActiveSceneIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+
+  // Rotating custom enticing messages strictly tailored to current day & time
+  const [dayTimeContext] = useState(() => getDayTimeContext());
+  const [rotatingMessages, setRotatingMessages] = useState<string[]>(() => getRotatingHeroMessages());
+  const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
+  const [isFading, setIsFading] = useState(false);
+
+  useEffect(() => {
+    const messages = getRotatingHeroMessages();
+    setRotatingMessages(messages);
+
+    // Slow down rotating messages so guests can comfortably read full sentences (10 seconds per message)
+    const timer = setInterval(() => {
+      setIsFading(true);
+      setTimeout(() => {
+        setCurrentMessageIndex((prev) => (prev + 1) % messages.length);
+        setIsFading(false);
+      }, 400);
+    }, 10000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const handleNextMessage = () => {
+    setIsFading(true);
+    setTimeout(() => {
+      setCurrentMessageIndex((prev) => (prev + 1) % rotatingMessages.length);
+      setIsFading(false);
+    }, 250);
+  };
 
   // Automatically cycle through video scenes smoothly every 7 seconds when playing
   useEffect(() => {
@@ -157,45 +189,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         />
       </div>
 
-      {/* Interactive Video Playback & Scene Switcher Bar */}
-      <div className="absolute top-24 right-4 sm:right-8 z-30 flex items-center space-x-2 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/15 shadow-xl">
-        <button
-          onClick={togglePlayPause}
-          className="p-1 text-[#d4a359] hover:text-white transition-colors cursor-pointer"
-          title={isPlaying ? 'Pause Background Video' : 'Play Background Video'}
-          aria-label={isPlaying ? 'Pause Background Video' : 'Play Background Video'}
-        >
-          {isPlaying ? <Pause size={13} /> : <Play size={13} />}
-        </button>
-
-        <span className="text-[10px] uppercase tracking-widest text-[#d4a359] font-bold">
-          Scene {activeSceneIndex + 1}/{HERO_SCENES.length}
-        </span>
-
-        <div className="flex space-x-1.5 ml-1">
-          {HERO_SCENES.map((_, idx) => (
-            <button
-              key={idx}
-              onClick={() => {
-                setActiveSceneIndex(idx);
-                setIsPlaying(true);
-              }}
-              className={`h-1.5 rounded-full transition-all duration-500 cursor-pointer ${
-                idx === activeSceneIndex ? 'w-6 bg-[#d4a359]' : 'w-2 bg-white/30 hover:bg-white/60'
-              }`}
-              aria-label={`Switch to video scene ${idx + 1}`}
-            />
-          ))}
-        </div>
-      </div>
-
       {/* Center Headline Content */}
-      <div className="relative z-20 max-w-4xl mx-auto px-4 text-center mt-6 sm:mt-0 flex flex-col items-center">
+      <RevealOnScroll direction="up" delay={100} duration={850} className="relative z-20 max-w-4xl mx-auto px-4 text-center mt-6 sm:mt-0 flex flex-col items-center">
         
-        {/* Mode Tag */}
-        <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-[#181d22]/85 border border-[#d4a359]/40 text-[#d4a359] text-xs uppercase tracking-[0.25em] mb-4 backdrop-blur-md shadow-lg">
-          <Sparkles size={13} className="text-[#d4a359]" />
-          <span className="font-bold">{mode === 'lunch' ? 'Lunch Hub & Afternoon Dining' : 'Cabaret, Persian Live Stage & Night'}</span>
+        {/* Experience Tag */}
+        <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-black/70 border border-[#d4a359]/60 text-[#f5d79e] text-xs sm:text-sm uppercase tracking-[0.2em] mb-4 backdrop-blur-md shadow-xl font-['Raleway'] font-medium">
+          <Sparkles size={14} className="text-[#f5d79e]" />
+          <span>Authentic Persian Cuisine & Live Entertainment</span>
         </div>
 
         {/* Script Top Title: "The true taste of" */}
@@ -207,58 +207,101 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
         {/* Main Brand Name: "FLAME INTERNATIONAL" in Raleway */}
         <h1 
-          className="font-['Raleway'] text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-[#fbf8f2] font-black tracking-tight mt-0 mb-3 drop-shadow-[0_4px_30px_rgba(0,0,0,0.9)]"
+          className="font-['Raleway'] text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-[#ffffff] font-medium tracking-wider mt-0 mb-4 drop-shadow-[0_4px_30px_rgba(0,0,0,0.95)]"
         >
           FLAME INTERNATIONAL
         </h1>
 
-        {/* Subtitle */}
-        <p className="text-[#e2dacd] text-sm sm:text-base md:text-lg lg:text-xl font-normal tracking-wide max-w-xl mx-auto mb-2 drop-shadow-md">
-          An experience that awakens all the senses
-        </p>
-
-        {/* Active Scene Subtitle Pill */}
-        <div className="inline-flex items-center px-3.5 py-1 rounded-md bg-black/60 border border-[#d4a359]/40 text-[#f5d79e] text-xs font-semibold tracking-wider mb-6 backdrop-blur-sm transition-all duration-700 shadow-md">
-          <span>✨ {HERO_SCENES[activeSceneIndex].subtitle}</span>
-        </div>
-
-        {/* Year indicator: "• 2026 •" */}
-        <div className="text-xs sm:text-sm tracking-[0.35em] text-[#d4a359] font-extrabold uppercase mb-8 font-['Raleway']">
-          • 2026 •
-        </div>
-
-        {/* Call to action buttons */}
-        <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 mt-2 w-full sm:w-auto">
-          <button
-            id="hero-view-menu-btn"
-            onClick={onExploreMenu}
-            className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-[#d4a359] hover:bg-[#e0b46d] text-[#121619] font-black text-xs uppercase tracking-[0.2em] transition-all duration-300 shadow-[0_10px_25px_rgba(212,163,89,0.3)] hover:scale-105 flex items-center justify-center space-x-2 cursor-pointer"
+        {/* 3 to 4 Rotating Context-Aware Welcome Lines strictly determined by Day and Time */}
+        <div 
+          onClick={handleNextMessage}
+          title="Click to view next message"
+          className="cursor-pointer group flex flex-col items-center justify-center max-w-2xl mx-auto my-2 px-2 select-none"
+        >
+          <p 
+            className={`text-[#f1ece1] text-base sm:text-lg md:text-xl font-normal tracking-wide text-center leading-relaxed drop-shadow-md min-h-[58px] sm:min-h-[64px] flex items-center justify-center transition-all duration-300 ${
+              isFading ? 'opacity-0 translate-y-1' : 'opacity-100 translate-y-0'
+            }`}
           >
-            <UtensilsCrossed size={16} />
-            <span>Explore Menu</span>
-          </button>
-          
+            {rotatingMessages[currentMessageIndex]}
+          </p>
+
+          {/* Discreet Message Pagination Indicator Dots */}
+          <div className="flex items-center space-x-1.5 mt-2 mb-6">
+            {rotatingMessages.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsFading(true);
+                  setTimeout(() => {
+                    setCurrentMessageIndex(idx);
+                    setIsFading(false);
+                  }, 150);
+                }}
+                className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                  idx === currentMessageIndex
+                    ? 'w-6 bg-[#d4a359] shadow-[0_0_8px_rgba(212,163,89,0.8)]'
+                    : 'w-1.5 bg-white/30 hover:bg-white/60'
+                }`}
+                aria-label={`Go to message ${idx + 1}`}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Call to action buttons with direct conversion hierarchy */}
+        <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 mt-2 w-full sm:w-auto">
+          {/* Primary Action: Solid Flame Red / Intense Burnt Orange */}
           <button
             id="hero-reserve-btn"
             onClick={onBookTable}
-            className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-[#1e242b]/90 hover:bg-[#28303a] text-[#f5f1ea] border border-[#434d5b] hover:border-[#d4a359]/70 font-bold text-xs uppercase tracking-[0.2em] transition-all duration-300 backdrop-blur-md flex items-center justify-center space-x-2 cursor-pointer shadow-lg"
+            className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-gradient-to-r from-[#d9381e] via-[#e64a19] to-[#ea580c] text-white font-medium text-sm sm:text-base uppercase tracking-[0.16em] transition-all duration-300 shadow-[0_10px_30px_rgba(230,74,25,0.45)] hover:brightness-110 hover:scale-105 active:scale-95 flex items-center justify-center space-x-2 cursor-pointer border border-[#ff8a65]/40 font-['Raleway']"
           >
-            <Calendar size={16} className="text-[#d4a359]" />
+            <Calendar size={18} className="text-white" />
             <span>Reserve a Table</span>
           </button>
-        </div>
-      </div>
 
-      {/* Floating Centered Down Arrow Button (No colored SVG background blocking below) */}
-      <div className="absolute bottom-4 left-0 right-0 z-20 flex justify-center pointer-events-auto">
+          {/* Secondary Action: Outlined button with white text */}
+          <button
+            id="hero-view-menu-btn"
+            onClick={onExploreMenu}
+            className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-black/40 hover:bg-black/60 text-white hover:text-[#d4a359] border-2 border-white/80 hover:border-[#d4a359] font-medium text-sm sm:text-base uppercase tracking-[0.16em] transition-all duration-300 backdrop-blur-md flex items-center justify-center space-x-2 cursor-pointer shadow-lg hover:scale-105 active:scale-95 font-['Raleway']"
+          >
+            <UtensilsCrossed size={18} />
+            <span>Explore Menu</span>
+          </button>
+        </div>
+      </RevealOnScroll>
+
+      {/* Floating Centered Down Arrow Button - No Background, Pure Chevron */}
+      <div className="absolute bottom-6 sm:bottom-8 left-0 right-0 z-20 flex justify-center pointer-events-auto">
         <button
           id="hero-scroll-down-btn"
           onClick={onScrollToStory}
           aria-label="Scroll to Discover Our Story"
-          className="w-10 h-10 rounded-full bg-[#d4a359] text-black flex items-center justify-center shadow-[0_4px_20px_rgba(0,0,0,0.6)] hover:bg-[#f3cf8a] hover:scale-110 active:scale-95 transition-all cursor-pointer border border-[#fff3cf]/50"
+          className="p-2 bg-transparent text-[#f3cf8a] hover:text-white hover:scale-125 active:scale-95 transition-all duration-300 cursor-pointer drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)] focus:outline-none"
         >
-          <ChevronDown size={20} className="animate-bounce" />
+          <ChevronDown size={32} strokeWidth={2.5} className="animate-bounce" />
         </button>
+      </div>
+
+      {/* Organic Architectural Bottom Wave Curve Transition */}
+      <div className="absolute bottom-0 left-0 right-0 z-10 pointer-events-none overflow-hidden leading-none">
+        <svg 
+          viewBox="0 0 1440 100" 
+          fill="none" 
+          xmlns="http://www.w3.org/2000/svg"
+          preserveAspectRatio="none"
+          className={`w-full h-10 sm:h-16 md:h-20 transition-colors duration-700 ${
+            mode === 'night' ? 'text-[#000000]' : 'text-[#ffffff]'
+          }`}
+        >
+          <path 
+            d="M 0,55 C 380,95 860,10 1440,28 L 1440,100 L 0,100 Z" 
+            fill="currentColor" 
+          />
+        </svg>
       </div>
 
     </section>

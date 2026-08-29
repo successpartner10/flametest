@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowRight, Calendar, Sparkles } from 'lucide-react';
 import { AppMode } from '../types';
+import { RevealOnScroll } from './RevealOnScroll';
 
 interface CulinarySectionProps {
   onMakeReservation: () => void;
@@ -27,7 +28,12 @@ export const CulinarySection: React.FC<CulinarySectionProps> = ({
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
         
         {/* Left Narrative Column */}
-        <div className="lg:col-span-5 flex flex-col items-center lg:items-start text-center lg:text-left space-y-6">
+        <RevealOnScroll 
+          direction="up" 
+          delay={0}
+          duration={800}
+          className="lg:col-span-5 flex flex-col items-center lg:items-start text-center lg:text-left space-y-6"
+        >
           
           <div className="space-y-1">
             {/* Script cursive: "Culinary" */}
@@ -74,60 +80,64 @@ export const CulinarySection: React.FC<CulinarySectionProps> = ({
             </button>
           </div>
 
-        </div>
+        </RevealOnScroll>
 
         {/* Right 2 Tall Vertical Dish Photos (Persian Chelo Kababs & Bastani Sonnati) */}
         <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
           
           {/* Dish 1: Persian Flame Chelo Kabab Koobideh */}
-          <div 
-            onClick={() => onOpenDish('item-4')}
-            className={`group relative aspect-[3/4] sm:aspect-[9/16] rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 ${
-              isNight 
-                ? 'bg-[#0a0a0a] border border-[#2a2a2a] shadow-[0_20px_50px_rgba(0,0,0,0.95)] ring-1 ring-white/10 hover:border-[#d4a359]/70 hover:shadow-[0_25px_60px_rgba(212,163,89,0.15)]' 
-                : 'bg-[#ece7df] shadow-[0_15px_35px_rgba(0,0,0,0.12)]'
-            }`}
-          >
-            <img
-              src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=900&q=80"
-              alt="Persian Flame Chelo Kabab Koobideh with saffron basmati rice"
-              className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out ${
-                isNight ? 'filter brightness-100 contrast-[1.08] saturate-[1.05]' : 'filter brightness-95 contrast-105'
+          <RevealOnScroll direction="up" delay={150} duration={850}>
+            <div 
+              onClick={() => onOpenDish('item-4')}
+              className={`group relative aspect-[3/4] sm:aspect-[9/16] rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 hover:-translate-y-1.5 ${
+                isNight 
+                  ? 'bg-[#0a0a0a] border border-[#2a2a2a] shadow-[0_20px_50px_rgba(0,0,0,0.95)] ring-1 ring-white/10 hover:border-[#d4a359]/70 hover:shadow-[0_25px_60px_rgba(212,163,89,0.15)]' 
+                  : 'bg-[#ece7df] shadow-[0_15px_35px_rgba(0,0,0,0.12)]'
               }`}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-5">
-              <div className="text-white">
-                <span className="text-[10px] uppercase tracking-widest text-[#f5d79e] font-semibold block mb-0.5 font-['Raleway']">Flame Charcoal Grill</span>
-                <h4 className="font-serif text-lg text-white font-medium">Chelo Kabab Koobideh &amp; Joojeh</h4>
-                <p className="text-xs text-white/80 mt-0.5">Prime minced lamb &amp; saffron chicken skewers over open embers</p>
+            >
+              <img
+                src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=900&q=80"
+                alt="Persian Flame Chelo Kabab Koobideh with saffron basmati rice"
+                className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out ${
+                  isNight ? 'filter brightness-100 contrast-[1.08] saturate-[1.05]' : 'filter brightness-95 contrast-105'
+                }`}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-5">
+                <div className="text-white">
+                  <span className="text-[10px] uppercase tracking-widest text-[#f5d79e] font-semibold block mb-0.5 font-['Raleway']">Flame Charcoal Grill</span>
+                  <h4 className="font-serif text-lg text-white font-medium">Chelo Kabab Koobideh &amp; Joojeh</h4>
+                  <p className="text-xs text-white/80 mt-0.5">Prime minced lamb &amp; saffron chicken skewers over open embers</p>
+                </div>
               </div>
             </div>
-          </div>
+          </RevealOnScroll>
 
           {/* Dish 2: Bastani Sonnati & Persian Saffron Ice Cream */}
-          <div 
-            onClick={() => onOpenDish('item-11')}
-            className={`group relative aspect-[3/4] sm:aspect-[9/16] rounded-2xl overflow-hidden sm:translate-y-6 cursor-pointer transition-all duration-500 ${
-              isNight 
-                ? 'bg-[#0a0a0a] border border-[#2a2a2a] shadow-[0_20px_50px_rgba(0,0,0,0.95)] ring-1 ring-white/10 hover:border-[#d4a359]/70 hover:shadow-[0_25px_60px_rgba(212,163,89,0.15)]' 
-                : 'bg-[#ece7df] shadow-[0_15px_35px_rgba(0,0,0,0.12)]'
-            }`}
-          >
-            <img
-              src="https://images.unsplash.com/photo-1501443762994-82bd5dace89a?auto=format&fit=crop&w=900&q=80"
-              alt="Bastani Sonnati Persian saffron rosewater pistachio dessert"
-              className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out ${
-                isNight ? 'filter brightness-100 contrast-[1.08] saturate-[1.05]' : 'filter brightness-95'
+          <RevealOnScroll direction="up" delay={300} duration={850}>
+            <div 
+              onClick={() => onOpenDish('item-11')}
+              className={`group relative aspect-[3/4] sm:aspect-[9/16] rounded-2xl overflow-hidden sm:translate-y-6 cursor-pointer transition-all duration-500 hover:-translate-y-1.5 ${
+                isNight 
+                  ? 'bg-[#0a0a0a] border border-[#2a2a2a] shadow-[0_20px_50px_rgba(0,0,0,0.95)] ring-1 ring-white/10 hover:border-[#d4a359]/70 hover:shadow-[0_25px_60px_rgba(212,163,89,0.15)]' 
+                  : 'bg-[#ece7df] shadow-[0_15px_35px_rgba(0,0,0,0.12)]'
               }`}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-5">
-              <div className="text-white">
-                <span className="text-[10px] uppercase tracking-widest text-[#f5d79e] font-semibold block mb-0.5 font-['Raleway']">Traditional Dessert</span>
-                <h4 className="font-serif text-lg text-white font-medium">Bastani Sonnati &amp; Faloodeh</h4>
-                <p className="text-xs text-white/80 mt-0.5">Persian saffron rosewater ice cream with roasted pistachio clotted cream</p>
+            >
+              <img
+                src="https://images.unsplash.com/photo-1501443762994-82bd5dace89a?auto=format&fit=crop&w=900&q=80"
+                alt="Bastani Sonnati Persian saffron rosewater pistachio dessert"
+                className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out ${
+                  isNight ? 'filter brightness-100 contrast-[1.08] saturate-[1.05]' : 'filter brightness-95'
+                }`}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-5">
+                <div className="text-white">
+                  <span className="text-[10px] uppercase tracking-widest text-[#f5d79e] font-semibold block mb-0.5 font-['Raleway']">Traditional Dessert</span>
+                  <h4 className="font-serif text-lg text-white font-medium">Bastani Sonnati &amp; Faloodeh</h4>
+                  <p className="text-xs text-white/80 mt-0.5">Persian saffron rosewater ice cream with roasted pistachio clotted cream</p>
+                </div>
               </div>
             </div>
-          </div>
+          </RevealOnScroll>
 
         </div>
 

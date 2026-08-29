@@ -38,7 +38,7 @@ export const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose, onOpenR
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6">
               <div>
-                <span className="text-[10px] uppercase font-mono tracking-widest text-[#d4a359]">Santa Monica Blvd, Los Angeles • Est. 2026</span>
+                <span className="text-[10px] uppercase font-mono tracking-widest text-[#d4a359]">Santa Monica Blvd, Los Angeles • Est. 1985</span>
                 <h4 className="font-serif text-xl sm:text-2xl text-white font-medium">A Sunlit Corner on Santa Monica Boulevard</h4>
               </div>
             </div>
