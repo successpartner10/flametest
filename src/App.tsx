@@ -324,6 +324,7 @@ export default function App() {
       {/* Footer & Los Angeles Map (Constant across all pages) */}
       <FooterSection
         mode={mode}
+        isHomePage={activePageSlug === 'home'}
         onScrollToTop={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         onOpenMenu={() => handleSelectPage('dine-in')}
         onOpenStories={() => handleSelectPage('live-events')}

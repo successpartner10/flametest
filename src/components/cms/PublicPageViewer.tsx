@@ -69,89 +69,94 @@ export const PublicPageViewer: React.FC<PublicPageViewerProps> = ({
           )}
         </div>
 
-        {/* Hero Cover Header */}
+        {/* Cinematic Luxury Hero Image Header */}
         <header
-          className={`relative rounded-3xl overflow-hidden shadow-2xl border ${
-            isNight ? 'border-[#4a0d1e] bg-[#280510]' : 'border-stone-200 bg-white'
+          className={`relative rounded-3xl overflow-hidden shadow-2xl border transition-all duration-500 ${
+            isNight ? 'border-[#521324] bg-[#280510]' : 'border-stone-300 bg-white'
           }`}
         >
-          {frontmatter.coverImage && (
-            <div className="relative h-64 sm:h-80 md:h-96 w-full overflow-hidden">
-              <img
-                src={frontmatter.coverImage}
-                alt={frontmatter.title}
-                className="w-full h-full object-cover brightness-[0.78] contrast-[1.05]"
-              />
-              <div
-                className={`absolute inset-0 ${
-                  isNight
-                    ? 'bg-gradient-to-t from-[#180309] via-[#180309]/60 to-black/30'
-                    : 'bg-gradient-to-t from-[#faf8f5] via-[#faf8f5]/60 to-black/30'
-                }`}
-              />
-            </div>
-          )}
+          {/* Hero Cover Image Container */}
+          <div className="relative h-72 sm:h-96 md:h-[420px] w-full overflow-hidden">
+            <img
+              src={
+                frontmatter.coverImage ||
+                'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1600&q=80'
+              }
+              alt={frontmatter.title}
+              className="w-full h-full object-cover brightness-[0.70] contrast-[1.08] scale-105 hover:scale-100 transition-transform duration-1000 ease-out"
+            />
 
-          {/* Title & Metadata Overlay */}
-          <div
-            className={`p-6 sm:p-10 relative z-10 ${
-              frontmatter.coverImage ? '-mt-24 sm:-mt-32' : 'pt-10'
-            }`}
-          >
-            <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-[#d4a359]/20 border border-[#d4a359]/50 text-[#d4a359] text-[10px] sm:text-xs uppercase tracking-[0.2em] font-bold mb-3 backdrop-blur-md">
-              <Sparkles size={12} />
-              <span>{frontmatter.navTitle || 'Flame International'}</span>
-            </div>
-
-            <h1
-              className={`font-serif text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight ${
-                isNight ? 'text-white' : 'text-[#14181f]'
+            {/* Dark Burgundy & Gold Shimmer Gradient Overlay */}
+            <div
+              className={`absolute inset-0 ${
+                isNight
+                  ? 'bg-gradient-to-t from-[#180309] via-[#180309]/70 to-black/40'
+                  : 'bg-gradient-to-t from-[#faf8f5] via-[#faf8f5]/70 to-black/40'
               }`}
-            >
-              {frontmatter.title}
-            </h1>
+            />
 
-            {frontmatter.subtitle && (
-              <p
-                className={`text-base sm:text-lg mt-3 max-w-2xl font-light leading-relaxed ${
-                  isNight ? 'text-gray-300' : 'text-gray-700'
-                }`}
-              >
-                {frontmatter.subtitle}
-              </p>
-            )}
-
-            {/* Quick Action Buttons for relevant pages */}
-            <div className="pt-6 flex flex-wrap items-center gap-3">
-              {onOpenReservation && (
-                <button
-                  onClick={onOpenReservation}
-                  className="px-6 py-2.5 rounded-full bg-gradient-to-r from-[#d4a359] to-[#b3833b] hover:brightness-110 text-black font-bold text-xs uppercase tracking-widest transition-all cursor-pointer shadow-md"
-                >
-                  Reserve a Table
-                </button>
-              )}
-              {page.slug === 'live-events' && onOpenTickets && (
-                <button
-                  onClick={onOpenTickets}
-                  className="px-6 py-2.5 rounded-full bg-gradient-to-r from-[#d9381e] via-[#e64a19] to-[#ea580c] hover:brightness-110 text-white font-bold text-xs uppercase tracking-widest transition-all cursor-pointer shadow-md"
-                >
-                  Buy Concert Tickets
-                </button>
-              )}
-              <a
-                href="tel:3104440045"
-                className={`px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-colors flex items-center space-x-1.5 border ${
-                  isNight
-                    ? 'border-[#4a0e23] hover:bg-[#20050f] text-gray-200'
-                    : 'border-stone-300 hover:bg-stone-100 text-gray-800'
-                }`}
-              >
-                <Phone size={13} className="text-[#d4a359]" />
-                <span>Call (310) 444-0045</span>
-              </a>
+            {/* Floating Gold Sparkle Accent in top right */}
+            <div className="absolute top-6 right-6 px-4 py-1.5 rounded-full bg-[#180309]/80 border border-[#d4a359]/60 text-[#f3cf8a] text-xs font-bold uppercase tracking-widest backdrop-blur-md hidden sm:flex items-center space-x-1.5 shadow-lg">
+              <Sparkles size={14} className="text-[#d4a359]" />
+              <span>FLAME EXPERIENCE</span>
             </div>
 
+            {/* Title & Subtitle Content Overlay */}
+            <div className="absolute inset-x-0 bottom-0 p-6 sm:p-10 md:p-12 z-10 space-y-3">
+              <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-[#d4a359]/25 border border-[#d4a359]/60 text-[#f3cf8a] text-[10px] sm:text-xs uppercase tracking-[0.2em] font-bold backdrop-blur-md shadow-md">
+                <Sparkles size={12} />
+                <span>{frontmatter.navTitle || 'Flame International'}</span>
+              </div>
+
+              <h1
+                className={`font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-tight drop-shadow-lg ${
+                  isNight ? 'text-white' : 'text-[#14181f]'
+                }`}
+              >
+                {frontmatter.title}
+              </h1>
+
+              {frontmatter.subtitle && (
+                <p
+                  className={`text-sm sm:text-lg max-w-3xl font-light leading-relaxed drop-shadow-md ${
+                    isNight ? 'text-gray-200' : 'text-gray-800'
+                  }`}
+                >
+                  {frontmatter.subtitle}
+                </p>
+              )}
+
+              {/* Action CTA Buttons */}
+              <div className="pt-3 flex flex-wrap items-center gap-3">
+                {onOpenReservation && (
+                  <button
+                    onClick={onOpenReservation}
+                    className="px-6 py-2.5 rounded-full bg-gradient-to-r from-[#d4a359] via-[#e2b46b] to-[#b3833b] hover:brightness-110 text-black font-bold text-xs uppercase tracking-widest transition-all cursor-pointer shadow-lg active:scale-95"
+                  >
+                    Reserve Table
+                  </button>
+                )}
+                {page.slug === 'live-events' && onOpenTickets && (
+                  <button
+                    onClick={onOpenTickets}
+                    className="px-6 py-2.5 rounded-full bg-gradient-to-r from-[#d9381e] via-[#e64a19] to-[#ea580c] hover:brightness-110 text-white font-bold text-xs uppercase tracking-widest transition-all cursor-pointer shadow-lg active:scale-95"
+                  >
+                    Buy Concert Tickets
+                  </button>
+                )}
+                <a
+                  href="tel:3104440045"
+                  className={`px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-colors flex items-center space-x-1.5 border backdrop-blur-md shadow-md ${
+                    isNight
+                      ? 'bg-[#180309]/80 border-[#6b152d] hover:bg-[#280510] text-gray-100'
+                      : 'bg-white/80 border-stone-300 hover:bg-stone-100 text-gray-900'
+                  }`}
+                >
+                  <Phone size={13} className="text-[#d4a359]" />
+                  <span>Call (310) 444-0045</span>
+                </a>
+              </div>
+            </div>
           </div>
         </header>
 

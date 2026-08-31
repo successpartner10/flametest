@@ -16,6 +16,7 @@ interface FooterSectionProps {
   onOpenStories?: () => void;
   onOpenAbout?: () => void;
   mode?: AppMode;
+  isHomePage?: boolean;
 }
 
 // Helper: Calculate distance in miles between two coordinates (Haversine Formula)
@@ -201,7 +202,7 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
   };
 
   return (
-    <footer id="find-us-footer" className="relative bg-[#180309] text-[#f7e8ea] pt-20 sm:pt-28 pb-28 px-4 sm:px-6 lg:px-12 overflow-hidden font-['Raleway']">
+    <footer id="find-us-footer" className={`relative bg-[#180309] text-[#f7e8ea] ${isHomePage ? 'pt-20 sm:pt-28 pb-28' : 'pt-12 sm:pt-16 pb-20'} px-4 sm:px-6 lg:px-12 overflow-hidden font-['Raleway']`}>
       
       {/* Curved Architectural Top Wave Transition - With Animated Continuous Moving Gold Glow Line */}
       <div className="absolute top-0 left-0 right-0 pointer-events-none overflow-hidden leading-none z-10">
@@ -286,12 +287,11 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
 
         {/* Unified 2-Column Responsive Layout: Map Functionality Grouped Together (Left) vs Hours & Contact (Right) */}
         <RevealOnScroll direction="up" delay={150} duration={850} className="w-full max-w-6xl">
-          <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-7 items-start font-['Raleway']">
+          <div className={`w-full grid ${isHomePage ? 'grid-cols-1 lg:grid-cols-12 gap-7' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'} items-start font-['Raleway']`}>
             
-            {/* ========================================================================= */}
             {/* 🗺️ LEFT COLUMN (lg:col-span-7): UNIFIED STREET MAP & DIRECTIONS MODULE */}
-            {/* ========================================================================= */}
-            <div className="lg:col-span-7">
+            {isHomePage && (
+              <div className="lg:col-span-7">
               
               <div className="bg-[#1c030b]/90 border border-[#6b152d]/70 rounded-3xl p-4 sm:p-6 backdrop-blur-md shadow-[0_20px_50px_rgba(0,0,0,0.6)] space-y-3.5">
                 
@@ -917,11 +917,12 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
               </div>
 
             </div>
+            )}
 
             {/* ========================================================================= */}
-            {/* 📍 RIGHT COLUMN (lg:col-span-5): HOURS & DIRECT CONTACT CONCIERGE */}
+            {/* 📍 RIGHT COLUMN (lg:col-span-5 on Home, 3-card grid on other pages) */}
             {/* ========================================================================= */}
-            <div className="lg:col-span-5 space-y-6">
+            <div className={isHomePage ? "lg:col-span-5 space-y-6" : "contents"}>
               
               {/* 1. HOURS OF OPERATION CARD */}
               <div className="bg-[#1c030b]/90 border border-[#6b152d]/60 rounded-3xl p-6 backdrop-blur-md shadow-[0_20px_50px_rgba(0,0,0,0.6)] space-y-4">
