@@ -294,7 +294,7 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
 
         {/* Unified 2-Column Responsive Layout: Map Functionality Grouped Together (Left) vs Hours & Contact (Right) */}
         <RevealOnScroll direction="up" delay={150} duration={850} className="w-full max-w-6xl">
-          <div className={`w-full grid ${isHomePage ? 'grid-cols-1 lg:grid-cols-12 gap-7' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'} items-start font-['Raleway']`}>
+          <div className={`w-full grid ${isHomePage ? 'grid-cols-1 lg:grid-cols-12 gap-7 items-start' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch'} font-['Raleway']`}>
             
             {/* 🗺️ LEFT COLUMN (lg:col-span-7): UNIFIED STREET MAP & DIRECTIONS MODULE */}
             {isHomePage && (
@@ -933,12 +933,12 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
               
               {/* 1ST COLUMN ON NON-HOME: LOGO, ADDRESS & VALET CARD */}
               {!isHomePage && (
-                <div className="bg-[#1c030b]/90 border border-[#6b152d]/60 rounded-3xl p-6 backdrop-blur-md shadow-[0_20px_50px_rgba(0,0,0,0.6)] space-y-4 flex flex-col justify-between">
+                <div className="bg-[#1c030b]/90 border border-[#6b152d]/60 rounded-3xl p-6 backdrop-blur-md shadow-[0_20px_50px_rgba(0,0,0,0.6)] space-y-4 flex flex-col justify-between h-full">
                   <div className="flex flex-col items-center text-center space-y-3">
                     <img 
                       src="/images/flame-logo.png" 
                       alt="Flame International" 
-                      className="h-25 sm:h-30 w-auto object-contain filter drop-shadow-[0_4px_12px_rgba(212,163,89,0.3)] hover:scale-105 transition-transform duration-300" 
+                      className="h-24 sm:h-28 w-auto object-contain filter drop-shadow-[0_4px_12px_rgba(212,163,89,0.3)] hover:scale-105 transition-transform duration-300" 
                     />
                     
                     <div className="space-y-1 pt-1">
@@ -964,25 +964,27 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
               )}
 
               {/* HOURS OF OPERATION CARD */}
-              <div className="bg-[#1c030b]/90 border border-[#6b152d]/60 rounded-3xl p-6 backdrop-blur-md shadow-[0_20px_50px_rgba(0,0,0,0.6)] space-y-4">
-                <div className="flex items-center space-x-2 text-[#d4a359] border-b border-[#521324] pb-3">
-                  <Clock size={20} />
-                  <h4 className="text-sm sm:text-base uppercase tracking-[0.2em] font-['Raleway'] font-medium">Hours of Operation</h4>
-                </div>
-                
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between p-3.5 rounded-2xl bg-[#280510]/90 border border-[#521324]">
-                    <span className="text-white font-normal text-sm sm:text-base">Monday – Sunday:</span>
-                    <span className="text-[#f5d79e] font-medium text-sm sm:text-base font-['Raleway']">11:30 AM – 11:00 PM</span>
+              <div className="bg-[#1c030b]/90 border border-[#6b152d]/60 rounded-3xl p-6 backdrop-blur-md shadow-[0_20px_50px_rgba(0,0,0,0.6)] space-y-4 flex flex-col justify-between h-full">
+                <div className="space-y-4">
+                  <div className="flex items-center space-x-2 text-[#d4a359] border-b border-[#521324] pb-3">
+                    <Clock size={20} />
+                    <h4 className="text-sm sm:text-base uppercase tracking-[0.2em] font-['Raleway'] font-medium">Hours of Operation</h4>
                   </div>
-                  <p className="text-xs sm:text-sm text-[#f5a7b8] leading-relaxed">
-                    Open 7 days a week for Lunch, Dinner, Craft Cocktails, Persian Banquets, and Nightly Live Entertainment.
-                  </p>
+                  
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between p-3.5 rounded-2xl bg-[#280510]/90 border border-[#521324]">
+                      <span className="text-white font-normal text-sm sm:text-base">Monday – Sunday:</span>
+                      <span className="text-[#f5d79e] font-medium text-sm sm:text-base font-['Raleway']">11:30 AM – 11:00 PM</span>
+                    </div>
+                    <p className="text-xs sm:text-sm text-[#f5a7b8] leading-relaxed">
+                      Open 7 days a week for Lunch, Dinner, Craft Cocktails, Persian Banquets, and Nightly Live Entertainment.
+                    </p>
+                  </div>
                 </div>
               </div>
 
               {/* 2. DIRECT CONTACT & SOCIAL CONCIERGE CARD */}
-              <div className="bg-[#1c030b]/90 border border-[#6b152d]/60 rounded-3xl p-6 backdrop-blur-md shadow-[0_20px_50px_rgba(0,0,0,0.6)] space-y-4">
+              <div className="bg-[#1c030b]/90 border border-[#6b152d]/60 rounded-3xl p-6 backdrop-blur-md shadow-[0_20px_50px_rgba(0,0,0,0.6)] space-y-4 flex flex-col justify-between h-full">
                 <div className="flex items-center space-x-2 text-[#d4a359] border-b border-[#521324] pb-3">
                   <Phone size={20} />
                   <h4 className="text-sm sm:text-base uppercase tracking-[0.2em] font-['Raleway'] font-medium">Contact &amp; Social</h4>
