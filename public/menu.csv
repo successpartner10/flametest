@@ -1,0 +1,47 @@
+Category,CategoryOrder,CategoryImage,Item,Description,Price
+Appetizers & Mazzeh,1,https://images.unsplash.com/photo-1540914124281-342587941389?auto=format&fit=crop&w=1400&q=85,Kashk-e Bademjan,"Charred eggplants, fermented kashk whey cream, mint oil & warm Sangak bread",$15.50
+Appetizers & Mazzeh,1,,Mast-o Khiar,"Strained yogurt, diced cucumber, wild rose petals, walnuts & sheep feta",$14.00
+Appetizers & Mazzeh,1,,Zeytoon Parvardeh,"Green olives marinated in pomegranate molasses, walnuts & angelica",$16.50
+Appetizers & Mazzeh,1,,Hummus & Warm Bread,"House-made hummus with olive oil, sumac & fresh-baked lavash",$13.00
+Appetizers & Mazzeh,1,,Mirza Ghasemi,"Roasted eggplant & tomatoes sautéed with garlic & eggs, served warm",$15.00
+Appetizers & Mazzeh,1,,Dolmeh,"Stuffed grape leaves with herbed rice, lamb, dried fruits & tamarind sauce",$16.00
+Appetizers & Mazzeh,1,,Borani Esfanaj,"Baby spinach dip with Greek yogurt, garlic & caramelized onions",$13.50
+Soups & Salads,2,https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=1400&q=85,Ash-e Reshteh,"Hearty Persian noodle soup with spinach, herbs, legumes & whey cream",$16.00
+Soups & Salads,2,,Ash-e Anar,"Pomegranate & walnut soup with ground lamb, herbs & kashk",$17.50
+Soups & Salads,2,,Shirazi Salad,"Persian cucumber, tomato, red onion & parsley tossed in verjuice dressing",$13.00
+Soups & Salads,2,,Fattoush,"Romaine, radish, crispy lavash chips, sumac vinaigrette & mint",$14.00
+Charbroiled Kababs,3,https://images.unsplash.com/photo-1529566652340-2c41a1eb6d7d?auto=format&fit=crop&w=1400&q=85,Chelo Kabab Koobideh,"Twin skewers of prime minced lamb & Angus beef, charbroiled over hardwood charcoal",$27.50
+Charbroiled Kababs,3,,Chelo Kabab Barg,"Thinly pounded & marinated Filet Mignon skewers over saffron-infused charcoal",$38.00
+Charbroiled Kababs,3,,Royal Soltani Combo,"One Barg skewer & one Koobideh skewer — the ultimate Persian feast",$36.00
+Charbroiled Kababs,3,,Joojeh Kabab,"Boneless saffron & lemon marinated chicken skewers, flame-kissed",$29.00
+Charbroiled Kababs,3,,Shrimp Kabab,"Jumbo Gulf shrimp marinated in saffron, turmeric & lime, charbroiled",$35.00
+Charbroiled Kababs,3,,Rack of Lamb (Shishlik),"Charbroiled baby lamb chops with Persian saffron, lemon & sumac",$48.00
+Charbroiled Kababs,3,,Mixed Grill Platter,"Koobideh + Barg + Joojeh served with saffron rice for two",$69.00
+Persian Stews & Rice,4,https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=1400&q=85,Ghormeh Sabzi,"Slow-braised lamb with sautéed herbs, kidney beans & sun-dried limoo amani",$27.00
+Persian Stews & Rice,4,,Fesenjan,"Duck confit braised in a rich pomegranate & walnut reduction",$32.00
+Persian Stews & Rice,4,,Baghali Polo ba Mahi,"Herb dill rice with fava beans & pan-seared whole sea bass",$38.00
+Persian Stews & Rice,4,,Loobia Polo,"Seasoned ground beef with green beans & tomatoes slow-braised with rice",$24.00
+Persian Stews & Rice,4,,Zereshk Polo ba Morgh,"Saffron chicken thighs over barberry rice with pistachios & almonds",$29.00
+Persian Stews & Rice,4,,Saffron Tahdig,"Royal golden rice crust — the crown jewel of Persian cuisine",$11.00
+Vegetarian & Vegan,5,https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=1400&q=85,Vegetarian Ghormeh Sabzi,"Herb & kidney bean stew in a rich limoo reduction, no meat",$22.00
+Vegetarian & Vegan,5,,Kuku Sabzi,"Persian herb frittata with walnut, barberries & fenugreek",$18.00
+Vegetarian & Vegan,5,,Herb Rice Platter,"Saffron basmati with dill, fava beans, pistachios & raisins",$19.00
+Vegetarian & Vegan,5,,Roasted Cauliflower,"Turmeric-spiced cauliflower with pomegranate glaze, tahini & herbs",$21.00
+Seafood,6,https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1400&q=85,Mahi Saffron,"Whole sea bass marinated in Persian saffron, turmeric & herbs, oven-roasted",$42.00
+Seafood,6,,Salmon Kabab,"Atlantic salmon skewer with saffron-lime marinade, charbroiled",$38.00
+Seafood,6,,Shrimp Stew (Ghalieh Mahi),"Gulf shrimp in a rich tamarind, fenugreek & herb sauce",$36.00
+Desserts,7,https://images.unsplash.com/photo-1488900128323-21503983a07e?auto=format&fit=crop&w=1400&q=85,Bastani Sonnati,"Traditional saffron & rosewater ice cream with pistachios & rose petals",$13.50
+Desserts,7,,Sholeh Zard,"Persian saffron rice pudding with cinnamon, cardamom & rosewater",$12.00
+Desserts,7,,Zulbia & Bamieh,"Crispy Persian funnel cake & fried dough pearls with rosewater syrup",$11.00
+Desserts,7,,Persian Baklava,"Layered pastry with pistachios, walnuts & orange blossom honey",$14.00
+Desserts,7,,Faloodeh Shirazi,"Rosewater sorbet vermicelli with sour cherry syrup",$12.50
+Teas & Beverages,8,https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=1400&q=85,Persian Cardamom Chai,"Brewed Ceylon black tea with saffron rock sugar & cardamom",$8.50
+Teas & Beverages,8,,Rose Hip Tea,"Fragrant rose hip & hibiscus blend with dried citrus peel",$8.00
+Teas & Beverages,8,,Doogh,"Chilled sparkling yogurt drink with dried mint & Persian cucumber",$7.50
+Teas & Beverages,8,,Saffron & Rosewater Sherbet,"Chilled traditional Persian sherbet with basil seeds",$9.00
+Craft Cocktails,9,https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=1400&q=85,Tehran Nightfall,"Bourbon, house saffron syrup, cardamom bitters & orange peel",$16.00
+Craft Cocktails,9,,Rose Garden Spritz,"Prosecco, rosewater, lychee & elderflower",$15.00
+Craft Cocktails,9,,Pomegranate Mule,"Vodka, pomegranate, fresh lime & spiced ginger beer",$15.00
+Craft Cocktails,9,,Saffron Margarita,"Reposado tequila, saffron cordial, lime & Tajín rim",$17.00
+Craft Cocktails,9,,Shiraz Sangria,"Persian red wine, blood orange, cinnamon & rosewater",$14.00
+Craft Cocktails,9,,Persian Garden Mocktail,"Rose, pomegranate, lime & sparkling water — alcohol-free",$10.00

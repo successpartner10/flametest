@@ -17,6 +17,7 @@ import { CMSPage, AdminUser } from '../../types/cms';
 import { AppMode } from '../../types';
 import { LiveEventsView } from '../LiveEventsView';
 import { ContactFormView } from '../ContactFormView';
+import { MenuSection } from './MenuSection';
 
 /* ── VideoHero: cycles through multiple video srcs automatically ── */
 const VideoHero: React.FC<{ srcs: string[]; className: string }> = ({ srcs, className }) => {
@@ -221,6 +222,14 @@ export const PublicPageViewer: React.FC<PublicPageViewerProps> = ({
             mode={mode}
             onOpenReservation={onOpenReservation}
           />
+        ) : page.slug === 'dine-in' ? (
+          <div className={`p-6 sm:p-10 rounded-3xl border shadow-xl ${
+            isNight
+              ? 'bg-[#100308] border-[#2d0715] text-gray-200'
+              : 'bg-white border-stone-200 text-gray-800'
+          }`}>
+            <MenuSection mode={mode} csvPath="/menu.csv" />
+          </div>
         ) : (
           <section
             className={`p-6 sm:p-12 rounded-3xl border shadow-xl ${

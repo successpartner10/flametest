@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { UtensilsCrossed, Calendar, Play, Pause, Ticket, Sparkles, Volume2, VolumeX } from 'lucide-react';
 import { AppMode } from '../types';
 import flameConcertHero from '../assets/images/flame_concert_hero_1788098658069.jpg';
-import flameStageLights from '../assets/images/flame_stage_lights_1788098671758.jpg';
+import flameDiningRoom from '../assets/images/flame_dining_room.jpg';
 
 interface HeroSectionProps {
   mode: AppMode;
@@ -20,10 +20,10 @@ const CINEMATIC_SCENES = [
     motionClass: 'animate-hero-pan-zoom-1',
   },
   {
-    id: 'flame-stage-ambiance',
-    title: 'Grand Concert Lounge & Crystal Chandeliers',
+    id: 'flame-dining-room',
+    title: 'Opulent West LA Dining Room',
     subtitle: '11330 Santa Monica Blvd, West Los Angeles',
-    image: flameStageLights,
+    image: flameDiningRoom,
     motionClass: 'animate-hero-pan-zoom-2',
   },
 ];
