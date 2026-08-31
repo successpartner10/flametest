@@ -269,7 +269,7 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
             <img 
               src="/images/flame-logo.png" 
               alt="Flame International" 
-              className="h-20 sm:h-24 w-auto object-contain filter drop-shadow-[0_4px_12px_rgba(212,163,89,0.3)]" 
+              className="h-24 sm:h-30 w-auto object-contain filter drop-shadow-[0_4px_12px_rgba(212,163,89,0.3)]" 
             />
           </div>
 
@@ -925,11 +925,43 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
             )}
 
             {/* ========================================================================= */}
-            {/* 📍 RIGHT COLUMN (lg:col-span-5 on Home, 3-card grid on other pages) */}
+            {/* 📍 RIGHT / MAIN COLUMNS (lg:col-span-5 on Home, 3 distinct columns on other pages) */}
             {/* ========================================================================= */}
             <div className={isHomePage ? "lg:col-span-5 space-y-6" : "contents"}>
               
-              {/* 1. HOURS OF OPERATION CARD */}
+              {/* 1ST COLUMN ON NON-HOME: LOGO, ADDRESS & VALET CARD */}
+              {!isHomePage && (
+                <div className="bg-[#1c030b]/90 border border-[#6b152d]/60 rounded-3xl p-6 backdrop-blur-md shadow-[0_20px_50px_rgba(0,0,0,0.6)] space-y-4 flex flex-col justify-between">
+                  <div className="flex flex-col items-center text-center space-y-3">
+                    <img 
+                      src="/images/flame-logo.png" 
+                      alt="Flame International" 
+                      className="h-20 sm:h-24 w-auto object-contain filter drop-shadow-[0_4px_12px_rgba(212,163,89,0.3)] hover:scale-105 transition-transform duration-300" 
+                    />
+                    
+                    <div className="space-y-1 pt-1">
+                      <span className="text-[11px] tracking-[0.25em] text-[#f5a7b8] uppercase font-['Raleway'] font-medium block">
+                        FIND US / VISIT US
+                      </span>
+                      <h3 className="text-white font-semibold text-xs sm:text-sm uppercase tracking-wider font-['Raleway']">
+                        ON <span className="text-[#f3cf8a]">SANTA MONICA BOULEVARD</span>
+                      </h3>
+                      <p className="text-xs sm:text-sm text-white/80 leading-relaxed font-['Raleway']">
+                        11330 Santa Monica Blvd<br />West Los Angeles, CA 90025
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="pt-3 border-t border-[#521324] text-center">
+                    <div className="inline-flex items-center justify-center space-x-2 px-3.5 py-2 rounded-2xl bg-[#280510] border border-[#831f3b] text-xs text-[#f3cf8a] font-medium w-full">
+                      <Car size={16} className="shrink-0 text-[#d4a359]" />
+                      <span className="text-[11px] sm:text-xs">Complimentary Guest Valet Parking at Main Entrance</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* HOURS OF OPERATION CARD */}
               <div className="bg-[#1c030b]/90 border border-[#6b152d]/60 rounded-3xl p-6 backdrop-blur-md shadow-[0_20px_50px_rgba(0,0,0,0.6)] space-y-4">
                 <div className="flex items-center space-x-2 text-[#d4a359] border-b border-[#521324] pb-3">
                   <Clock size={20} />
