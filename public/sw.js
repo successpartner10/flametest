@@ -1,73 +1,31 @@
-// Service Worker for Flame International PWA
-const CACHE_NAME = 'flame-pwa-v2';
-const ASSETS_TO_CACHE = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/flame_logo_whiteBORDER.svg'
-];
+// Service Worker — Self-Destruct & Cache Wipe
+// This version clears ALL caches and unregisters itself so the app
+// always loads fresh JS/CSS from the network.
 
-// Install Event
-self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      console.log('[PWA SW] Pre-caching core assets');
-      return cache.addAll(ASSETS_TO_CACHE).catch((err) => {
-        console.warn('[PWA SW] Cache addAll warning:', err);
-      });
-    })
-  );
+self.addEventListener('install', () => {
   self.skipWaiting();
 });
 
-// Activate Event
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cache) => {
-          if (cache !== CACHE_NAME) {
-            console.log('[PWA SW] Purging outdated cache:', cache);
-            return caches.delete(cache);
-          }
-        })
-      );
+      return Promise.all(cacheNames.map((name) => {
+        console.log('[SW] Deleting cache:', name);
+        return caches.delete(name);
+      }));
+    }).then(() => {
+      console.log('[SW] All caches cleared. Unregistering service worker.');
+      return self.registration.unregister();
+    }).then(() => {
+      // Force all controlled clients to reload and get fresh assets
+      return self.clients.matchAll({ type: 'window' });
+    }).then((clients) => {
+      clients.forEach((client) => client.navigate(client.url));
     })
   );
-  self.clients.claim();
 });
 
-// Fetch Event - Network First for HTML/JS/API, Cache Fallback
+// Pass ALL fetches straight to network — no caching
 self.addEventListener('fetch', (event) => {
-  if (event.request.method !== 'GET') return;
-
-  const url = new URL(event.request.url);
-
-  // API Requests: Network only
-  if (url.pathname.startsWith('/api/')) {
-    return;
-  }
-
-  // Network-First for Navigation, HTML, JS, and CSS so code updates show instantly
-  event.respondWith(
-    fetch(event.request)
-      .then((networkResponse) => {
-        if (networkResponse && networkResponse.status === 200) {
-          const responseToCache = networkResponse.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseToCache);
-          });
-        }
-        return networkResponse;
-      })
-      .catch(() => {
-        // Fallback to cache if network fails (offline)
-        return caches.match(event.request).then((cachedResponse) => {
-          if (cachedResponse) return cachedResponse;
-          if (event.request.headers.get('accept')?.includes('text/html')) {
-            return caches.match('/index.html');
-          }
-        });
-      })
-  );
+  event.respondWith(fetch(event.request));
 });

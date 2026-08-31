@@ -13,12 +13,18 @@ if ('serviceWorker' in navigator) {
       );
     });
   } else {
-    // Unregister active service worker in development so live hot-reloads are never blocked by cache
+    // In development: unregister all SWs AND wipe every cache so hot-reload is never blocked
     navigator.serviceWorker.getRegistrations().then((registrations) => {
       for (const registration of registrations) {
         registration.unregister();
         console.log('[PWA Dev] Unregistered cached Service Worker');
       }
+    });
+    caches.keys().then((cacheNames) => {
+      cacheNames.forEach((name) => {
+        caches.delete(name);
+        console.log('[PWA Dev] Deleted cache:', name);
+      });
     });
   }
 }
