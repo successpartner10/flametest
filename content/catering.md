@@ -4,7 +4,7 @@ subtitle: "Corporate Luncheons, Weddings & Private Celebrations Across Los Angel
 navTitle: "Catering"
 order: 5
 slug: "catering"
-coverImage: "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=1600&q=80"
+coverImage: "/images/hero-catering.png"
 metaDescription: "Professional Persian catering and event banquets by Flame International in LA."
 ---
 

@@ -77,8 +77,8 @@ export const PublicPageViewer: React.FC<PublicPageViewerProps> = ({
             isNight ? 'border-[#521324] bg-[#280510]' : 'border-stone-300 bg-white'
           }`}
         >
-          {/* Hero Cover Image Container */}
-          <div className="relative h-72 sm:h-96 md:h-[420px] w-full overflow-hidden">
+          {/* Hero Cover Image Container - Half height of home hero (h-48 sm:h-64 md:h-80) */}
+          <div className="relative h-48 sm:h-64 md:h-80 w-full overflow-hidden">
             <img
               src={
                 frontmatter.coverImage ||

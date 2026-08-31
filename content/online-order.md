@@ -4,7 +4,7 @@ subtitle: "Persian Flame Charcoal Kababs, Mazzeh & Feast Boxes Delivered Fresh"
 navTitle: "Online Order"
 order: 4
 slug: "online-order"
-coverImage: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=1600&q=80"
+coverImage: "/images/hero-online-order.png"
 metaDescription: "Order Flame International Persian kababs, saffron rice, and mazzeh online for pickup or delivery in Los Angeles."
 ---
 
