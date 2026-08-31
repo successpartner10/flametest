@@ -13,6 +13,7 @@ interface HeaderProps {
   onOpenOnlineOrders: () => void;
   onOpenCatering?: () => void;
   onOpenContact: () => void;
+  onOpenTickets?: () => void;
   cartCount?: number;
   // CMS Dynamic navigation props
   pages?: CMSPage[];
@@ -32,6 +33,7 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenOnlineOrders,
   onOpenCatering,
   onOpenContact,
+  onOpenTickets,
   cartCount = 0,
   pages = [],
   activePageSlug = 'home',
@@ -77,7 +79,17 @@ export const Header: React.FC<HeaderProps> = ({
       <div className="fixed top-0 right-0 z-50 pointer-events-none w-28 h-28 sm:w-36 sm:h-36 overflow-hidden select-none">
         <button
           id="diagonal-ticket-ribbon-btn"
-          onClick={onOpenReserve}
+          onClick={() => {
+            if (onOpenTickets) {
+              onOpenTickets();
+            } else {
+              handleNavClick('live-events');
+              setTimeout(() => {
+                const el = document.getElementById('ticketing-section');
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+              }, 350);
+            }
+          }}
           className="absolute top-4 -right-10 sm:top-6 sm:-right-10 w-36 sm:w-44 py-1 sm:py-1.5 bg-gradient-to-r from-[#b37a2b] via-[#f7d688] to-[#b37a2b] text-[#121619] font-medium font-['Raleway'] tracking-[0.18em] text-[9px] sm:text-[11px] uppercase text-center shadow-[0_4px_20px_rgba(0,0,0,0.8)] rotate-45 pointer-events-auto cursor-pointer hover:brightness-110 active:scale-95 transition-all border-y border-[#fff3cf]/60 flex items-center justify-center space-x-1 group"
           title="Buy Concert & Live Show Tickets"
         >
@@ -281,11 +293,22 @@ export const Header: React.FC<HeaderProps> = ({
 
             <div className="pt-2 flex flex-col gap-2.5">
               <button
-                onClick={() => { onOpenReserve(); setMobileMenuOpen(false); }}
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  if (onOpenTickets) {
+                    onOpenTickets();
+                  } else {
+                    handleNavClick('live-events');
+                    setTimeout(() => {
+                      const el = document.getElementById('ticketing-section');
+                      if (el) el.scrollIntoView({ behavior: 'smooth' });
+                    }, 350);
+                  }
+                }}
                 className="w-full py-3 bg-gradient-to-r from-[#b37a2b] via-[#f7d688] to-[#d4a359] text-black font-bold text-xs uppercase tracking-widest rounded-xl flex items-center justify-center space-x-1.5 shadow-lg active:scale-95 transition-transform cursor-pointer"
               >
                 <span>🎟️</span>
-                <span>BUY TICKETS / RESERVE</span>
+                <span>BUY EVENT TICKETS</span>
               </button>
               
               <a

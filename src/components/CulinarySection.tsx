@@ -68,7 +68,7 @@ export const CulinarySection: React.FC<CulinarySectionProps> = ({
             <div className="flex items-center justify-center space-x-3">
               <span className="w-10 h-[1px] bg-[#c6924b]/50" />
               <span className={`text-xs font-bold uppercase tracking-[0.3em] ${isNight ? 'text-[#d4a359]' : 'text-[#9e6d2b]'}`}>
-                ✦ Catering Services ✦
+                ✦ Full-Service Catering ✦
               </span>
               <span className="w-10 h-[1px] bg-[#c6924b]/50" />
             </div>
@@ -77,19 +77,19 @@ export const CulinarySection: React.FC<CulinarySectionProps> = ({
               <h3 className={`font-script text-4xl sm:text-5xl md:text-6xl font-normal leading-tight ${
                 isNight ? 'text-[#f3cf8a]' : 'text-[#c6924b]'
               }`}>
-                Catering
+                We Cater
               </h3>
               <h2 className={`font-serif text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight ${
                 isNight ? 'text-white' : 'text-[#1a1c20]'
               }`}>
-                Persian Feasts, Any Occasion
+                Your Event, Our Kitchen
               </h2>
             </div>
 
             <p className={`text-base sm:text-lg leading-relaxed font-light ${
               isNight ? 'text-[#d1d5db]' : 'text-[#555e6b]'
             }`}>
-              From intimate private gatherings to grand weddings and corporate lunches — <strong className={isNight ? 'text-white' : 'text-[#1a1c20]'}>Flame International</strong> brings the full grandeur of authentic Persian cuisine to your event.
+              Whether it's a backyard birthday, a boardroom lunch, or a grand wedding banquet — <strong className={isNight ? 'text-white' : 'text-[#1a1c20]'}>Flame International</strong> brings authentic Persian flavours, charcoal-grilled kababs, and saffron feasts directly to your venue.
             </p>
 
             <div className="pt-2 flex flex-wrap gap-4 items-center justify-center">
@@ -178,30 +178,93 @@ export const CulinarySection: React.FC<CulinarySectionProps> = ({
           })}
         </div>
 
-        {/* Bottom highlights strip */}
-        <RevealOnScroll direction="up" delay={400} duration={700}>
-          <div className={`rounded-2xl border p-6 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center ${
-            isNight
-              ? 'bg-[#110308] border-[#2d0715]'
-              : 'bg-white border-stone-200'
-          }`}>
-            {[
-              { stat: '50+', label: 'Events Per Month' },
-              { stat: '500+', label: 'Guests Served Daily' },
-              { stat: '100%', label: 'Halal & Fresh' },
-              { stat: '24h', label: 'Quote Turnaround' },
-            ].map((item) => (
-              <div key={item.label} className="space-y-1">
-                <div className={`font-serif text-2xl sm:text-3xl font-black ${isNight ? 'text-[#f3cf8a]' : 'text-[#9e1c38]'}`}>
-                  {item.stat}
+
+        {/* Bottom: 2 Scenario Photo Cards — Home Party & Office Get-Together */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+
+          {/* Home Party Card */}
+          <RevealOnScroll direction="up" delay={400} duration={800}>
+            <div
+              onClick={onMakeReservation}
+              className={`group relative rounded-3xl overflow-hidden cursor-pointer transition-all duration-500 hover:-translate-y-2 shadow-xl hover:shadow-2xl border ${
+                isNight
+                  ? 'border-[#2d0715] hover:border-[#d4a359]/60 hover:shadow-[0_20px_60px_rgba(212,163,89,0.2)]'
+                  : 'border-stone-200 hover:border-[#d4a359]/60 hover:shadow-[0_20px_60px_rgba(0,0,0,0.1)]'
+              }`}
+            >
+              {/* Photo */}
+              <div className="relative h-52 overflow-hidden">
+                <img
+                  src="https://images.unsplash.com/photo-1529543544282-ea669407fca3?auto=format&fit=crop&w=900&q=85"
+                  alt="Home party Persian food spread on dining table"
+                  loading="lazy"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out brightness-[0.88] contrast-[1.05]"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+                <div className="absolute top-3 left-3 flex items-center space-x-1.5 px-3 py-1 rounded-full bg-[#180309]/85 border border-[#d4a359]/70 backdrop-blur-sm">
+                  <Home size={11} className="text-[#d4a359]" />
+                  <span className="text-[#f3cf8a] text-[10px] font-bold uppercase tracking-widest">Home Party</span>
                 </div>
-                <div className={`text-xs uppercase tracking-wider font-semibold ${isNight ? 'text-gray-400' : 'text-stone-500'}`}>
-                  {item.label}
+                <div className="absolute bottom-3 left-4">
+                  <span className="text-white font-serif text-lg font-bold drop-shadow-lg">Home Gatherings</span>
                 </div>
               </div>
-            ))}
-          </div>
-        </RevealOnScroll>
+
+              {/* Text */}
+              <div className={`p-5 space-y-2 ${isNight ? 'bg-[#110308]' : 'bg-white'}`}>
+                <p className={`text-sm leading-relaxed font-light ${isNight ? 'text-gray-300' : 'text-stone-600'}`}>
+                  Backyard barbecues, birthday feasts, family Nowruz celebrations — our team sets up a full Persian kabab station right at your home.
+                </p>
+                <div className={`inline-flex items-center space-x-1.5 text-xs font-bold uppercase tracking-widest pt-1 group-hover:translate-x-1 transition-transform ${isNight ? 'text-[#f3cf8a]' : 'text-[#9e1c38]'}`}>
+                  <span>Plan My Home Party</span>
+                  <ArrowRight size={13} />
+                </div>
+              </div>
+            </div>
+          </RevealOnScroll>
+
+          {/* Office Get-Together Card */}
+          <RevealOnScroll direction="up" delay={550} duration={800}>
+            <div
+              onClick={onMakeReservation}
+              className={`group relative rounded-3xl overflow-hidden cursor-pointer transition-all duration-500 hover:-translate-y-2 shadow-xl hover:shadow-2xl border ${
+                isNight
+                  ? 'border-[#2d0715] hover:border-[#d4a359]/60 hover:shadow-[0_20px_60px_rgba(212,163,89,0.2)]'
+                  : 'border-stone-200 hover:border-[#d4a359]/60 hover:shadow-[0_20px_60px_rgba(0,0,0,0.1)]'
+              }`}
+            >
+              {/* Photo */}
+              <div className="relative h-52 overflow-hidden">
+                <img
+                  src="https://images.unsplash.com/photo-1551218808-94e220e084d2?auto=format&fit=crop&w=900&q=85"
+                  alt="Office team lunch catering spread with kabab platters"
+                  loading="lazy"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out brightness-[0.88] contrast-[1.05]"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+                <div className="absolute top-3 left-3 flex items-center space-x-1.5 px-3 py-1 rounded-full bg-[#180309]/85 border border-[#d4a359]/70 backdrop-blur-sm">
+                  <Building2 size={11} className="text-[#d4a359]" />
+                  <span className="text-[#f3cf8a] text-[10px] font-bold uppercase tracking-widest">Office Catering</span>
+                </div>
+                <div className="absolute bottom-3 left-4">
+                  <span className="text-white font-serif text-lg font-bold drop-shadow-lg">Office Get-Together</span>
+                </div>
+              </div>
+
+              {/* Text */}
+              <div className={`p-5 space-y-2 ${isNight ? 'bg-[#110308]' : 'bg-white'}`}>
+                <p className={`text-sm leading-relaxed font-light ${isNight ? 'text-gray-300' : 'text-stone-600'}`}>
+                  Team lunches, quarterly reviews, client appreciation events — hot saffron trays, grilled kababs and mazzeh platters delivered to your office, boardroom-ready.
+                </p>
+                <div className={`inline-flex items-center space-x-1.5 text-xs font-bold uppercase tracking-widest pt-1 group-hover:translate-x-1 transition-transform ${isNight ? 'text-[#f3cf8a]' : 'text-[#9e1c38]'}`}>
+                  <span>Book Office Catering</span>
+                  <ArrowRight size={13} />
+                </div>
+              </div>
+            </div>
+          </RevealOnScroll>
+
+        </div>
 
       </div>
     </section>

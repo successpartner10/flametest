@@ -99,7 +99,7 @@ export const LiveEventsView: React.FC<LiveEventsViewProps> = ({
       </section>
 
       {/* 2. DYNAMIC NAVIGATION / FILTER TABS */}
-      <section className="space-y-8">
+      <section id="ticketing-section" className="space-y-8">
         <div className="flex justify-center border-b border-[#521324] pb-4">
           <div className="inline-flex p-1.5 rounded-full bg-[#1c030b] border border-[#6b152d] shadow-xl">
             <button
@@ -129,7 +129,7 @@ export const LiveEventsView: React.FC<LiveEventsViewProps> = ({
 
         {/* TAB CONTENT 1: UPCOMING TICKETS & GALAS */}
         {activeTab === 'tickets' && (
-          <div className="space-y-8 animate-fadeIn">
+          <div id="ticketing-section" className="space-y-8 animate-fadeIn">
             
             <div className="text-center space-y-2">
               <h3 className="font-serif text-2xl sm:text-3xl font-bold text-white">Upcoming Concerts &amp; Special Events</h3>
