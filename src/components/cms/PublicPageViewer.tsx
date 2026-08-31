@@ -49,14 +49,26 @@ export const PublicPageViewer: React.FC<PublicPageViewerProps> = ({
       {/* Full-width Screen Hero Banner Header (Matches Home Page Hero Screen Width) */}
       <header className="relative w-full overflow-hidden shadow-2xl mb-10">
         <div className="relative h-56 sm:h-72 md:h-96 w-full overflow-hidden">
-          <img
-            src={
-              frontmatter.coverImage ||
-              'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1600&q=80'
-            }
-            alt={frontmatter.title}
-            className="w-full h-full object-cover brightness-[0.75] contrast-[1.08] scale-105 hover:scale-100 transition-transform duration-1000 ease-out"
-          />
+          {/* Dynamic Video or Image Hero Media */}
+          {frontmatter.coverImage && (frontmatter.coverImage.endsWith('.mp4') || frontmatter.coverImage.endsWith('.webm') || frontmatter.coverImage.endsWith('.mov')) ? (
+            <video
+              src={frontmatter.coverImage}
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-full object-cover brightness-[0.75] contrast-[1.08]"
+            />
+          ) : (
+            <img
+              src={
+                frontmatter.coverImage ||
+                'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1600&q=80'
+              }
+              alt={frontmatter.title}
+              className="w-full h-full object-cover brightness-[0.75] contrast-[1.08] scale-105 hover:scale-100 transition-transform duration-1000 ease-out"
+            />
+          )}
 
           {/* Deep Luxury Dark Burgundy Gradient Overlay (No light/white fade) */}
           <div className="absolute inset-0 bg-gradient-to-t from-[#180309] via-[#180309]/60 to-black/50" />

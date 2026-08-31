@@ -4,7 +4,7 @@ subtitle: "Charbroiled Flame Kababs, Royal Soltani, Saffron Tahdig & Craft Elixi
 navTitle: "Dine In"
 order: 3
 slug: "dine-in"
-coverImage: "/images/hero-dine-in.png"
+coverImage: "/images/sizzling.mp4"
 metaDescription: "Explore Flame International's complete dine-in menu featuring Persian Kababs, Mazzeh starters, and craft cocktails."
 ---
 
