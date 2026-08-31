@@ -17,7 +17,7 @@ const CATERING_CARDS = [
     title: 'Office & Corporate Events',
     description: 'Impress your team and clients with lavish Persian kabab spreads, saffron rice, and mazzeh platters delivered fresh to your boardroom or event hall.',
     cta: 'Plan Corporate Catering',
-    image: 'https://images.unsplash.com/photo-1608897013039-887f21d8c804?auto=format&fit=crop&w=900&q=85',
+    image: '/images/hero-catering.png',
     imageAlt: 'Large corporate office group lunch with Persian food spread',
     overlayLabel: 'Corporate Lunch Packages',
   },
@@ -28,7 +28,7 @@ const CATERING_CARDS = [
     title: 'Weddings & Celebrations',
     description: 'Make your wedding unforgettable with a grand Persian feast — royal Soltani platters, fesenjan, jewelled rice and a full dessert station with bastani and baklava.',
     cta: 'Get Wedding Quote',
-    image: 'https://images.unsplash.com/photo-1529042410759-befb1204b468?auto=format&fit=crop&w=900&q=85',
+    image: '/images/poster_cabaret_gala.png',
     imageAlt: 'Wedding reception banquet with Persian food on elegantly set tables',
     overlayLabel: 'Wedding Banquet Packages',
   },
@@ -39,11 +39,12 @@ const CATERING_CARDS = [
     title: 'Home & Private Gatherings',
     description: 'From intimate family dinners to backyard parties, our catering team brings Flame\'s legendary charcoal kababs and aromatic stews straight to your home.',
     cta: 'Request Private Party Menu',
-    image: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=900&q=85',
+    image: '/images/hero-dine-in.png',
     imageAlt: 'Private home party gathering with Persian food spread on dining table',
     overlayLabel: 'Private Party Packages',
   },
 ];
+
 
 export const CulinarySection: React.FC<CulinarySectionProps> = ({
   onMakeReservation,
@@ -135,6 +136,7 @@ export const CulinarySection: React.FC<CulinarySectionProps> = ({
                       src={card.image}
                       alt={card.imageAlt}
                       loading="lazy"
+                      onError={(e) => { e.currentTarget.src = '/images/hero-catering.png'; }}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out brightness-[0.92] contrast-[1.05]"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
@@ -195,9 +197,10 @@ export const CulinarySection: React.FC<CulinarySectionProps> = ({
               {/* Photo */}
               <div className="relative h-52 overflow-hidden">
                 <img
-                  src="https://images.unsplash.com/photo-1529543544282-ea669407fca3?auto=format&fit=crop&w=900&q=85"
+                  src="/images/hero-dine-in.png"
                   alt="Home party Persian food spread on dining table"
                   loading="lazy"
+                  onError={(e) => { e.currentTarget.src = '/images/hero-dine-in.png'; }}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out brightness-[0.88] contrast-[1.05]"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
@@ -236,9 +239,10 @@ export const CulinarySection: React.FC<CulinarySectionProps> = ({
               {/* Photo */}
               <div className="relative h-52 overflow-hidden">
                 <img
-                  src="https://images.unsplash.com/photo-1551218808-94e220e084d2?auto=format&fit=crop&w=900&q=85"
+                  src="/images/hero-catering.png"
                   alt="Office team lunch catering spread with kabab platters"
                   loading="lazy"
+                  onError={(e) => { e.currentTarget.src = '/images/hero-catering.png'; }}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out brightness-[0.88] contrast-[1.05]"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
@@ -263,6 +267,7 @@ export const CulinarySection: React.FC<CulinarySectionProps> = ({
               </div>
             </div>
           </RevealOnScroll>
+
 
         </div>
 

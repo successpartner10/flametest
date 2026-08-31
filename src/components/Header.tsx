@@ -150,9 +150,12 @@ export const Header: React.FC<HeaderProps> = ({
           >
             <div className="group-hover:scale-105 transition-transform duration-300 flex items-center justify-center">
               <img 
-                src="/images/flame-logo.png" 
+                src="/images/flame-logo.png?v=4" 
                 alt="Flame International" 
                 className="h-16 sm:h-20 md:h-22 w-auto object-contain filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] max-h-full py-0.5" 
+                onError={(e) => {
+                  e.currentTarget.src = '/flame_logo_whiteBORDER.svg';
+                }}
               />
             </div>
           </div>

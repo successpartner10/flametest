@@ -268,9 +268,12 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
           <RevealOnScroll direction="up" delay={0} duration={800} className="text-center mb-8 flex flex-col items-center">
             <div className="mb-5 hover:scale-105 transition-transform duration-300 cursor-pointer">
               <img 
-                src="/images/flame-logo.png" 
+                src="/images/flame-logo.png?v=4" 
                 alt="Flame International" 
                 className="h-30 sm:h-36 w-auto object-contain filter drop-shadow-[0_4px_12px_rgba(212,163,89,0.3)]" 
+                onError={(e) => {
+                  e.currentTarget.src = '/flame_logo_whiteBORDER.svg';
+                }}
               />
             </div>
 
@@ -936,9 +939,12 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
                 <div className="bg-[#1c030b]/90 border border-[#6b152d]/60 rounded-3xl p-6 backdrop-blur-md shadow-[0_20px_50px_rgba(0,0,0,0.6)] space-y-4 flex flex-col justify-between h-full">
                   <div className="flex flex-col items-center text-center space-y-3">
                     <img 
-                      src="/images/flame-logo.png" 
+                      src="/images/flame-logo.png?v=4" 
                       alt="Flame International" 
                       className="h-24 sm:h-28 w-auto object-contain filter drop-shadow-[0_4px_12px_rgba(212,163,89,0.3)] hover:scale-105 transition-transform duration-300" 
+                      onError={(e) => {
+                        e.currentTarget.src = '/flame_logo_whiteBORDER.svg';
+                      }}
                     />
                     
                     <div className="space-y-1 pt-1">

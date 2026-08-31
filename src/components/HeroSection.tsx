@@ -141,6 +141,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                   src={scene.image}
                   alt={scene.title}
                   referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    e.currentTarget.src = '/images/hero-catering.png';
+                  }}
                   className="w-full h-full object-cover object-center filter contrast-[1.04] brightness-[0.98]"
                 />
               </div>

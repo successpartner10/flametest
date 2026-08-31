@@ -276,7 +276,12 @@ export const FlameLogo: React.FC<FlameLogoProps> = ({
   if (variant === 'color-emblem') {
     return (
       <div className={`inline-flex items-center justify-center ${className}`}>
-        {renderColorEmblemSvg(emblemSize, emblemSize)}
+        <img
+          src="/images/flame-logo.png?v=4"
+          alt="Flame International Emblem"
+          className="h-auto w-auto object-contain max-h-full drop-shadow-[0_4px_15px_rgba(0,0,0,0.8)]"
+          style={{ height: emblemSize }}
+        />
       </div>
     );
   }
@@ -341,23 +346,15 @@ export const FlameLogo: React.FC<FlameLogoProps> = ({
     );
   }
 
-  // Default: Exact Full Color Logo Lockup matching reference image
-  // (Fiery Red/Orange Orb with flames on left + Ultra Bold Pure White FLAME on top + Tracked Pure White INTERNATIONAL below)
+  // Default: Official Flame International Logo image asset
   return (
-    <div className={`inline-flex items-center space-x-3.5 sm:space-x-4 lg:space-x-5 ${className}`}>
-      {renderColorEmblemSvg(emblemSize, emblemSize)}
-      <div className="flex flex-col text-left font-['Raleway'] select-none">
-        <span 
-          className={`${textSize} font-black font-[900] tracking-wider leading-none text-white drop-shadow-[0_4px_15px_rgba(0,0,0,0.8)]`}
-        >
-          FLAME
-        </span>
-        <span 
-          className={`${subTextSize} font-black font-[900] tracking-[0.32em] uppercase leading-none mt-1 sm:mt-1.5 text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]`}
-        >
-          INTERNATIONAL
-        </span>
-      </div>
+    <div className={`inline-flex items-center justify-center ${className}`}>
+      <img
+        src="/images/flame-logo.png?v=4"
+        alt="Flame International"
+        className="h-auto w-auto object-contain max-h-full drop-shadow-[0_4px_15px_rgba(0,0,0,0.8)]"
+        style={{ height: emblemSize }}
+      />
     </div>
   );
 };

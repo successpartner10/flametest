@@ -20,7 +20,7 @@ export const ReserveSpaceSection: React.FC<ReserveSpaceSectionProps> = ({
       title: 'Grand Ballroom & Concert Stage',
       capacity: 'Up to 250 Guests',
       description: 'Ideal for lavish Persian weddings, concert banquets, galas, and milestone anniversaries with full stage, concert lighting, and dance floor.',
-      imageUrl: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=1200&q=80',
+      imageUrl: '/images/hero-reserve-space.png',
       badge: 'Main Hall & Stage',
       features: ['Full Stage & Sound System', 'Custom Buffet or Plated Menus', 'Private Bar Setup'],
     },
@@ -29,7 +29,7 @@ export const ReserveSpaceSection: React.FC<ReserveSpaceSectionProps> = ({
       title: 'The Saffron VIP Dining Alcove',
       capacity: '12 – 35 Guests',
       description: 'An intimate, luxurious dining sanctuary for executive dinners, rehearsal celebrations, family reunions, and birthdays.',
-      imageUrl: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80',
+      imageUrl: '/images/hero-dine-in.png',
       badge: 'Private Dining Room',
       features: ['Dedicated Service Team', 'Family-Style Saffron Platters', 'Private Audio Control'],
     },
@@ -38,7 +38,7 @@ export const ReserveSpaceSection: React.FC<ReserveSpaceSectionProps> = ({
       title: 'Cocktail Lounge & Reception Mezzanine',
       capacity: '40 – 80 Guests',
       description: 'Vibrant ambient lounge setting for cocktail mixers, corporate happy hours, birthday bashes, and Persian hors d’oeuvres receptions.',
-      imageUrl: 'https://images.unsplash.com/photo-1578474846511-04ba529f0b88?auto=format&fit=crop&w=1200&q=80',
+      imageUrl: '/images/poster_cabaret_gala.png',
       badge: 'Lounge & Bar',
       features: ['Craft Persian Mixology Bar', 'Mazzeh & Hors d’Oeuvres', 'Dedicated Bartender'],
     },
@@ -109,6 +109,7 @@ export const ReserveSpaceSection: React.FC<ReserveSpaceSectionProps> = ({
                   <img 
                     src={space.imageUrl} 
                     alt={space.title}
+                    onError={(e) => { e.currentTarget.src = '/images/hero-reserve-space.png'; }}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                     loading="lazy"
                   />

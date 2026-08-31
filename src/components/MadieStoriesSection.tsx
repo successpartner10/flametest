@@ -136,6 +136,9 @@ export const MadieStoriesSection: React.FC<MadieStoriesSectionProps> = ({
                   <img
                     src={slide.image}
                     alt={slide.title}
+                    onError={(e) => {
+                      e.currentTarget.src = '/images/hero-catering.png';
+                    }}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 filter brightness-95"
                   />
                   
