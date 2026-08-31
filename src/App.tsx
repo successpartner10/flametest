@@ -202,22 +202,25 @@ export default function App() {
 
   // Bottom Navigation tab selector
   const handleBottomNavigate = (action: BottomNavAction) => {
+    setActiveBottomAction(action);
     if (action === 'home') {
-      setActiveBottomAction('home');
       setActivePageSlug('home');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else if (action === 'live-events') {
-      setActiveBottomAction('live-events');
       setSelectedStoryIndex(0);
       setIsStoriesOpen(true);
+    } else if (action === 'dine-in') {
+      setMenuInitialCategory('all');
+      setIsMenuOpen(true);
     } else if (action === 'order-online') {
-      setActiveBottomAction('order-online');
       setIsBagOpen(true);
+    } else if (action === 'catering') {
+      setIsCateringOpen(true);
+    } else if (action === 'reserve') {
+      setIsReserveOpen(true);
     } else if (action === 'lunch') {
-      setActiveBottomAction('lunch');
       handleOpenLunch();
     } else if (action === 'dinner') {
-      setActiveBottomAction('dinner');
       handleOpenDinner();
     }
   };
@@ -254,6 +257,7 @@ export default function App() {
           setIsStoriesOpen(true);
         }}
         onOpenOnlineOrders={() => setIsBagOpen(true)}
+        onOpenCatering={() => setIsCateringOpen(true)}
         onOpenContact={() => {
           const el = document.getElementById('find-us-footer');
           if (el) {

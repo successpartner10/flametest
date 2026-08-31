@@ -1,8 +1,8 @@
 import React from 'react';
-import { Home, Sparkles, ShoppingBag, Sun, Moon } from 'lucide-react';
+import { Home, Sparkles, Utensils, ShoppingBag, Users, Calendar } from 'lucide-react';
 import { AppMode } from '../types';
 
-export type BottomNavAction = 'home' | 'live-events' | 'order-online' | 'lunch' | 'dinner';
+export type BottomNavAction = 'home' | 'live-events' | 'dine-in' | 'order-online' | 'catering' | 'reserve' | 'lunch' | 'dinner';
 
 interface BottomStickyNavProps {
   mode: AppMode;
@@ -15,8 +15,6 @@ export const BottomStickyNav: React.FC<BottomStickyNavProps> = ({
   activeAction = 'home',
   onNavigate,
 }) => {
-  const isNight = mode === 'night';
-
   const navItems = [
     {
       id: 'home' as BottomNavAction,
@@ -33,25 +31,32 @@ export const BottomStickyNav: React.FC<BottomStickyNavProps> = ({
       ariaLabel: 'View Live Events & Concerts',
     },
     {
+      id: 'dine-in' as BottomNavAction,
+      label: 'DINE IN',
+      icon: Utensils,
+      badge: null,
+      ariaLabel: 'View Dine In Menu',
+    },
+    {
       id: 'order-online' as BottomNavAction,
-      label: 'ORDER ONLINE',
+      label: 'ONLINE ORDER',
       icon: ShoppingBag,
       badge: null,
       ariaLabel: 'Order Food Online',
     },
     {
-      id: 'lunch' as BottomNavAction,
-      label: 'LUNCH',
-      icon: Sun,
+      id: 'catering' as BottomNavAction,
+      label: 'CATERING',
+      icon: Users,
       badge: null,
-      ariaLabel: 'View Lunch Specials & Menu',
+      ariaLabel: 'Catering & Banquets',
     },
     {
-      id: 'dinner' as BottomNavAction,
-      label: 'DINNER',
-      icon: Moon,
+      id: 'reserve' as BottomNavAction,
+      label: 'RESERVE SPACE',
+      icon: Calendar,
       badge: null,
-      ariaLabel: 'View Dinner Entrees & Kababs',
+      ariaLabel: 'Reserve Table or Space',
     },
   ];
 
@@ -59,14 +64,10 @@ export const BottomStickyNav: React.FC<BottomStickyNavProps> = ({
     <aside
       id="bottom-sticky-navigation"
       aria-label="Bottom Navigation Bar"
-      className={`fixed bottom-0 left-0 right-0 z-50 backdrop-blur-xl transition-colors duration-500 shadow-[0_-8px_32px_rgba(0,0,0,0.7)] font-['Raleway'] ${
-        isNight
-          ? 'bg-[#180309]/95 border-t border-[#4a0d1e]'
-          : 'bg-[#18030b]/95 border-t border-[#4f1022]'
-      }`}
+      className="fixed bottom-0 left-0 right-0 z-50 backdrop-blur-xl transition-colors duration-500 shadow-[0_-8px_32px_rgba(0,0,0,0.7)] font-['Raleway'] bg-gradient-to-r from-[#180309]/95 via-[#24060f]/95 to-[#180309]/95 border-t border-[#521324]/60"
     >
-      <div className="max-w-4xl mx-auto px-1.5 sm:px-4 pt-1.5 pb-[max(0.65rem,env(safe-area-inset-bottom))] sm:py-2">
-        <nav className="grid grid-cols-5 gap-1 sm:gap-2 items-stretch">
+      <div className="max-w-4xl mx-auto px-1 sm:px-4 pt-1.5 pb-[max(0.65rem,env(safe-area-inset-bottom))] sm:py-2">
+        <nav className="grid grid-cols-6 gap-0.5 sm:gap-1.5 items-stretch">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeAction === item.id;
@@ -77,17 +78,15 @@ export const BottomStickyNav: React.FC<BottomStickyNavProps> = ({
                 id={`bottom-nav-${item.id}`}
                 onClick={() => onNavigate(item.id)}
                 aria-label={item.ariaLabel}
-                className={`relative flex flex-col items-center justify-center min-h-[54px] sm:min-h-[58px] py-1.5 sm:py-2 px-1 sm:px-2 rounded-xl transition-all duration-200 group cursor-pointer focus:outline-none focus:ring-1 focus:ring-[#d4a359]/50 overflow-hidden touch-manipulation select-none active:scale-95 ${
+                className={`relative flex flex-col items-center justify-center min-h-[50px] sm:min-h-[56px] py-1 px-0.5 sm:px-1.5 rounded-xl transition-all duration-200 group cursor-pointer focus:outline-none focus:ring-1 focus:ring-[#d4a359]/50 overflow-hidden touch-manipulation select-none active:scale-95 ${
                   isActive
-                    ? isNight
-                      ? 'text-[#f3cf8a] bg-white/15 shadow-inner ring-1 ring-[#f3cf8a]/30'
-                      : 'text-[#f5d79e] bg-white/15 shadow-inner ring-1 ring-[#f5d79e]/30'
-                    : 'text-[#e2e8f0] hover:text-white hover:bg-white/10 active:bg-white/20'
+                    ? 'text-[#f3cf8a] bg-[#3d0917] border border-[#831f3b] shadow-inner ring-1 ring-[#d4a359]/30'
+                    : 'text-[#f7e8ea] hover:text-white hover:bg-[#2d0713]/80 active:bg-[#3d0917]'
                 }`}
               >
                 {/* Live Badge for Live Events */}
                 {item.badge && (
-                  <span className="absolute top-0.5 right-1 px-1.5 py-0.2 bg-[#e53935] text-white text-[7.5px] sm:text-[8.5px] font-['Raleway'] font-semibold rounded-full uppercase tracking-wider shadow-md animate-pulse">
+                  <span className="absolute top-0.5 right-0.5 px-1 py-0.2 bg-[#e53935] text-white text-[6.5px] sm:text-[7.5px] font-['Raleway'] font-semibold rounded-full uppercase tracking-wider shadow-md animate-pulse">
                     {item.badge}
                   </span>
                 )}
@@ -95,18 +94,18 @@ export const BottomStickyNav: React.FC<BottomStickyNavProps> = ({
                 {/* Prominent Icon container */}
                 <div className="flex items-center justify-center mb-0.5 transition-transform duration-200 group-hover:scale-110 group-active:scale-95">
                   <Icon
-                    className={`w-4 h-4 sm:w-5 sm:h-5 stroke-[2] ${
+                    className={`w-3.5 h-3.5 sm:w-4.5 sm:h-4.5 stroke-[2] ${
                       isActive ? 'text-[#f3cf8a]' : 'text-[#f5d79e]'
                     }`}
                   />
                 </div>
 
-                {/* Label: ALL CAPS, Raleway font, clean font-medium */}
+                {/* Label: ALL CAPS, Raleway font */}
                 <span
-                  className={`text-[9.5px] sm:text-[11px] md:text-xs font-medium tracking-[0.04em] sm:tracking-[0.08em] uppercase truncate max-w-full text-center whitespace-nowrap leading-tight transition-all font-['Raleway'] ${
+                  className={`text-[8px] sm:text-[10px] md:text-[11px] font-medium tracking-tight sm:tracking-[0.04em] uppercase truncate max-w-full text-center whitespace-nowrap leading-tight transition-all font-['Raleway'] ${
                     isActive
-                      ? 'text-[#f3cf8a] font-semibold'
-                      : 'text-[#f1f5f9] group-hover:text-white'
+                      ? 'text-[#f3cf8a] font-bold'
+                      : 'text-[#f7e8ea] group-hover:text-white'
                   }`}
                 >
                   {item.label}
@@ -114,7 +113,7 @@ export const BottomStickyNav: React.FC<BottomStickyNavProps> = ({
 
                 {/* Bottom Active Glow Accent Bar */}
                 {isActive && (
-                  <span className="absolute bottom-0 w-8 sm:w-12 h-0.5 rounded-full bg-[#f3cf8a] shadow-[0_0_8px_rgba(243,207,138,0.8)]" />
+                  <span className="absolute bottom-0 w-6 sm:w-10 h-0.5 rounded-full bg-[#f3cf8a] shadow-[0_0_8px_rgba(243,207,138,0.8)]" />
                 )}
               </button>
             );

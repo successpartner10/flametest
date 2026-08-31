@@ -11,6 +11,7 @@ interface HeaderProps {
   onOpenReserve: () => void;
   onOpenLiveEntertainment: () => void;
   onOpenOnlineOrders: () => void;
+  onOpenCatering?: () => void;
   onOpenContact: () => void;
   cartCount?: number;
   // CMS Dynamic navigation props
@@ -29,6 +30,7 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenReserve,
   onOpenLiveEntertainment,
   onOpenOnlineOrders,
+  onOpenCatering,
   onOpenContact,
   cartCount = 0,
   pages = [],
@@ -148,7 +150,7 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
 
           {/* Top Navigation Links - All Caps */}
-          <nav className="hidden lg:flex items-center space-x-5 xl:space-x-8 text-xs xl:text-sm font-['Raleway'] tracking-[0.14em] text-[#ffffff] font-medium uppercase drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
+          <nav className="hidden lg:flex items-center space-x-4 xl:space-x-7 text-xs xl:text-sm font-['Raleway'] tracking-[0.14em] text-[#ffffff] font-medium uppercase drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
             <button
               id="nav-link-home"
               onClick={() => handleNavClick('home')}
@@ -175,18 +177,25 @@ export const Header: React.FC<HeaderProps> = ({
               DINE IN
             </button>
             <button
-              id="nav-link-reserve-space"
-              onClick={onOpenReserve}
-              className="hover:text-[#d4a359] text-white/90 transition-colors cursor-pointer py-1 font-medium"
-            >
-              RESERVE SPACE
-            </button>
-            <button
               id="nav-link-online-order"
               onClick={onOpenOnlineOrders}
               className="hover:text-[#d4a359] text-white/90 transition-colors cursor-pointer py-1 font-medium"
             >
               ONLINE ORDER
+            </button>
+            <button
+              id="nav-link-catering"
+              onClick={onOpenCatering}
+              className="hover:text-[#d4a359] text-white/90 transition-colors cursor-pointer py-1 font-medium"
+            >
+              CATERING
+            </button>
+            <button
+              id="nav-link-reserve-space"
+              onClick={onOpenReserve}
+              className="hover:text-[#d4a359] text-white/90 transition-colors cursor-pointer py-1 font-medium"
+            >
+              RESERVE SPACE
             </button>
           </nav>
 
@@ -236,16 +245,22 @@ export const Header: React.FC<HeaderProps> = ({
               DINE IN
             </button>
             <button
-              onClick={() => { onOpenReserve(); setMobileMenuOpen(false); }}
+              onClick={() => { onOpenOnlineOrders(); setMobileMenuOpen(false); }}
               className="block w-full text-left py-2.5 text-base font-medium tracking-wider uppercase text-[#f5f1ea] hover:text-[#d4a359] border-b border-[#3d0917]"
             >
-              RESERVE SPACE
+              ONLINE ORDER
             </button>
             <button
-              onClick={() => { onOpenOnlineOrders(); setMobileMenuOpen(false); }}
+              onClick={() => { onOpenCatering?.(); setMobileMenuOpen(false); }}
+              className="block w-full text-left py-2.5 text-base font-medium tracking-wider uppercase text-[#f5f1ea] hover:text-[#d4a359] border-b border-[#3d0917]"
+            >
+              CATERING
+            </button>
+            <button
+              onClick={() => { onOpenReserve(); setMobileMenuOpen(false); }}
               className="block w-full text-left py-2.5 text-base font-medium tracking-wider uppercase text-[#f5f1ea] hover:text-[#d4a359]"
             >
-              ONLINE ORDER
+              RESERVE SPACE
             </button>
 
             <div className="pt-2 flex flex-col gap-2.5">

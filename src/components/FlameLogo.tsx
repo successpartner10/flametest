@@ -210,8 +210,9 @@ export const FlameLogo: React.FC<FlameLogoProps> = ({
 
       </g>
 
-      {/* Outer subtle rim glow */}
-      <circle cx="130" cy="130" r="119" stroke="#ffffff" strokeWidth="1.2" opacity="0.25" fill="none" />
+      {/* Outer crisp white border matching flame_logo_whiteBORDER.png */}
+      <circle cx="130" cy="130" r="121" stroke="#ffffff" strokeWidth="5.5" fill="none" />
+      <circle cx="130" cy="130" r="118.25" stroke="#ffffff" strokeWidth="1" opacity="0.4" fill="none" />
     </svg>
   );
 
