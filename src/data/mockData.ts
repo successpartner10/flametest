@@ -194,64 +194,65 @@ export const MENU_ITEMS: MenuItem[] = [
 export const STORY_SLIDES: StorySlide[] = [
   {
     id: 'story-1',
-    title: 'Office Conference Catering',
-    subtitle: 'Hot saffron trays & kabab platters delivered boardroom-ready',
-    image: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=900&q=85',
-    category: 'CORPORATE CATERING',
-    tagline: 'Impress your team and clients with a full Persian kabab and saffron rice spread — set up, served, and cleared by our catering crew.',
-    actionText: 'Book Corporate Lunch',
+    title: 'Office & Boardroom Lunches',
+    subtitle: 'Corporate teams gathering over hot Persian kabab & saffron rice platters',
+    image: 'https://images.unsplash.com/photo-1608897013039-887f21d8c804?auto=format&fit=crop&w=900&q=85',
+    category: 'CORPORATE LUNCH',
+    tagline: 'Treat your team to a joyful lunch with charbroiled Koobideh, saffron basmati, and fresh Sabzi Khordan delivered directly to your office.',
+    actionText: 'Book Office Catering',
     dishId: 'item-4'
   },
   {
     id: 'story-2',
-    title: 'Team Celebrations & Milestones',
-    subtitle: 'Group feasts for company parties, launches & award dinners',
-    image: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=900&q=85',
-    category: 'CORPORATE EVENTS',
-    tagline: 'From 15 to 500 guests — full Persian banquet setups with live charcoal grill masters, chafing racks, and dedicated service staff.',
-    actionText: 'Plan Team Event',
+    title: 'Company Galas & Celebrations',
+    subtitle: 'Large corporate events featuring live grill stations & full buffet spreads',
+    image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=85',
+    category: 'CORPORATE GALAS',
+    tagline: 'Elevate company milestones with grand Persian banquets — live flame grilling, chafing trays of Ghormeh Sabzi, and royal Soltani platters.',
+    actionText: 'Plan Gala Event',
     dishId: 'item-5'
   },
   {
     id: 'story-3',
-    title: 'Family Dinner at Home',
-    subtitle: 'Steaming kababs & saffron feasts brought straight to your table',
+    title: 'Family Feasts & Home Dinners',
+    subtitle: 'Family members gathered around tables loaded with steaming Persian food',
     image: 'https://images.unsplash.com/photo-1529543544282-ea669407fca3?auto=format&fit=crop&w=900&q=85',
-    category: 'HOME GATHERINGS',
-    tagline: 'Nowruz, birthdays, anniversaries — our team sets up a full Persian feast at your home so you celebrate with family, not the kitchen.',
-    actionText: 'Plan Home Dinner',
+    category: 'FAMILY GATHERINGS',
+    tagline: 'Nowruz, family reunions & birthdays — we set up full Persian tables with saffron rice, stews, and hot kababs so you enjoy the party.',
+    actionText: 'Plan Family Dinner',
     dishId: 'item-6'
   },
   {
     id: 'story-4',
-    title: 'Backyard & Friends Parties',
-    subtitle: 'Live charcoal grill masters at your backyard — joyful & sizzling',
-    image: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=900&q=85',
+    title: 'Backyard Parties with Friends',
+    subtitle: 'Joyful outdoor dining with friends sharing grilled skewers & mazzeh platters',
+    image: 'https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=900&q=85',
     category: 'FRIENDS & BACKYARD',
-    tagline: 'We bring the mesquite charcoal grills, the saffron, the crew — you bring the guests. Perfect for summer parties and casual get-togethers.',
+    tagline: 'Live mesquite charcoal grills right in your backyard — sizzling Joojeh kababs, ice-cold Doogh, and vibrant appetizers for all your friends.',
     actionText: 'Book Backyard Party',
     dishId: 'item-7'
   },
   {
     id: 'story-5',
-    title: 'Wedding Banquets & Galas',
-    subtitle: 'Royal Soltani platters, jeweled rice & full dessert stations',
-    image: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=900&q=85',
-    category: 'WEDDINGS & GALAS',
-    tagline: 'Make your wedding unforgettable — grand Persian banquet tables, rose-garnished platters, bastani stations, and baklava towers for your guests.',
+    title: 'Wedding Banquets & Receptions',
+    subtitle: 'Guests celebrating around lavish Persian wedding feast tables',
+    image: 'https://images.unsplash.com/photo-1529042410759-befb1204b468?auto=format&fit=crop&w=900&q=85',
+    category: 'WEDDING BANQUETS',
+    tagline: 'Unforgettable wedding receptions with royal Soltani skewers, jeweled Zereshk Polo, Bastani ice cream stations, and dessert towers.',
     actionText: 'Get Wedding Quote',
     dishId: 'item-5'
   },
   {
     id: 'story-6',
-    title: 'Steaming Hot Persian Feasts',
-    subtitle: 'Sizzling kababs, crispy tahdig & rich saffron aromas',
-    image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=900&q=85',
-    category: 'THE FOOD',
-    tagline: 'Every tray arrives steaming hot — charbroiled koobideh, joojeh, slow-simmered ghormeh sabzi and golden saffron tahdig. Flame quality, at your venue.',
-    actionText: 'Request Catering Quote',
+    title: 'Friends Over & Party Feasts',
+    subtitle: 'Friends gathering around tables filled with charcoal kababs & starters',
+    image: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=900&q=85',
+    category: 'PARTY FEASTS',
+    tagline: 'Host friends with ease — steaming platters of Kashk-e Bademjan, charbroiled skewers, and saffron rice delivered ready to serve.',
+    actionText: 'Request Party Quote',
     dishId: 'item-4'
   }
 ];
+
 
 
