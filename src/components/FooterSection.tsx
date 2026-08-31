@@ -263,32 +263,34 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
 
       <div className="max-w-6xl mx-auto flex flex-col items-center relative z-10">
         
-        {/* Prominent Official Flame International Color Logo Header */}
-        <RevealOnScroll direction="up" delay={0} duration={800} className="text-center mb-8 flex flex-col items-center">
-          <div className="mb-5 hover:scale-105 transition-transform duration-300 cursor-pointer">
-            <img 
-              src="/images/flame-logo.png" 
-              alt="Flame International" 
-              className="h-24 sm:h-30 w-auto object-contain filter drop-shadow-[0_4px_12px_rgba(212,163,89,0.3)]" 
-            />
-          </div>
+        {/* Prominent Official Flame International Color Logo Header (Home Page Only) */}
+        {isHomePage && (
+          <RevealOnScroll direction="up" delay={0} duration={800} className="text-center mb-8 flex flex-col items-center">
+            <div className="mb-5 hover:scale-105 transition-transform duration-300 cursor-pointer">
+              <img 
+                src="/images/flame-logo.png" 
+                alt="Flame International" 
+                className="h-24 sm:h-30 w-auto object-contain filter drop-shadow-[0_4px_12px_rgba(212,163,89,0.3)]" 
+              />
+            </div>
 
-          <span className="text-xs sm:text-sm tracking-[0.3em] text-[#f5a7b8] uppercase font-['Raleway'] font-medium block mb-1">
-            FIND US / VISIT US
-          </span>
-          <h2 className="font-['Raleway'] text-lg sm:text-2xl text-white font-medium tracking-wider uppercase">
-            ON <span className="text-[#f3cf8a] font-semibold ml-1">SANTA MONICA BOULEVARD</span>
-          </h2>
-          <p className="text-base sm:text-lg text-white font-normal mt-2 font-['Raleway']">
-            11330 Santa Monica Blvd, West Los Angeles, CA 90025
-          </p>
-          
-          {/* Valet Parking Info Pill directly below Address */}
-          <div className="mt-3 inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-[#3d0a1c]/95 border border-[#831f3b] text-sm text-[#f3cf8a] font-medium shadow-lg">
-            <Car size={18} className="text-[#f3cf8a] shrink-0" />
-            <span>Complimentary Guest Valet Parking at Main Entrance</span>
-          </div>
-        </RevealOnScroll>
+            <span className="text-xs sm:text-sm tracking-[0.3em] text-[#f5a7b8] uppercase font-['Raleway'] font-medium block mb-1">
+              FIND US / VISIT US
+            </span>
+            <h2 className="font-['Raleway'] text-lg sm:text-2xl text-white font-medium tracking-wider uppercase">
+              ON <span className="text-[#f3cf8a] font-semibold ml-1">SANTA MONICA BOULEVARD</span>
+            </h2>
+            <p className="text-base sm:text-lg text-white font-normal mt-2 font-['Raleway']">
+              11330 Santa Monica Blvd, West Los Angeles, CA 90025
+            </p>
+            
+            {/* Valet Parking Info Pill directly below Address */}
+            <div className="mt-3 inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-[#3d0a1c]/95 border border-[#831f3b] text-sm text-[#f3cf8a] font-medium shadow-lg">
+              <Car size={18} className="text-[#f3cf8a] shrink-0" />
+              <span>Complimentary Guest Valet Parking at Main Entrance</span>
+            </div>
+          </RevealOnScroll>
+        )}
 
         {/* Unified 2-Column Responsive Layout: Map Functionality Grouped Together (Left) vs Hours & Contact (Right) */}
         <RevealOnScroll direction="up" delay={150} duration={850} className="w-full max-w-6xl">
