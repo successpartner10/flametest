@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import {
@@ -17,6 +17,36 @@ import { CMSPage, AdminUser } from '../../types/cms';
 import { AppMode } from '../../types';
 import { LiveEventsView } from '../LiveEventsView';
 import { ContactFormView } from '../ContactFormView';
+
+/* ── VideoHero: guaranteed silent autoplay via imperative ref ── */
+const VideoHero: React.FC<{ src: string; className: string }> = ({ src, className }) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    const vid = videoRef.current;
+    if (!vid) return;
+    vid.muted = true;
+    vid.defaultMuted = true;
+    vid.volume = 0;
+    const attempt = () => vid.play().catch(() => {});
+    if (vid.readyState >= 2) {
+      attempt();
+    } else {
+      vid.addEventListener('canplay', attempt, { once: true });
+    }
+    return () => vid.removeEventListener('canplay', attempt);
+  }, [src]);
+  return (
+    <video
+      ref={videoRef}
+      src={src}
+      loop
+      muted
+      playsInline
+      preload="auto"
+      className={className}
+    />
+  );
+};
 
 interface PublicPageViewerProps {
   page: CMSPage;
@@ -51,14 +81,9 @@ export const PublicPageViewer: React.FC<PublicPageViewerProps> = ({
         <div className="relative h-[440px] sm:h-[540px] md:h-[600px] w-full overflow-hidden">
           {/* Dynamic Video or Image Hero Media */}
           {frontmatter.coverImage && (frontmatter.coverImage.endsWith('.mp4') || frontmatter.coverImage.endsWith('.webm') || frontmatter.coverImage.endsWith('.mov')) ? (
-            <video
+            <VideoHero
               key={frontmatter.coverImage}
               src={frontmatter.coverImage}
-              autoPlay
-              loop
-              muted
-              playsInline
-              preload="metadata"
               className="w-full h-full object-cover brightness-[0.95] contrast-[1.05]"
             />
           ) : (
