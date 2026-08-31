@@ -196,7 +196,7 @@ export const STORY_SLIDES: StorySlide[] = [
     id: 'story-1',
     title: 'Office & Boardroom Lunches',
     subtitle: 'Corporate teams packed around tables with hot kabab & saffron rice platters',
-    image: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=900&q=85',
+    image: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=900&q=85',
     category: 'CORPORATE LUNCH',
     tagline: 'Treat your team to a joyful lunch with charbroiled Koobideh, saffron basmati, and fresh Sabzi Khordan delivered directly to your office.',
     actionText: 'Book Office Catering',
@@ -206,7 +206,7 @@ export const STORY_SLIDES: StorySlide[] = [
     id: 'story-2',
     title: 'Company Galas & Celebrations',
     subtitle: 'Packed banquet halls celebrating over live grill stations & Persian feasts',
-    image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=85',
+    image: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=900&q=85',
     category: 'CORPORATE GALAS',
     tagline: 'Elevate company milestones with grand Persian banquets — live flame grilling, chafing trays of Ghormeh Sabzi, and royal Soltani platters.',
     actionText: 'Plan Gala Event',
@@ -216,7 +216,7 @@ export const STORY_SLIDES: StorySlide[] = [
     id: 'story-3',
     title: 'Family Feasts & Home Dinners',
     subtitle: 'Crowded family tables surrounded by guests enjoying hot Persian dishes',
-    image: 'https://images.unsplash.com/photo-1529543544282-ea669407fca3?auto=format&fit=crop&w=900&q=85',
+    image: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=900&q=85',
     category: 'FAMILY GATHERINGS',
     tagline: 'Nowruz, family reunions & birthdays — we set up full Persian tables with saffron rice, stews, and hot kababs so you enjoy the party.',
     actionText: 'Plan Family Dinner',
@@ -226,7 +226,7 @@ export const STORY_SLIDES: StorySlide[] = [
     id: 'story-4',
     title: 'Backyard Parties with Friends',
     subtitle: 'Friends seated shoulder-to-shoulder sharing grilled skewers & wine',
-    image: 'https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=900&q=85',
+    image: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=900&q=85',
     category: 'FRIENDS & BACKYARD',
     tagline: 'Live mesquite charcoal grills right in your backyard — sizzling Joojeh kababs, ice-cold Doogh, and vibrant appetizers for all your friends.',
     actionText: 'Book Backyard Party',
@@ -236,7 +236,7 @@ export const STORY_SLIDES: StorySlide[] = [
     id: 'story-5',
     title: 'Wedding Banquets & Receptions',
     subtitle: 'Guests seated together at candlelit banquet tables overflowing with food',
-    image: 'https://images.unsplash.com/photo-1529042410759-befb1204b468?auto=format&fit=crop&w=900&q=85',
+    image: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=900&q=85',
     category: 'WEDDING BANQUETS',
     tagline: 'Unforgettable wedding receptions with royal Soltani skewers, jeweled Zereshk Polo, Bastani ice cream stations, and dessert towers.',
     actionText: 'Get Wedding Quote',
@@ -246,13 +246,14 @@ export const STORY_SLIDES: StorySlide[] = [
     id: 'story-6',
     title: 'Friends Over & Party Feasts',
     subtitle: 'Bustling party table with friends dining over charcoal kababs & platters',
-    image: 'https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=900&q=85',
+    image: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=900&q=85',
     category: 'PARTY FEASTS',
     tagline: 'Host friends with ease — steaming platters of Kashk-e Bademjan, charbroiled skewers, and saffron rice delivered ready to serve.',
     actionText: 'Request Party Quote',
     dishId: 'item-4'
   }
 ];
+
 
 
 
