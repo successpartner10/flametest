@@ -48,8 +48,8 @@ export const PublicPageViewer: React.FC<PublicPageViewerProps> = ({
     >
       {/* Full-width Screen Hero Banner Header (Matches Home Page Hero Screen Width) */}
       <header className="relative w-full overflow-hidden shadow-2xl mb-10">
-        <div className="relative h-56 sm:h-72 md:h-96 w-full overflow-hidden">
-          {/* Dynamic Video or Image Hero Media */}
+        <div className="relative h-[380px] sm:h-[480px] md:h-[540px] w-full overflow-hidden">
+          {/* Dynamic Video or Image Hero Media - Always Plays Smoothly */}
           {frontmatter.coverImage && (frontmatter.coverImage.endsWith('.mp4') || frontmatter.coverImage.endsWith('.webm') || frontmatter.coverImage.endsWith('.mov')) ? (
             <video
               src={frontmatter.coverImage}
@@ -57,7 +57,7 @@ export const PublicPageViewer: React.FC<PublicPageViewerProps> = ({
               loop
               muted
               playsInline
-              className="w-full h-full object-cover brightness-[0.75] contrast-[1.08]"
+              className="w-full h-full object-cover brightness-[0.92] contrast-[1.05]"
             />
           ) : (
             <img
@@ -66,12 +66,12 @@ export const PublicPageViewer: React.FC<PublicPageViewerProps> = ({
                 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1600&q=80'
               }
               alt={frontmatter.title}
-              className="w-full h-full object-cover brightness-[0.75] contrast-[1.08] scale-105 hover:scale-100 transition-transform duration-1000 ease-out"
+              className="w-full h-full object-cover brightness-[0.90] contrast-[1.05] scale-105 hover:scale-100 transition-transform duration-1000 ease-out"
             />
           )}
 
-          {/* Deep Luxury Dark Burgundy Gradient Overlay (No light/white fade) */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#180309] via-[#180309]/60 to-black/50" />
+          {/* Minimal Subtle Overlay to let the video shine clearly while keeping text legible */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#180309]/85 via-black/25 to-black/30" />
 
           {/* Floating Gold Sparkle Accent in top right */}
           <div className="absolute top-6 right-6 px-4 py-1.5 rounded-full bg-[#180309]/80 border border-[#d4a359]/60 text-[#f3cf8a] text-xs font-bold uppercase tracking-widest backdrop-blur-md hidden sm:flex items-center space-x-1.5 shadow-lg z-20">
@@ -79,28 +79,20 @@ export const PublicPageViewer: React.FC<PublicPageViewerProps> = ({
             <span>FLAME EXPERIENCE</span>
           </div>
 
-          {/* Title & Subtitle Content Overlay - Aligned with Max-W Content grid */}
+          {/* Title & Subtitle Content Overlay - Golden & Cream Luxury Palette */}
           <div className="absolute inset-x-0 bottom-0 z-10">
             <div className="max-w-7xl mx-auto p-6 sm:p-10 md:p-12 space-y-3">
-              <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-[#d4a359]/25 border border-[#d4a359]/60 text-[#f3cf8a] text-[10px] sm:text-xs uppercase tracking-[0.2em] font-bold backdrop-blur-md shadow-md">
-                <Sparkles size={12} />
+              <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-[#180309]/80 border border-[#d4a359]/70 text-[#f3cf8a] text-[10px] sm:text-xs uppercase tracking-[0.2em] font-bold backdrop-blur-md shadow-md">
+                <Sparkles size={12} className="text-[#d4a359]" />
                 <span>{frontmatter.navTitle || 'Flame International'}</span>
               </div>
 
-              <h1
-                className={`font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-tight drop-shadow-lg ${
-                  isNight ? 'text-white' : 'text-[#14181f]'
-                }`}
-              >
+              <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight text-[#f3cf8a] drop-shadow-[0_4px_16px_rgba(0,0,0,0.9)]">
                 {frontmatter.title}
               </h1>
 
               {frontmatter.subtitle && (
-                <p
-                  className={`text-sm sm:text-lg max-w-3xl font-light leading-relaxed drop-shadow-md ${
-                    isNight ? 'text-gray-200' : 'text-gray-800'
-                  }`}
-                >
+                <p className="text-sm sm:text-lg md:text-xl max-w-3xl font-normal leading-relaxed text-[#f7e8ea] drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
                   {frontmatter.subtitle}
                 </p>
               )}
