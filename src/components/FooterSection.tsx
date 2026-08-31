@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   MapPin, Clock, Phone, Mail, Instagram, Facebook, Linkedin, Navigation, ExternalLink, 
   Heart, Globe, Star, Plus, Minus, RotateCcw, Compass, Car, MessageCircle, ArrowRight,
-  Route, CheckCircle2, AlertCircle, LocateFixed
+  Route, CheckCircle2, AlertCircle, LocateFixed, Utensils
 } from 'lucide-react';
 import { AppMode } from '../types';
 import { FlameLogo } from './FlameLogo';
