@@ -270,7 +270,7 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
               <img 
                 src="/images/flame-logo.png" 
                 alt="Flame International" 
-                className="h-24 sm:h-30 w-auto object-contain filter drop-shadow-[0_4px_12px_rgba(212,163,89,0.3)]" 
+                className="h-30 sm:h-36 w-auto object-contain filter drop-shadow-[0_4px_12px_rgba(212,163,89,0.3)]" 
               />
             </div>
 
@@ -938,7 +938,7 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
                     <img 
                       src="/images/flame-logo.png" 
                       alt="Flame International" 
-                      className="h-20 sm:h-24 w-auto object-contain filter drop-shadow-[0_4px_12px_rgba(212,163,89,0.3)] hover:scale-105 transition-transform duration-300" 
+                      className="h-25 sm:h-30 w-auto object-contain filter drop-shadow-[0_4px_12px_rgba(212,163,89,0.3)] hover:scale-105 transition-transform duration-300" 
                     />
                     
                     <div className="space-y-1 pt-1">
