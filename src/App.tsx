@@ -27,6 +27,7 @@ import { fetchAllPages } from './services/cmsService';
 import { AuthModal } from './components/cms/AuthModal';
 import { AdminPanel } from './components/cms/AdminPanel';
 import { PublicPageViewer } from './components/cms/PublicPageViewer';
+import { BackToTopButton } from './components/BackToTopButton';
 import { signOutUser } from './lib/firebase';
 import { isAuthorizedAdmin } from './config/adminConfig';
 
@@ -455,6 +456,9 @@ export default function App() {
           setIsReserveOpen(true);
         }}
       />
+
+      {/* Discreet Global Back to Top Button */}
+      <BackToTopButton />
 
     </div>
   );

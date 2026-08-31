@@ -921,176 +921,151 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
             )}
 
             {/* ========================================================================= */}
-            {/* 📍 RIGHT COLUMN (lg:col-span-5 on Home, 3-card grid on other pages) */}
+            {/* 📍 RIGHT / MAIN COLUMNS (lg:col-span-5 on Home, 3 distinct columns on other pages) */}
             {/* ========================================================================= */}
-            <div className={isHomePage ? "lg:col-span-5 space-y-6" : "contents"}>
-              
-              {/* 1. HOURS OF OPERATION CARD */}
-              <div className="bg-[#1c030b]/90 border border-[#6b152d]/60 rounded-3xl p-6 backdrop-blur-md shadow-[0_20px_50px_rgba(0,0,0,0.6)] space-y-4">
-                <div className="flex items-center space-x-2 text-[#d4a359] border-b border-[#521324] pb-3">
-                  <Clock size={20} />
-                  <h4 className="text-sm sm:text-base uppercase tracking-[0.2em] font-['Raleway'] font-medium">Hours of Operation</h4>
-                </div>
-                
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between p-3.5 rounded-2xl bg-[#280510]/90 border border-[#521324]">
-                    <span className="text-white font-normal text-sm sm:text-base">Monday – Sunday:</span>
-                    <span className="text-[#f5d79e] font-medium text-sm sm:text-base font-['Raleway']">11:30 AM – 11:00 PM</span>
+            {isHomePage ? (
+              <div className="lg:col-span-5 space-y-6">
+                {/* 1. HOURS OF OPERATION CARD */}
+                <div className="bg-[#1c030b]/90 border border-[#6b152d]/60 rounded-3xl p-6 backdrop-blur-md shadow-[0_20px_50px_rgba(0,0,0,0.6)] space-y-4">
+                  <div className="flex items-center space-x-2 text-[#d4a359] border-b border-[#521324] pb-3">
+                    <Clock size={20} />
+                    <h4 className="text-sm sm:text-base uppercase tracking-[0.2em] font-['Raleway'] font-medium">Hours of Operation</h4>
                   </div>
-                  <p className="text-xs sm:text-sm text-[#f5a7b8] leading-relaxed">
-                    Open 7 days a week for Lunch, Dinner, Craft Cocktails, Persian Banquets, and Nightly Live Entertainment.
-                  </p>
-                </div>
-              </div>
-
-              {/* 2. DIRECT CONTACT & SOCIAL CONCIERGE CARD */}
-              <div className="bg-[#1c030b]/90 border border-[#6b152d]/60 rounded-3xl p-6 backdrop-blur-md shadow-[0_20px_50px_rgba(0,0,0,0.6)] space-y-4">
-                <div className="flex items-center space-x-2 text-[#d4a359] border-b border-[#521324] pb-3">
-                  <Phone size={20} />
-                  <h4 className="text-sm sm:text-base uppercase tracking-[0.2em] font-['Raleway'] font-medium">Contact &amp; Social</h4>
-                </div>
-
-                {/* Direct Phone Bar */}
-                <a
-                  href="tel:+13104440045"
-                  className="flex items-center justify-between p-3.5 rounded-2xl bg-[#280510] hover:bg-[#3d0818] border border-[#831f3b] transition-all group cursor-pointer"
-                  title="Direct Phone Concierge: (310) 444-0045"
-                >
-                  <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 rounded-xl bg-[#521324] flex items-center justify-center text-[#d4a359] group-hover:scale-110 transition-transform">
-                      <Phone size={18} />
+                  
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between p-3.5 rounded-2xl bg-[#280510]/90 border border-[#521324]">
+                      <span className="text-white font-normal text-sm sm:text-base">Monday – Sunday:</span>
+                      <span className="text-[#f5d79e] font-medium text-sm sm:text-base font-['Raleway']">11:30 AM – 11:00 PM</span>
                     </div>
-                    <div>
-                      <span className="text-[11px] text-[#f5a7b8] uppercase font-normal tracking-wider block">Direct Concierge</span>
-                      <span className="text-sm sm:text-base font-medium text-white group-hover:text-[#f3cf8a] transition-colors">(310) 444-0045</span>
-                    </div>
+                    <p className="text-xs sm:text-sm text-[#f5a7b8] leading-relaxed">
+                      Open 7 days a week for Lunch, Dinner, Craft Cocktails, Persian Banquets, and Nightly Live Entertainment.
+                    </p>
                   </div>
-                  <span className="text-xs font-semibold text-[#f5d79e] bg-[#521324] px-3.5 py-1.5 rounded-xl flex flex-col items-center justify-center text-center leading-tight">
-                    <span>CALL</span>
-                    <span>NOW</span>
-                  </span>
-                </a>
+                </div>
 
-                {/* Unified Social & Communication Icon Row with Interactive Hover Tooltips */}
-                <div className="pt-1">
-                  <div className="grid grid-cols-6 gap-2">
-                    {/* 1. Phone */}
-                    <div className="relative group flex justify-center">
-                      <a
-                        href="tel:+13104440045"
-                        className="w-full h-11 rounded-xl bg-[#280510] hover:bg-[#d4a359] text-[#f5d79e] hover:text-black border border-[#831f3b]/70 flex items-center justify-center transition-all duration-300 shadow-md hover:scale-105 active:scale-95 cursor-pointer"
-                        aria-label="Call: (310) 444-0045"
-                      >
+                {/* 2. DIRECT CONTACT & SOCIAL CONCIERGE CARD */}
+                <div className="bg-[#1c030b]/90 border border-[#6b152d]/60 rounded-3xl p-6 backdrop-blur-md shadow-[0_20px_50px_rgba(0,0,0,0.6)] space-y-4">
+                  <div className="flex items-center space-x-2 text-[#d4a359] border-b border-[#521324] pb-3">
+                    <Phone size={20} />
+                    <h4 className="text-sm sm:text-base uppercase tracking-[0.2em] font-['Raleway'] font-medium">Contact &amp; Social</h4>
+                  </div>
+
+                  <div className="space-y-3">
+                    <div className="grid grid-cols-6 gap-2">
+                      <a href="tel:+13104440045" className="h-11 rounded-xl bg-[#280510] hover:bg-[#d4a359] text-[#f5d79e] hover:text-black border border-[#831f3b]/70 flex items-center justify-center transition-all shadow-md">
                         <Phone size={18} />
                       </a>
-                      <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded bg-black/90 border border-[#d4a359]/60 text-[10px] text-[#f5d79e] whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity shadow-lg z-30 font-medium">
-                        Call (310) 444-0045
-                      </span>
-                    </div>
-
-                    {/* 2. WhatsApp */}
-                    <div className="relative group flex justify-center">
-                      <a
-                        href="https://wa.me/13104440045"
-                        target="_blank"
-                        rel="noreferrer"
-                        className="w-full h-11 rounded-xl bg-[#280510] hover:bg-[#25D366] text-[#25D366] hover:text-white border border-[#831f3b]/70 flex items-center justify-center transition-all duration-300 shadow-md hover:scale-105 active:scale-95 cursor-pointer"
-                        aria-label="WhatsApp Concierge"
-                      >
+                      <a href="https://wa.me/13104440045" target="_blank" rel="noreferrer" className="h-11 rounded-xl bg-[#280510] hover:bg-[#25D366] text-[#25D366] hover:text-white border border-[#831f3b]/70 flex items-center justify-center transition-all shadow-md">
                         <MessageCircle size={18} />
                       </a>
-                      <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded bg-black/90 border border-green-500/60 text-[10px] text-green-300 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity shadow-lg z-30 font-medium">
-                        WhatsApp Chat
-                      </span>
-                    </div>
-
-                    {/* 3. Email */}
-                    <div className="relative group flex justify-center">
-                      <a
-                        href="mailto:contact@flameinternational.com"
-                        className="w-full h-11 rounded-xl bg-[#280510] hover:bg-[#ea4335] text-[#f5d79e] hover:text-white border border-[#831f3b]/70 flex items-center justify-center transition-all duration-300 shadow-md hover:scale-105 active:scale-95 cursor-pointer"
-                        aria-label="Email Concierge"
-                      >
+                      <a href="mailto:contact@flameinternational.com" className="h-11 rounded-xl bg-[#280510] hover:bg-[#ea4335] text-[#f5d79e] hover:text-white border border-[#831f3b]/70 flex items-center justify-center transition-all shadow-md">
                         <Mail size={18} />
                       </a>
-                      <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded bg-black/90 border border-red-500/60 text-[10px] text-red-200 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity shadow-lg z-30 font-medium">
-                        Email Concierge
-                      </span>
-                    </div>
-
-                    {/* 4. Instagram */}
-                    <div className="relative group flex justify-center">
-                      <a
-                        href="https://instagram.com/flameinternational"
-                        target="_blank"
-                        rel="noreferrer"
-                        className="w-full h-11 rounded-xl bg-[#280510] hover:bg-gradient-to-tr hover:from-[#f58529] hover:via-[#dd2a7b] hover:to-[#8134af] text-[#f5d79e] hover:text-white border border-[#831f3b]/70 flex items-center justify-center transition-all duration-300 shadow-md hover:scale-105 active:scale-95 cursor-pointer"
-                        aria-label="Instagram Profile"
-                      >
+                      <a href="https://instagram.com/flameinternational" target="_blank" rel="noreferrer" className="h-11 rounded-xl bg-[#280510] hover:bg-gradient-to-tr hover:from-[#f58529] hover:via-[#dd2a7b] hover:to-[#8134af] text-[#f5d79e] hover:text-white border border-[#831f3b]/70 flex items-center justify-center transition-all shadow-md">
                         <Instagram size={18} />
                       </a>
-                      <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded bg-black/90 border border-pink-500/60 text-[10px] text-pink-200 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity shadow-lg z-30 font-medium">
-                        Instagram @flame
-                      </span>
-                    </div>
-
-                    {/* 5. Facebook */}
-                    <div className="relative group flex justify-center">
-                      <a
-                        href="https://facebook.com/flameinternational"
-                        target="_blank"
-                        rel="noreferrer"
-                        className="w-full h-11 rounded-xl bg-[#280510] hover:bg-[#1877F2] text-[#f5d79e] hover:text-white border border-[#831f3b]/70 flex items-center justify-center transition-all duration-300 shadow-md hover:scale-105 active:scale-95 cursor-pointer"
-                        aria-label="Facebook Page"
-                      >
+                      <a href="https://facebook.com/flameinternational" target="_blank" rel="noreferrer" className="h-11 rounded-xl bg-[#280510] hover:bg-[#1877F2] text-[#f5d79e] hover:text-white border border-[#831f3b]/70 flex items-center justify-center transition-all shadow-md">
                         <Facebook size={18} />
                       </a>
-                      <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded bg-black/90 border border-blue-500/60 text-[10px] text-blue-200 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity shadow-lg z-30 font-medium">
-                        Facebook Page
-                      </span>
-                    </div>
-
-                    {/* 6. LinkedIn */}
-                    <div className="relative group flex justify-center">
-                      <a
-                        href="https://linkedin.com/company/flame-international"
-                        target="_blank"
-                        rel="noreferrer"
-                        className="w-full h-11 rounded-xl bg-[#280510] hover:bg-[#0A66C2] text-[#f5d79e] hover:text-white border border-[#831f3b]/70 flex items-center justify-center transition-all duration-300 shadow-md hover:scale-105 active:scale-95 cursor-pointer"
-                        aria-label="LinkedIn Profile"
-                      >
+                      <a href="https://linkedin.com/company/flame-international" target="_blank" rel="noreferrer" className="h-11 rounded-xl bg-[#280510] hover:bg-[#0A66C2] text-[#f5d79e] hover:text-white border border-[#831f3b]/70 flex items-center justify-center transition-all shadow-md">
                         <Linkedin size={18} />
                       </a>
-                      <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded bg-black/90 border border-sky-500/60 text-[10px] text-sky-200 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity shadow-lg z-30 font-medium">
-                        LinkedIn Profile
-                      </span>
                     </div>
                   </div>
-                </div>
 
-                {/* Quick Interactive Actions */}
-                <div className="pt-2 grid grid-cols-2 gap-2.5">
-                  <button
-                    onClick={onOpenReserve}
-                    className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-[#d4a359] to-[#f3cf8a] text-black font-bold text-xs sm:text-sm uppercase tracking-wider transition-all hover:brightness-110 active:scale-95 cursor-pointer shadow-md flex flex-col items-center justify-center text-center leading-tight"
-                  >
-                    <span>RESERVE</span>
-                    <span>TABLE</span>
-                  </button>
-                  {onOpenMenu && (
-                    <button
-                      onClick={onOpenMenu}
-                      className="w-full py-3 px-4 rounded-xl bg-[#280510] hover:bg-[#3d0818] text-[#f5d79e] border border-[#831f3b] font-bold text-xs sm:text-sm uppercase tracking-wider transition-all active:scale-95 cursor-pointer flex flex-col items-center justify-center text-center leading-tight"
-                    >
-                      <span>EXPLORE</span>
-                      <span>MENU</span>
+                  <div className="pt-2 grid grid-cols-2 gap-2.5">
+                    <button onClick={onOpenReserve} className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-[#d4a359] to-[#f3cf8a] text-black font-bold text-xs sm:text-sm uppercase tracking-wider transition-all hover:brightness-110 cursor-pointer shadow-md">
+                      RESERVE TABLE
                     </button>
-                  )}
+                    {onOpenMenu && (
+                      <button onClick={onOpenMenu} className="w-full py-3 px-4 rounded-xl bg-[#280510] hover:bg-[#3d0818] text-[#f5d79e] border border-[#831f3b] font-bold text-xs sm:text-sm uppercase tracking-wider transition-all cursor-pointer">
+                        EXPLORE MENU
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              /* NON-HOME PAGE: CLEAN 3-COLUMN FOOTER LAYOUT */
+              <>
+                {/* COLUMN 1: HOURS OF OPERATION */}
+                <div className="bg-[#1c030b]/90 border border-[#6b152d]/60 rounded-3xl p-6 backdrop-blur-md shadow-xl space-y-4">
+                  <div className="flex items-center space-x-2 text-[#d4a359] border-b border-[#521324] pb-3">
+                    <Clock size={20} />
+                    <h4 className="text-sm sm:text-base uppercase tracking-[0.2em] font-['Raleway'] font-medium">Hours &amp; Service</h4>
+                  </div>
+                  <div className="space-y-2.5 text-xs sm:text-sm">
+                    <div className="flex justify-between border-b border-[#521324]/40 pb-2">
+                      <span className="text-white font-medium">Mon – Thu:</span>
+                      <span className="text-[#f5d79e]">11:30 AM – 10:00 PM</span>
+                    </div>
+                    <div className="flex justify-between border-b border-[#521324]/40 pb-2">
+                      <span className="text-white font-medium">Fri &amp; Sat:</span>
+                      <span className="text-[#f3cf8a] font-semibold">11:30 AM – 1:00 AM</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-white font-medium">Sunday:</span>
+                      <span className="text-[#f5d79e]">12:00 PM – 10:00 PM</span>
+                    </div>
+                  </div>
+                  <p className="text-[11px] text-[#f5a7b8]/80 leading-relaxed pt-1">
+                    Live Persian Concerts &amp; Cabaret Galas every weekend.
+                  </p>
                 </div>
 
-              </div>
+                {/* COLUMN 2: LOCATION & VALET PARKING */}
+                <div className="bg-[#1c030b]/90 border border-[#6b152d]/60 rounded-3xl p-6 backdrop-blur-md shadow-xl space-y-4">
+                  <div className="flex items-center space-x-2 text-[#d4a359] border-b border-[#521324] pb-3">
+                    <MapPin size={20} />
+                    <h4 className="text-sm sm:text-base uppercase tracking-[0.2em] font-['Raleway'] font-medium">Location &amp; Valet</h4>
+                  </div>
+                  <p className="text-xs sm:text-sm text-white font-medium">
+                    11330 Santa Monica Blvd<br />
+                    West Los Angeles, CA 90025
+                  </p>
+                  <div className="p-3 rounded-2xl bg-[#3d0a1c]/80 border border-[#831f3b] text-xs text-[#f3cf8a] font-medium flex items-center space-x-2">
+                    <Car size={16} className="shrink-0" />
+                    <span>Complimentary Guest Valet Parking</span>
+                  </div>
+                  <a
+                    href="https://www.google.com/maps/dir/?api=1&destination=11330+Santa+Monica+Blvd,+Los+Angeles,+CA+90025"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#d4a359] to-[#f3cf8a] text-black font-bold text-xs uppercase tracking-wider flex items-center justify-center shadow hover:brightness-110 transition-all cursor-pointer"
+                  >
+                    <span>Google Maps Directions</span>
+                  </a>
+                </div>
 
-            </div>
+                {/* COLUMN 3: DIRECT CONCIERGE & QUICK ACTIONS */}
+                <div className="bg-[#1c030b]/90 border border-[#6b152d]/60 rounded-3xl p-6 backdrop-blur-md shadow-xl space-y-4">
+                  <div className="flex items-center space-x-2 text-[#d4a359] border-b border-[#521324] pb-3">
+                    <Phone size={20} />
+                    <h4 className="text-sm sm:text-base uppercase tracking-[0.2em] font-['Raleway'] font-medium">Direct Concierge</h4>
+                  </div>
+                  <div className="space-y-2 text-xs sm:text-sm">
+                    <div className="flex justify-between items-center text-white">
+                      <span>Reservations:</span>
+                      <a href="tel:+13104440045" className="text-[#f3cf8a] font-bold hover:underline">(310) 444-0045</a>
+                    </div>
+                    <div className="flex justify-between items-center text-white">
+                      <span>Tickets &amp; Events:</span>
+                      <a href="tel:+13104440046" className="text-[#f3cf8a] font-bold hover:underline">(310) 444-0046</a>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2 pt-1">
+                    <button onClick={onOpenReserve} className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-[#d4a359] to-[#f3cf8a] text-black font-bold text-xs uppercase tracking-wider transition-all hover:brightness-110 cursor-pointer shadow">
+                      Reserve Table
+                    </button>
+                    {onOpenMenu && (
+                      <button onClick={onOpenMenu} className="w-full py-2.5 px-3 rounded-xl bg-[#280510] hover:bg-[#3d0818] text-[#f5d79e] border border-[#831f3b] font-bold text-xs uppercase tracking-wider transition-all cursor-pointer">
+                        View Menu
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </>
+            )}
 
           </div>
         </RevealOnScroll>
