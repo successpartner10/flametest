@@ -254,7 +254,7 @@ app.delete('/api/content/pages/:slug', (req, res) => {
 });
 
 // POST /api/upload - Drag-and-drop Image Upload
-app.post('/api/upload', upload.single('image'), (req, res) => {
+app.post('/api/upload', upload.single('image') as any, (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ error: 'No image file uploaded' });

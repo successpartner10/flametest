@@ -77,33 +77,33 @@ export const StorySection: React.FC<StorySectionProps> = ({
           </div>
 
           {/* Narrative Paragraph */}
-          <p className={`text-base sm:text-lg leading-relaxed font-light max-w-md ${
-            isNight ? 'text-[#d1d5db]' : 'text-[#555e6b]'
+          <p className={`text-base sm:text-lg lg:text-xl leading-relaxed font-normal max-w-lg ${
+            isNight ? 'text-gray-100' : 'text-stone-900'
           }`}>
-            <span className="font-black font-[900]">FLAME</span> <span className="font-black font-[900] tracking-wider">INTERNATIONAL</span> is Los Angeles' premier destination for authentic Persian cuisine, world-class Persian musical concerts, and vibrant weekend cabaret on Santa Monica Boulevard. Join us for exquisite saffron banquets, legendary performers, and an unforgettable cultural atmosphere.
+            <span className="font-extrabold">FLAME</span> <span className="font-extrabold tracking-wider">INTERNATIONAL</span> is Los Angeles' premier destination for authentic Persian cuisine, world-class Persian musical concerts, and vibrant weekend cabaret on Santa Monica Boulevard. Join us for exquisite saffron banquets, legendary performers, and an unforgettable cultural atmosphere.
           </p>
 
           {/* Action Button & Link */}
           <div className="pt-2 flex flex-wrap gap-4 items-center justify-center lg:justify-start">
             <button
               onClick={onReserve}
-              className="px-6 py-2.5 rounded-full bg-gradient-to-r from-[#9e1c38] to-[#d4a359] hover:from-[#c22345] hover:to-[#f3cf8a] text-white font-bold text-xs uppercase tracking-widest shadow-lg shadow-[#9e1c38]/30 hover:scale-105 transition-all cursor-pointer flex items-center space-x-2"
+              className="px-7 py-3 rounded-full bg-gradient-to-r from-[#9e1c38] to-[#d4a359] hover:from-[#c22345] hover:to-[#f3cf8a] text-white font-extrabold text-sm uppercase tracking-wider shadow-lg shadow-[#9e1c38]/30 hover:scale-105 transition-all cursor-pointer flex items-center space-x-2"
             >
-              <Sparkles size={14} className="text-[#fbe8a6]" />
-              <span>Book Event Table</span>
+              <Sparkles size={16} className="text-[#fbe8a6]" />
+              <span>Book Event Space</span>
             </button>
 
             <button
               id="story-learn-about-us-btn"
               onClick={onLearnMore}
-              className={`group inline-flex items-center space-x-2 text-xs uppercase tracking-[0.25em] font-semibold border-b pb-1 transition-all duration-300 cursor-pointer ${
+              className={`group inline-flex items-center space-x-2 text-sm uppercase tracking-widest font-bold border-b pb-1 transition-all duration-300 cursor-pointer ${
                 isNight 
                   ? 'text-[#f3cf8a] hover:text-white border-[#f3cf8a]/70' 
                   : 'text-[#8c6227] hover:text-[#212429] border-[#c6924b]'
               }`}
             >
               <span>Learn About Us</span>
-              <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+              <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
         </RevealOnScroll>
@@ -131,15 +131,15 @@ export const StorySection: React.FC<StorySectionProps> = ({
               <div className="relative z-10 text-center">
                 <div className="flex items-center justify-between border-b border-[#d4a359]/40 pb-2 mb-3">
                   <div className="text-left">
-                    <h4 className="font-['Raleway'] font-black tracking-widest text-xs sm:text-sm text-white uppercase">
+                    <h4 className="font-['Raleway'] font-black tracking-widest text-sm text-white uppercase">
                       FLAME INTERNATIONAL
                     </h4>
-                    <span className="text-[8px] sm:text-[9px] tracking-[0.25em] text-[#d4a359] uppercase block font-semibold">
+                    <span className="text-xs tracking-[0.2em] text-[#d4a359] uppercase block font-bold">
                       ✦ PROUDLY PRESENT ✦
                     </span>
                   </div>
                   {/* Glowing Mini Badge */}
-                  <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-[#9e1c38] to-[#d4a359] p-0.5 shadow-md">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#9e1c38] to-[#d4a359] p-0.5 shadow-md">
                     <div className="w-full h-full rounded-full bg-black flex items-center justify-center p-0.5">
                       <FlameLogo variant="emblem-only" size="sm" color="#ffffff" className="w-6 h-6" />
                     </div>
@@ -149,8 +149,8 @@ export const StorySection: React.FC<StorySectionProps> = ({
                 {/* Event Date Block matching poster */}
                 <div className="py-2 flex items-center justify-center space-x-3">
                   <div className="text-right">
-                    <span className="block text-[10px] tracking-[0.2em] uppercase text-white font-extrabold">SATURDAY</span>
-                    <span className="block text-xs sm:text-sm tracking-[0.15em] uppercase text-[#d4a359] font-black">SEPTEMBER</span>
+                    <span className="block text-xs tracking-[0.18em] uppercase text-white font-extrabold">SATURDAY</span>
+                    <span className="block text-sm tracking-[0.14em] uppercase text-[#d4a359] font-black">SEPTEMBER</span>
                   </div>
                   <div className="font-serif text-4xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-b from-[#fff6d6] via-[#f3cf8a] to-[#d4a359] leading-none drop-shadow-md">
                     12<span className="text-xs font-sans align-top ml-0.5 text-[#f3cf8a]">TH</span>
@@ -164,26 +164,25 @@ export const StorySection: React.FC<StorySectionProps> = ({
                   <img
                     src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=800&q=80"
                     alt="Shahyar Ghanbari & Arand Live in Concert Flame International"
-                    className="w-full h-full object-cover object-center filter contrast-[1.1] brightness-[0.9] group-hover:scale-105 transition-transform duration-700"
+                    className="w-full h-full object-cover object-center filter contrast-[1.05] group-hover:scale-105 transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0c0307] via-transparent to-black/50" />
                   
                   {/* Live Spotlight Badge */}
-                  <div className="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-full bg-red-600/90 text-white text-[9px] font-black tracking-widest uppercase flex items-center space-x-1 shadow-lg animate-pulse">
-                    <span className="w-1.5 h-1.5 rounded-full bg-white"></span>
+                  <div className="absolute top-2.5 left-2.5 px-3 py-1 rounded-full bg-red-600/90 text-white text-xs font-black tracking-wider uppercase flex items-center space-x-1.5 shadow-lg animate-pulse">
+                    <span className="w-2 h-2 rounded-full bg-white"></span>
                     <span>LIVE CONCERT</span>
                   </div>
 
                   {/* Crystal Chandelier Gold Icon Overlays */}
                   <div className="absolute bottom-2 inset-x-2 text-center">
                     <div className="grid grid-cols-2 gap-2 text-xs font-serif font-bold text-[#fbe8a6] drop-shadow-md">
-                      <div className="bg-black/70 backdrop-blur-sm py-1 px-2 rounded-lg border border-[#d4a359]/40">
-                        <span className="block text-[8px] uppercase tracking-wider text-gray-400 font-sans">Guest Artist</span>
-                        ARAND
+                      <div className="bg-black/85 backdrop-blur-sm py-1.5 px-2.5 rounded-lg border border-[#d4a359]/60">
+                        <span className="block text-[10px] uppercase tracking-wider text-gray-300 font-sans font-bold">Guest Artist</span>
+                        <span className="text-sm font-extrabold text-white">ARAND</span>
                       </div>
-                      <div className="bg-black/70 backdrop-blur-sm py-1 px-2 rounded-lg border border-[#d4a359]/40">
-                        <span className="block text-[8px] uppercase tracking-wider text-[#d4a359] font-sans">Iconic Master</span>
-                        SHAHYAR GHANBARI
+                      <div className="bg-black/85 backdrop-blur-sm py-1.5 px-2.5 rounded-lg border border-[#d4a359]/60">
+                        <span className="block text-[10px] uppercase tracking-wider text-[#d4a359] font-sans font-bold">Iconic Master</span>
+                        <span className="text-sm font-extrabold text-[#f3cf8a]">SHAHYAR GHANBARI</span>
                       </div>
                     </div>
                   </div>
@@ -191,7 +190,7 @@ export const StorySection: React.FC<StorySectionProps> = ({
               </div>
 
               {/* Poster Footer: LOS ANGELES, Buy Tickets & Phone */}
-              <div className="relative z-10 text-center space-y-2.5 pt-1 border-t border-[#d4a359]/40">
+              <div className="relative z-10 text-center space-y-3 pt-1 border-t border-[#d4a359]/40">
                 
                 {/* Dedicated Buy Tickets Action Button */}
                 <button
@@ -199,27 +198,27 @@ export const StorySection: React.FC<StorySectionProps> = ({
                     e.stopPropagation();
                     handleTicketClick("Arand & Shahyar Ghanbari Live in Concert", "Saturday, September 12, 2026");
                   }}
-                  className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#d9381e] via-[#e64a19] to-[#ea580c] hover:brightness-110 active:scale-95 text-white font-black text-xs uppercase tracking-[0.16em] shadow-[0_8px_20px_rgba(230,74,25,0.45)] transition-all flex items-center justify-center space-x-1.5 cursor-pointer font-['Raleway']"
+                  className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-[#d9381e] via-[#e64a19] to-[#ea580c] hover:brightness-110 active:scale-95 text-white font-black text-sm uppercase tracking-wider shadow-[0_8px_20px_rgba(230,74,25,0.45)] transition-all flex items-center justify-center space-x-2 cursor-pointer font-['Raleway']"
                 >
-                  <Ticket size={14} />
+                  <Ticket size={16} />
                   <span>Get Concert Tickets (from $65)</span>
                 </button>
 
-                <div className="flex items-center justify-between px-1">
+                <div className="flex items-center justify-between px-1 text-sm">
                   <a
                     href="tel:3104440045"
                     onClick={(e) => e.stopPropagation()}
-                    className="inline-flex items-center space-x-1 text-xs font-bold text-[#fff6d6] hover:text-[#d4a359] transition-colors"
+                    className="inline-flex items-center space-x-1 font-bold text-white hover:text-[#d4a359] transition-colors"
                   >
-                    <Phone size={12} className="text-[#d4a359]" />
+                    <Phone size={14} className="text-[#d4a359]" />
                     <span>310-444-0045</span>
                   </a>
 
-                  <span className="text-[9px] text-gray-400">Sept 12 • 8:00 PM</span>
+                  <span className="text-xs font-bold text-[#f3cf8a]">Sept 12 • 8:00 PM</span>
                 </div>
 
-                <div className="text-[8.5px] text-[#d1d5db]/80 flex items-center justify-center space-x-1 font-medium">
-                  <MapPin size={9} className="text-[#d4a359] shrink-0" />
+                <div className="text-xs text-gray-200 flex items-center justify-center space-x-1.5 font-medium">
+                  <MapPin size={13} className="text-[#d4a359] shrink-0" />
                   <span>11330 Santa Monica Blvd, Los Angeles, CA 90025</span>
                 </div>
               </div>
@@ -240,20 +239,20 @@ export const StorySection: React.FC<StorySectionProps> = ({
               <div className="relative z-10 text-center">
                 <div className="flex items-center justify-between border-b border-[#d4a359]/40 pb-2 mb-3">
                   <div className="text-left">
-                    <h4 className="font-['Raleway'] font-black tracking-widest text-xs sm:text-sm text-white uppercase">
+                    <h4 className="font-['Raleway'] font-black tracking-widest text-sm text-white uppercase">
                       WEEKEND CABARET
                     </h4>
-                    <span className="text-[8px] sm:text-[9px] tracking-[0.25em] text-[#d4a359] uppercase block font-semibold">
+                    <span className="text-xs tracking-[0.2em] text-[#d4a359] uppercase block font-bold">
                       ✦ EVERY FRI &amp; SAT NIGHT ✦
                     </span>
                   </div>
-                  <div className="w-8 h-8 rounded-full bg-[#1b030b] border border-[#d4a359] flex items-center justify-center text-[#d4a359]">
-                    <Music size={14} />
+                  <div className="w-9 h-9 rounded-full bg-[#1b030b] border border-[#d4a359] flex items-center justify-center text-[#d4a359]">
+                    <Music size={16} />
                   </div>
                 </div>
 
                 <div className="py-1">
-                  <span className="text-[10px] uppercase tracking-[0.2em] text-[#fbe8a6] font-bold block">
+                  <span className="text-xs uppercase tracking-[0.2em] text-[#fbe8a6] font-bold block">
                     PERSIAN LIVE MUSIC &amp; DINING
                   </span>
                   <h3 className="font-serif text-2xl sm:text-3xl text-white font-bold tracking-tight mt-0.5">
@@ -268,12 +267,11 @@ export const StorySection: React.FC<StorySectionProps> = ({
                   <img
                     src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80"
                     alt="Persian live music and violin concert performance"
-                    className="w-full h-full object-cover filter contrast-[1.1] brightness-[0.92] group-hover:scale-105 transition-transform duration-700"
+                    className="w-full h-full object-cover filter contrast-[1.05] group-hover:scale-105 transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0c0307] via-transparent to-black/40" />
                   
-                  <div className="absolute bottom-2.5 left-2.5 right-2.5 bg-black/80 backdrop-blur-md p-2.5 rounded-xl border border-white/10">
-                    <p className="text-[10px] text-gray-200 leading-snug">
+                  <div className="absolute bottom-2.5 left-2.5 right-2.5 bg-black/85 backdrop-blur-md p-3 rounded-xl border border-white/20">
+                    <p className="text-xs text-gray-100 leading-snug">
                       <strong className="text-[#f3cf8a]">Dinner &amp; Show:</strong> Royal Persian kabab platters, tahdig, and live vocalists under grand crystal chandeliers.
                     </p>
                   </div>
@@ -281,9 +279,9 @@ export const StorySection: React.FC<StorySectionProps> = ({
               </div>
 
               {/* Footer */}
-              <div className="relative z-10 text-center space-y-2 pt-1 border-t border-[#d4a359]/40">
-                <div className="flex items-center justify-center space-x-2 text-[10px] text-[#f3cf8a] uppercase tracking-widest font-bold">
-                  <Calendar size={12} className="text-[#d4a359]" />
+              <div className="relative z-10 text-center space-y-3 pt-1 border-t border-[#d4a359]/40">
+                <div className="flex items-center justify-center space-x-2 text-xs text-[#f3cf8a] uppercase tracking-wider font-bold">
+                  <Calendar size={14} className="text-[#d4a359]" />
                   <span>DOORS OPEN 8:00 PM • SHOW 9:30 PM</span>
                 </div>
 
@@ -293,15 +291,15 @@ export const StorySection: React.FC<StorySectionProps> = ({
                       e.stopPropagation();
                       handleTicketClick("Persian Live Music & Weekend Cabaret", "Every Friday & Saturday Night");
                     }}
-                    className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#d4a359] via-[#e2b46b] to-[#f3cf8a] hover:brightness-110 active:scale-95 text-black font-black text-xs uppercase tracking-widest shadow-md transition-all flex items-center justify-center space-x-1.5 cursor-pointer font-['Raleway']"
+                    className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-[#d4a359] via-[#e2b46b] to-[#f3cf8a] hover:brightness-110 active:scale-95 text-black font-black text-sm uppercase tracking-wider shadow-md transition-all flex items-center justify-center space-x-2 cursor-pointer font-['Raleway']"
                   >
-                    <Ticket size={14} />
+                    <Ticket size={16} />
                     <span>Get Cabaret &amp; Dinner Passes</span>
                   </button>
                 </div>
 
-                <div className="text-[9px] text-[#d1d5db]/80 flex items-center justify-center space-x-1 font-medium">
-                  <MapPin size={10} className="text-[#d4a359] shrink-0" />
+                <div className="text-xs text-gray-200 flex items-center justify-center space-x-1.5 font-medium">
+                  <MapPin size={13} className="text-[#d4a359] shrink-0" />
                   <span>West Los Angeles • Free Valet Available</span>
                 </div>
               </div>

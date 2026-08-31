@@ -77,7 +77,7 @@ interface PublicPageViewerProps {
   adminUser: AdminUser | null;
   onOpenAdminToPage: (slug: string) => void;
   onNavigateHome: () => void;
-  onOpenReservation?: () => void;
+  onOpenReservation?: (spaceName?: string) => void;
   onOpenTickets?: () => void;
 }
 
@@ -109,14 +109,14 @@ export const PublicPageViewer: React.FC<PublicPageViewerProps> = ({
         isNight ? 'bg-[#180309] text-[#f7e8ea]' : 'bg-[#faf8f5] text-[#1a1e24]'
       }`}
     >
-      {/* Full-width Screen Hero Banner Header (Matches Home Page Hero Screen Width) */}
+      {/* Full-width Screen Hero Banner Header */}
       <header className="relative w-full overflow-hidden shadow-2xl mb-10">
         <div className="relative h-[440px] sm:h-[540px] md:h-[600px] w-full overflow-hidden">
           {/* Dynamic Video (single or playlist) or Image Hero Media */}
           {videoSrcs.length > 0 ? (
             <VideoHero
               srcs={videoSrcs}
-              className="w-full h-full object-cover brightness-[0.95] contrast-[1.05]"
+              className="w-full h-full object-cover"
             />
           ) : (
             <img
@@ -125,12 +125,9 @@ export const PublicPageViewer: React.FC<PublicPageViewerProps> = ({
                 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1600&q=80'
               }
               alt={frontmatter.title}
-              className="w-full h-full object-cover brightness-[0.90] contrast-[1.05] scale-105 hover:scale-100 transition-transform duration-1000 ease-out"
+              className="w-full h-full object-cover scale-105 hover:scale-100 transition-transform duration-1000 ease-out"
             />
           )}
-
-          {/* Minimal Subtle Overlay to let the video shine clearly while keeping text legible */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#180309]/90 via-black/30 to-black/35" />
 
           {/* Floating Gold Sparkle Accent in top right */}
           <div className="absolute top-6 right-6 px-4 py-1.5 rounded-full bg-[#180309]/80 border border-[#d4a359]/60 text-[#f3cf8a] text-xs font-bold uppercase tracking-widest backdrop-blur-md hidden sm:flex items-center space-x-1.5 shadow-lg z-20">
@@ -160,10 +157,10 @@ export const PublicPageViewer: React.FC<PublicPageViewerProps> = ({
               <div className="pt-3 flex flex-wrap items-center gap-3">
                 {onOpenReservation && (
                   <button
-                    onClick={onOpenReservation}
+                    onClick={() => onOpenReservation()}
                     className="px-6 py-2.5 rounded-full bg-gradient-to-r from-[#d4a359] via-[#e2b46b] to-[#b3833b] hover:brightness-110 text-black font-bold text-xs uppercase tracking-widest transition-all cursor-pointer shadow-lg active:scale-95"
                   >
-                    Reserve Table
+                    {page.slug === 'reserve-space' ? 'Inquire About Spaces' : 'Reserve Table'}
                   </button>
                 )}
                 {page.slug === 'live-events' && onOpenTickets && (
@@ -234,143 +231,145 @@ export const PublicPageViewer: React.FC<PublicPageViewerProps> = ({
         ) : page.slug === 'dine-in' ? (
           <div className={`p-6 sm:p-10 rounded-3xl border shadow-xl ${
             isNight
-              ? 'bg-[#100308] border-[#2d0715] text-gray-200'
-              : 'bg-white border-stone-200 text-gray-800'
+              ? 'bg-[#100308] border-[#2d0715] text-gray-100'
+              : 'bg-white border-stone-200 text-gray-900'
           }`}>
             <MenuSection mode={mode} csvPath="/menu.csv" />
           </div>
         ) : page.slug === 'catering' ? (
           <div className="space-y-12">
-            <section
-              className={`p-6 sm:p-12 rounded-3xl border shadow-xl ${
-                isNight
-                  ? 'bg-[#100308] border-[#2d0715] text-gray-200'
-                  : 'bg-white border-stone-200 text-gray-800'
-              }`}
-            >
-              <div className="max-w-none space-y-6 text-sm sm:text-base leading-relaxed">
-                <ReactMarkdown
-                  remarkPlugins={[remarkGfm]}
-                  components={{
-                    h1: ({ children }) => (
-                      <h2
-                        className={`font-serif text-2xl sm:text-3xl font-bold border-b pb-3 mb-4 mt-8 ${
-                          isNight ? 'text-white border-[#38081a]' : 'text-stone-900 border-stone-200'
-                        }`}
-                      >
-                        {children}
-                      </h2>
-                    ),
-                    h2: ({ children }) => (
-                      <h3
-                        className={`font-serif text-xl sm:text-2xl font-bold border-b pb-2 mb-3 mt-8 ${
-                          isNight ? 'text-[#f3cf8a] border-white/10' : 'text-[#9e1c38] border-stone-200'
-                        }`}
-                      >
-                        {children}
-                      </h3>
-                    ),
-                    h3: ({ children }) => (
-                      <h4
-                        className={`font-serif text-lg sm:text-xl font-bold mb-2 mt-6 ${
-                          isNight ? 'text-white' : 'text-stone-900'
-                        }`}
-                      >
-                        {children}
-                      </h4>
-                    ),
-                    p: ({ children }) => <p className="mb-4 leading-relaxed font-light">{children}</p>,
-                    ul: ({ children }) => (
-                      <ul className="list-disc pl-6 space-y-2 my-4 marker:text-[#d4a359]">{children}</ul>
-                    ),
-                    ol: ({ children }) => (
-                      <ol className="list-decimal pl-6 space-y-2 my-4 marker:text-[#d4a359] font-medium">
-                        {children}
-                      </ol>
-                    ),
-                    li: ({ children }) => <li className="leading-relaxed">{children}</li>,
-                    blockquote: ({ children }) => (
-                      <blockquote
-                        className={`border-l-4 border-[#d4a359] p-5 rounded-r-2xl italic my-6 shadow-sm ${
-                          isNight ? 'bg-[#1b050f] text-[#f5d79e]' : 'bg-amber-50/80 text-stone-800'
-                        }`}
-                      >
-                        {children}
-                      </blockquote>
-                    ),
-                    table: ({ children }) => (
-                      <div
-                        className={`overflow-x-auto my-6 rounded-2xl border shadow-sm ${
-                          isNight ? 'border-[#38081a] bg-[#14040b]' : 'border-stone-200 bg-stone-50'
-                        }`}
-                      >
-                        <table className="w-full text-left text-sm sm:text-base border-collapse">
+            {content && content.trim().length > 0 && (
+              <section
+                className={`p-6 sm:p-12 rounded-3xl border shadow-xl ${
+                  isNight
+                    ? 'bg-[#100308] border-[#2d0715] text-gray-100'
+                    : 'bg-white border-stone-200 text-gray-900'
+                }`}
+              >
+                <div className="max-w-none space-y-6 text-base sm:text-lg leading-relaxed">
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    components={{
+                      h1: ({ children }) => (
+                        <h2
+                          className={`font-serif text-3xl sm:text-4xl lg:text-5xl font-bold border-b pb-3 mb-6 mt-4 ${
+                            isNight ? 'text-[#f3cf8a] border-[#38081a]' : 'text-stone-900 border-stone-200'
+                          }`}
+                        >
                           {children}
-                        </table>
-                      </div>
-                    ),
-                    th: ({ children }) => (
-                      <th
-                        className={`px-4 sm:px-6 py-4 border-b font-bold uppercase tracking-wider text-xs sm:text-sm ${
-                          isNight
-                            ? 'bg-[#20050f] border-[#38081a] text-[#f3cf8a]'
-                            : 'bg-stone-100 border-stone-200 text-[#9e1c38]'
-                        }`}
-                      >
-                        {children}
-                      </th>
-                    ),
-                    td: ({ children }) => (
-                      <td
-                        className={`px-4 sm:px-6 py-4 border-b text-sm sm:text-base leading-relaxed ${
-                          isNight ? 'border-[#260511] text-gray-100' : 'border-stone-200 text-stone-900'
-                        }`}
-                      >
-                        {children}
-                      </td>
-                    ),
-                    img: ({ src, alt }) => (
-                      <figure className="my-8 rounded-3xl overflow-hidden border border-stone-300/30 shadow-2xl">
-                        <img
-                          src={src}
-                          alt={alt || ''}
-                          className="w-full object-cover max-h-[500px] hover:scale-102 transition-transform duration-700"
-                        />
-                        {alt && (
-                          <figcaption
-                            className={`px-4 py-2 text-center text-xs font-mono tracking-wide ${
-                              isNight ? 'bg-[#18040d] text-gray-400' : 'bg-stone-100 text-stone-600'
-                            }`}
-                          >
-                            {alt}
-                          </figcaption>
-                        )}
-                      </figure>
-                    ),
-                    a: ({ href, children }) => (
-                      <a
-                        href={href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-[#d4a359] underline underline-offset-4 hover:text-[#f3cf8a] font-medium"
-                      >
-                        {children}
-                      </a>
-                    ),
-                    strong: ({ children }) => (
-                      <strong className={isNight ? 'text-white font-bold' : 'text-stone-950 font-bold'}>
-                        {children}
-                      </strong>
-                    ),
-                    hr: () => (
-                      <hr className={`my-8 ${isNight ? 'border-[#38081a]' : 'border-stone-200'}`} />
-                    ),
-                  }}
-                >
-                  {content}
-                </ReactMarkdown>
-              </div>
-            </section>
+                        </h2>
+                      ),
+                      h2: ({ children }) => (
+                        <h3
+                          className={`font-serif text-2xl sm:text-3xl font-bold border-b pb-2 mb-4 mt-8 ${
+                            isNight ? 'text-[#f3cf8a] border-white/10' : 'text-[#9e1c38] border-stone-200'
+                          }`}
+                        >
+                          {children}
+                        </h3>
+                      ),
+                      h3: ({ children }) => (
+                        <h4
+                          className={`font-serif text-xl sm:text-2xl font-bold mb-3 mt-6 ${
+                            isNight ? 'text-white' : 'text-stone-900'
+                          }`}
+                        >
+                          {children}
+                        </h4>
+                      ),
+                      p: ({ children }) => <p className="mb-4 leading-relaxed font-normal">{children}</p>,
+                      ul: ({ children }) => (
+                        <ul className="list-disc pl-6 space-y-2.5 my-4 marker:text-[#d4a359]">{children}</ul>
+                      ),
+                      ol: ({ children }) => (
+                        <ol className="list-decimal pl-6 space-y-2.5 my-4 marker:text-[#d4a359] font-medium">
+                          {children}
+                        </ol>
+                      ),
+                      li: ({ children }) => <li className="leading-relaxed font-normal">{children}</li>,
+                      blockquote: ({ children }) => (
+                        <blockquote
+                          className={`border-l-4 border-[#d4a359] p-5 rounded-r-2xl italic my-6 shadow-sm ${
+                            isNight ? 'bg-[#1b050f] text-[#f5d79e]' : 'bg-amber-50/90 text-stone-900'
+                          }`}
+                        >
+                          {children}
+                        </blockquote>
+                      ),
+                      table: ({ children }) => (
+                        <div
+                          className={`overflow-x-auto my-6 rounded-2xl border shadow-sm ${
+                            isNight ? 'border-[#38081a] bg-[#14040b]' : 'border-stone-200 bg-stone-50'
+                          }`}
+                        >
+                          <table className="w-full text-left text-base sm:text-lg border-collapse">
+                            {children}
+                          </table>
+                        </div>
+                      ),
+                      th: ({ children }) => (
+                        <th
+                          className={`px-4 sm:px-6 py-4 border-b font-bold uppercase tracking-wider text-sm sm:text-base ${
+                            isNight
+                              ? 'bg-[#20050f] border-[#38081a] text-[#f3cf8a]'
+                              : 'bg-stone-100 border-stone-200 text-[#9e1c38]'
+                          }`}
+                        >
+                          {children}
+                        </th>
+                      ),
+                      td: ({ children }) => (
+                        <td
+                          className={`px-4 sm:px-6 py-4 border-b text-base sm:text-lg leading-relaxed ${
+                            isNight ? 'border-[#260511] text-gray-100' : 'border-stone-200 text-stone-900'
+                          }`}
+                        >
+                          {children}
+                        </td>
+                      ),
+                      img: ({ src, alt }) => (
+                        <figure className="my-8 rounded-3xl overflow-hidden border border-stone-300/30 shadow-2xl">
+                          <img
+                            src={src}
+                            alt={alt || ''}
+                            className="w-full object-cover max-h-[520px] hover:scale-102 transition-transform duration-700"
+                          />
+                          {alt && (
+                            <figcaption
+                              className={`px-4 py-2.5 text-center text-xs sm:text-sm font-mono tracking-wide ${
+                                isNight ? 'bg-[#18040d] text-gray-300' : 'bg-stone-100 text-stone-700'
+                              }`}
+                            >
+                              {alt}
+                            </figcaption>
+                          )}
+                        </figure>
+                      ),
+                      a: ({ href, children }) => (
+                        <a
+                          href={href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[#d4a359] underline underline-offset-4 hover:text-[#f3cf8a] font-bold"
+                        >
+                          {children}
+                        </a>
+                      ),
+                      strong: ({ children }) => (
+                        <strong className={isNight ? 'text-white font-extrabold' : 'text-stone-950 font-extrabold'}>
+                          {children}
+                        </strong>
+                      ),
+                      hr: () => (
+                        <hr className={`my-8 ${isNight ? 'border-[#38081a]' : 'border-stone-200'}`} />
+                      ),
+                    }}
+                  >
+                    {content}
+                  </ReactMarkdown>
+                </div>
+              </section>
+            )}
 
             <div className="rounded-3xl overflow-hidden shadow-2xl border border-stone-200/10">
               <CulinarySection
@@ -384,18 +383,18 @@ export const PublicPageViewer: React.FC<PublicPageViewerProps> = ({
           <section
             className={`p-6 sm:p-12 rounded-3xl border shadow-xl ${
               isNight
-                ? 'bg-[#100308] border-[#2d0715] text-gray-200'
-                : 'bg-white border-stone-200 text-gray-800'
+                ? 'bg-[#100308] border-[#2d0715] text-gray-100'
+                : 'bg-white border-stone-200 text-gray-900'
             }`}
           >
-            <div className="max-w-none space-y-6 text-sm sm:text-base leading-relaxed">
+            <div className="max-w-none space-y-6 text-base sm:text-lg leading-relaxed">
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 components={{
                   h1: ({ children }) => (
                     <h2
-                      className={`font-serif text-2xl sm:text-3xl font-bold border-b pb-3 mb-4 mt-8 ${
-                        isNight ? 'text-white border-[#38081a]' : 'text-stone-900 border-stone-200'
+                      className={`font-serif text-3xl sm:text-4xl lg:text-5xl font-bold border-b pb-3 mb-6 mt-4 ${
+                        isNight ? 'text-[#f3cf8a] border-[#38081a]' : 'text-stone-900 border-stone-200'
                       }`}
                     >
                       {children}
@@ -403,7 +402,7 @@ export const PublicPageViewer: React.FC<PublicPageViewerProps> = ({
                   ),
                   h2: ({ children }) => (
                     <h3
-                      className={`font-serif text-xl sm:text-2xl font-bold border-b pb-2 mb-3 mt-8 ${
+                      className={`font-serif text-2xl sm:text-3xl font-bold border-b pb-2 mb-4 mt-8 ${
                         isNight ? 'text-[#f3cf8a] border-white/10' : 'text-[#9e1c38] border-stone-200'
                       }`}
                     >
@@ -412,27 +411,27 @@ export const PublicPageViewer: React.FC<PublicPageViewerProps> = ({
                   ),
                   h3: ({ children }) => (
                     <h4
-                      className={`font-serif text-lg sm:text-xl font-bold mb-2 mt-6 ${
+                      className={`font-serif text-xl sm:text-2xl font-bold mb-3 mt-6 ${
                         isNight ? 'text-white' : 'text-stone-900'
                       }`}
                     >
                       {children}
                     </h4>
                   ),
-                  p: ({ children }) => <p className="mb-4 leading-relaxed font-light">{children}</p>,
+                  p: ({ children }) => <p className="mb-4 leading-relaxed font-normal">{children}</p>,
                   ul: ({ children }) => (
-                    <ul className="list-disc pl-6 space-y-2 my-4 marker:text-[#d4a359]">{children}</ul>
+                    <ul className="list-disc pl-6 space-y-2.5 my-4 marker:text-[#d4a359]">{children}</ul>
                   ),
                   ol: ({ children }) => (
-                    <ol className="list-decimal pl-6 space-y-2 my-4 marker:text-[#d4a359] font-medium">
+                    <ol className="list-decimal pl-6 space-y-2.5 my-4 marker:text-[#d4a359] font-medium">
                       {children}
                     </ol>
                   ),
-                  li: ({ children }) => <li className="leading-relaxed">{children}</li>,
+                  li: ({ children }) => <li className="leading-relaxed font-normal">{children}</li>,
                   blockquote: ({ children }) => (
                     <blockquote
                       className={`border-l-4 border-[#d4a359] p-5 rounded-r-2xl italic my-6 shadow-sm ${
-                        isNight ? 'bg-[#1b050f] text-[#f5d79e]' : 'bg-amber-50/80 text-stone-800'
+                        isNight ? 'bg-[#1b050f] text-[#f5d79e]' : 'bg-amber-50/90 text-stone-900'
                       }`}
                     >
                       {children}
@@ -444,14 +443,14 @@ export const PublicPageViewer: React.FC<PublicPageViewerProps> = ({
                         isNight ? 'border-[#38081a] bg-[#14040b]' : 'border-stone-200 bg-stone-50'
                       }`}
                     >
-                      <table className="w-full text-left text-sm sm:text-base border-collapse">
+                      <table className="w-full text-left text-base sm:text-lg border-collapse">
                         {children}
                       </table>
                     </div>
                   ),
                   th: ({ children }) => (
                     <th
-                      className={`px-4 sm:px-6 py-4 border-b font-bold uppercase tracking-wider text-xs sm:text-sm ${
+                      className={`px-4 sm:px-6 py-4 border-b font-bold uppercase tracking-wider text-sm sm:text-base ${
                         isNight
                           ? 'bg-[#20050f] border-[#38081a] text-[#f3cf8a]'
                           : 'bg-stone-100 border-stone-200 text-[#9e1c38]'
@@ -462,7 +461,7 @@ export const PublicPageViewer: React.FC<PublicPageViewerProps> = ({
                   ),
                   td: ({ children }) => (
                     <td
-                      className={`px-4 sm:px-6 py-4 border-b text-sm sm:text-base leading-relaxed ${
+                      className={`px-4 sm:px-6 py-4 border-b text-base sm:text-lg leading-relaxed ${
                         isNight ? 'border-[#260511] text-gray-100' : 'border-stone-200 text-stone-900'
                       }`}
                     >
@@ -474,12 +473,12 @@ export const PublicPageViewer: React.FC<PublicPageViewerProps> = ({
                       <img
                         src={src}
                         alt={alt || ''}
-                        className="w-full object-cover max-h-[500px] hover:scale-102 transition-transform duration-700"
+                        className="w-full object-cover max-h-[520px] hover:scale-102 transition-transform duration-700"
                       />
                       {alt && (
                         <figcaption
-                          className={`px-4 py-2 text-center text-xs font-mono tracking-wide ${
-                            isNight ? 'bg-[#18040d] text-gray-400' : 'bg-stone-100 text-stone-600'
+                          className={`px-4 py-2.5 text-center text-xs sm:text-sm font-mono tracking-wide ${
+                            isNight ? 'bg-[#18040d] text-gray-300' : 'bg-stone-100 text-stone-700'
                           }`}
                         >
                           {alt}
@@ -492,13 +491,13 @@ export const PublicPageViewer: React.FC<PublicPageViewerProps> = ({
                       href={href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-[#d4a359] underline underline-offset-4 hover:text-[#f3cf8a] font-medium"
+                      className="text-[#d4a359] underline underline-offset-4 hover:text-[#f3cf8a] font-bold"
                     >
                       {children}
                     </a>
                   ),
                   strong: ({ children }) => (
-                    <strong className={isNight ? 'text-white font-bold' : 'text-stone-950 font-bold'}>
+                    <strong className={isNight ? 'text-white font-extrabold' : 'text-stone-950 font-extrabold'}>
                       {children}
                     </strong>
                   ),

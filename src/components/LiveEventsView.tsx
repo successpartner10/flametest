@@ -133,7 +133,7 @@ export const LiveEventsView: React.FC<LiveEventsViewProps> = ({
             
             <div className="text-center space-y-2">
               <h3 className="font-serif text-2xl sm:text-3xl font-bold text-white">Upcoming Concerts &amp; Special Events</h3>
-              <p className="text-sm text-[#f5a7b8]">Select an event below to reserve VIP tables or general concert admission tickets.</p>
+              <p className="text-sm sm:text-base text-gray-200">Select an event below to reserve VIP tables or general concert admission tickets.</p>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -146,41 +146,41 @@ export const LiveEventsView: React.FC<LiveEventsViewProps> = ({
                     alt="Shahyar Ghanbari & Arand Live Concert"
                     className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700"
                   />
-                  <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-red-900/90 text-white border border-red-500 text-[11px] font-bold uppercase tracking-widest shadow-md">
+                  <div className="absolute top-4 left-4 px-3.5 py-1.5 rounded-full bg-red-900/95 text-white border border-red-500 text-xs font-extrabold uppercase tracking-wider shadow-md">
                     FEATURED CONCERT
                   </div>
-                  <div className="absolute bottom-4 right-4 px-3 py-1 rounded-full bg-black/80 text-[#f3cf8a] border border-[#d4a359] text-xs font-bold shadow-md">
+                  <div className="absolute bottom-4 right-4 px-3.5 py-1.5 rounded-full bg-black/85 text-[#f3cf8a] border border-[#d4a359] text-xs sm:text-sm font-bold shadow-md">
                     Sat, Sept 12th
                   </div>
                 </div>
 
                 <div className="p-6 sm:p-8 space-y-6 flex-1 flex flex-col justify-between">
                   <div className="space-y-3">
-                    <h4 className="font-serif text-2xl font-bold text-white">Shahyar Ghanbari &amp; Arand Live</h4>
-                    <p className="text-xs text-[#f5a7b8] leading-relaxed">
+                    <h4 className="font-serif text-2xl sm:text-3xl font-bold text-white">Shahyar Ghanbari &amp; Arand Live</h4>
+                    <p className="text-sm sm:text-base text-gray-200 leading-relaxed font-normal">
                       An extraordinary evening of iconic Persian songwriting and contemporary live vocals in our luxury ballroom setting.
                     </p>
 
-                    <div className="space-y-2 pt-2">
-                      <div className="flex items-center justify-between text-xs p-2.5 rounded-xl bg-[#280510] border border-[#521324]">
-                        <span className="text-white font-medium">VIP Front Stage Table + Dinner:</span>
-                        <span className="text-[#f3cf8a] font-bold">$150 / guest</span>
+                    <div className="space-y-2.5 pt-2">
+                      <div className="flex items-center justify-between text-sm p-3 rounded-xl bg-[#280510] border border-[#521324]">
+                        <span className="text-white font-semibold">VIP Front Stage Table + Dinner:</span>
+                        <span className="text-[#f3cf8a] font-extrabold text-base">$150 / guest</span>
                       </div>
-                      <div className="flex items-center justify-between text-xs p-2.5 rounded-xl bg-[#280510] border border-[#521324]">
-                        <span className="text-white font-medium">General Gala Admission:</span>
-                        <span className="text-[#f5d79e] font-bold">$75 / guest</span>
+                      <div className="flex items-center justify-between text-sm p-3 rounded-xl bg-[#280510] border border-[#521324]">
+                        <span className="text-white font-semibold">General Gala Admission:</span>
+                        <span className="text-[#f5d79e] font-extrabold text-base">$75 / guest</span>
                       </div>
                     </div>
                   </div>
 
                   <div className="pt-4 flex items-center justify-between border-t border-[#521324]">
-                    <div className="text-xs text-gray-400">
+                    <div className="text-xs sm:text-sm text-gray-300 font-semibold">
                       <span>Doors Open: 8:00 PM</span>
                     </div>
                     {onOpenTickets && (
                       <button
                         onClick={onOpenTickets}
-                        className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#d4a359] to-[#f3cf8a] text-black font-bold text-xs uppercase tracking-wider hover:brightness-110 transition-all cursor-pointer shadow-md"
+                        className="px-7 py-3 rounded-xl bg-gradient-to-r from-[#d4a359] to-[#f3cf8a] text-black font-extrabold text-xs sm:text-sm uppercase tracking-wider hover:brightness-110 transition-all cursor-pointer shadow-md"
                       >
                         Book Event 1
                       </button>
@@ -197,41 +197,41 @@ export const LiveEventsView: React.FC<LiveEventsViewProps> = ({
                     alt="Royal Persian Cabaret Gala"
                     className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700"
                   />
-                  <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-[#521324] text-[#f3cf8a] border border-[#d4a359] text-[11px] font-bold uppercase tracking-widest shadow-md">
+                  <div className="absolute top-4 left-4 px-3.5 py-1.5 rounded-full bg-[#521324] text-[#f3cf8a] border border-[#d4a359] text-xs font-extrabold uppercase tracking-wider shadow-md">
                     EVERY FRIDAY NIGHT
                   </div>
-                  <div className="absolute bottom-4 right-4 px-3 py-1 rounded-full bg-black/80 text-[#f3cf8a] border border-[#d4a359] text-xs font-bold shadow-md">
+                  <div className="absolute bottom-4 right-4 px-3.5 py-1.5 rounded-full bg-black/85 text-[#f3cf8a] border border-[#d4a359] text-xs sm:text-sm font-bold shadow-md">
                     Weekly Gala
                   </div>
                 </div>
 
                 <div className="p-6 sm:p-8 space-y-6 flex-1 flex flex-col justify-between">
                   <div className="space-y-3">
-                    <h4 className="font-serif text-2xl font-bold text-white">Royal Persian Cabaret &amp; Dance Night</h4>
-                    <p className="text-xs text-[#f5a7b8] leading-relaxed">
+                    <h4 className="font-serif text-2xl sm:text-3xl font-bold text-white">Royal Persian Cabaret &amp; Dance Night</h4>
+                    <p className="text-sm sm:text-base text-gray-200 leading-relaxed font-normal">
                       Live Persian orchestra, traditional dancers, artisan craft cocktails, and skewer platters until 1:00 AM.
                     </p>
 
-                    <div className="space-y-2 pt-2">
-                      <div className="flex items-center justify-between text-xs p-2.5 rounded-xl bg-[#280510] border border-[#521324]">
-                        <span className="text-white font-medium">VIP Cabaret Table Service:</span>
-                        <span className="text-[#f3cf8a] font-bold">$120 / guest</span>
+                    <div className="space-y-2.5 pt-2">
+                      <div className="flex items-center justify-between text-sm p-3 rounded-xl bg-[#280510] border border-[#521324]">
+                        <span className="text-white font-semibold">VIP Cabaret Table Service:</span>
+                        <span className="text-[#f3cf8a] font-extrabold text-base">$120 / guest</span>
                       </div>
-                      <div className="flex items-center justify-between text-xs p-2.5 rounded-xl bg-[#280510] border border-[#521324]">
-                        <span className="text-white font-medium">General Cabaret Entry:</span>
-                        <span className="text-[#f5d79e] font-bold">$60 / guest</span>
+                      <div className="flex items-center justify-between text-sm p-3 rounded-xl bg-[#280510] border border-[#521324]">
+                        <span className="text-white font-semibold">General Cabaret Entry:</span>
+                        <span className="text-[#f5d79e] font-extrabold text-base">$60 / guest</span>
                       </div>
                     </div>
                   </div>
 
                   <div className="pt-4 flex items-center justify-between border-t border-[#521324]">
-                    <div className="text-xs text-gray-400">
+                    <div className="text-xs sm:text-sm text-gray-300 font-semibold">
                       <span>Service: 9:00 PM – Late</span>
                     </div>
                     {onOpenTickets && (
                       <button
                         onClick={onOpenTickets}
-                        className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#d4a359] to-[#f3cf8a] text-black font-bold text-xs uppercase tracking-wider hover:brightness-110 transition-all cursor-pointer shadow-md"
+                        className="px-7 py-3 rounded-xl bg-gradient-to-r from-[#d4a359] to-[#f3cf8a] text-black font-extrabold text-xs sm:text-sm uppercase tracking-wider hover:brightness-110 transition-all cursor-pointer shadow-md"
                       >
                         Book Event 2
                       </button>

@@ -38,12 +38,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   const [isPlaying, setIsPlaying] = useState(true);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  // Auto-cycle between cinematic scenes with smooth crossfade
+  // Auto-cycle between cinematic scenes with smooth crossfade (faster transition)
   useEffect(() => {
     if (!isPlaying) return;
     const interval = setInterval(() => {
       setActiveSceneIndex((prev) => (prev + 1) % CINEMATIC_SCENES.length);
-    }, 9000);
+    }, 4000);
     return () => clearInterval(interval);
   }, [isPlaying]);
 
@@ -133,7 +133,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             >
               {/* Animated Cinematic Motion Image Video layer with Ken-Burns pan and zoom */}
               <div 
-                className={`w-full h-full transform transition-transform duration-[9000ms] ease-out ${
+                className={`w-full h-full transform transition-transform duration-[4000ms] ease-out ${
                   isPlaying ? (index === 0 ? 'scale-110 translate-x-2 -translate-y-1' : 'scale-105 -translate-x-2') : 'scale-100'
                 }`}
               >
@@ -144,7 +144,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                   onError={(e) => {
                     e.currentTarget.src = '/images/hero-catering.png';
                   }}
-                  className="w-full h-full object-cover object-center filter contrast-[1.04] brightness-[0.98]"
+                  className="w-full h-full object-cover object-center filter contrast-[1.04]"
                 />
               </div>
             </div>
@@ -156,51 +156,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           ref={canvasRef}
           className="absolute inset-0 z-20 pointer-events-none w-full h-full"
         />
-
-        {/* Subtle Bottom Grounding Gradient (only at the very bottom edge so content blends into next section) */}
-        <div className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-[#180309]/95 via-[#180309]/40 to-transparent z-15 pointer-events-none" />
-      </div>
-
-
-
-
-      {/* Clean, Non-Intrusive Bottom Actions (Removed heavy text overlay to keep hero fully visible) */}
-      <div className="relative z-30 max-w-5xl mx-auto px-4 w-full flex flex-col sm:flex-row items-center justify-between gap-4">
-        
-        {/* Discreet Location & Live Tag */}
-        <div className="flex items-center space-x-3 bg-[#2d0713]/85 backdrop-blur-md px-4 py-2 rounded-2xl border border-[#831f3b]/60 shadow-xl text-left">
-          <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
-          <div>
-            <p className="text-xs sm:text-sm font-bold text-white tracking-wide">
-              FLAME INTERNATIONAL LIVE STAGE
-            </p>
-            <p className="text-[10px] sm:text-xs text-white/70 tracking-wider">
-              11330 Santa Monica Blvd, West Los Angeles • 310-444-0045
-            </p>
-          </div>
-        </div>
-
-        {/* Action Buttons */}
-        <div className="flex items-center space-x-3 w-full sm:w-auto justify-center">
-          <button
-            id="hero-reserve-btn"
-            onClick={onBookTable}
-            className="flex-1 sm:flex-none px-6 py-3 rounded-full bg-gradient-to-r from-[#d9381e] via-[#e64a19] to-[#ea580c] text-white font-bold text-xs sm:text-sm uppercase tracking-[0.14em] transition-all duration-300 shadow-[0_8px_25px_rgba(230,74,25,0.5)] hover:scale-105 active:scale-95 flex items-center justify-center space-x-2 cursor-pointer border border-[#ff8a65]/40 font-['Raleway']"
-          >
-            <Calendar size={16} className="text-white" />
-            <span>Reserve Table</span>
-          </button>
-
-          <button
-            id="hero-view-menu-btn"
-            onClick={onExploreMenu}
-            className="flex-1 sm:flex-none px-6 py-3 rounded-full bg-[#2d0713]/85 hover:bg-[#430b1c] text-white hover:text-[#d4a359] border border-[#831f3b]/70 hover:border-[#d4a359] font-bold text-xs sm:text-sm uppercase tracking-[0.14em] transition-all duration-300 backdrop-blur-md flex items-center justify-center space-x-2 cursor-pointer shadow-lg hover:scale-105 active:scale-95 font-['Raleway']"
-          >
-            <UtensilsCrossed size={16} />
-            <span>Explore Menu</span>
-          </button>
-        </div>
-
       </div>
 
       {/* Organic Architectural Bottom Wave Curve Transition with Animated Glowing Gold Line */}

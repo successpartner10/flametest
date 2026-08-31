@@ -107,37 +107,37 @@ export const Header: React.FC<HeaderProps> = ({
         }`}
       >
         
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-20 sm:h-24 md:h-28 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-24 sm:h-28 md:h-32 flex items-center justify-between">
           
           {/* Mobile Hamburger on TOP-LEFT with stunning custom 3-line morphing animation */}
           <div className="flex items-center lg:hidden">
             <button
               id="mobile-menu-toggle-btn"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="relative w-10 h-10 flex flex-col items-center justify-center rounded-xl bg-[#2d0713]/80 hover:bg-[#430b1c] border border-[#831f3b]/70 hover:border-[#d4a359] text-[#f5d79e] focus:outline-none cursor-pointer transition-all duration-300 shadow-[0_0_15px_rgba(0,0,0,0.5)] group"
+              className="relative w-11 h-11 flex flex-col items-center justify-center rounded-xl bg-[#2d0713]/80 hover:bg-[#430b1c] border border-[#831f3b]/70 hover:border-[#d4a359] text-[#f5d79e] focus:outline-none cursor-pointer transition-all duration-300 shadow-[0_0_15px_rgba(0,0,0,0.5)] group"
               aria-label="Toggle Navigation Menu"
               aria-expanded={mobileMenuOpen}
             >
               {/* Top Bar */}
               <span
-                className={`w-5 h-0.5 bg-[#f3cf8a] rounded-full transition-all duration-300 ease-in-out ${
+                className={`w-5.5 h-0.5 bg-[#f3cf8a] rounded-full transition-all duration-300 ease-in-out ${
                   mobileMenuOpen
                     ? 'rotate-45 translate-y-2 bg-[#f7d688] shadow-[0_0_8px_#d4a359]'
-                    : '-translate-y-1 group-hover:w-5.5'
+                    : '-translate-y-1 group-hover:w-6'
                 }`}
               />
               {/* Middle Bar */}
               <span
-                className={`w-5 h-0.5 bg-[#f3cf8a] rounded-full transition-all duration-200 ease-in-out ${
-                  mobileMenuOpen ? 'opacity-0 scale-x-0' : 'opacity-100 my-0.5 group-hover:w-4'
+                className={`w-5.5 h-0.5 bg-[#f3cf8a] rounded-full transition-all duration-200 ease-in-out ${
+                  mobileMenuOpen ? 'opacity-0 scale-x-0' : 'opacity-100 my-0.5 group-hover:w-4.5'
                 }`}
               />
               {/* Bottom Bar */}
               <span
-                className={`w-5 h-0.5 bg-[#f3cf8a] rounded-full transition-all duration-300 ease-in-out ${
+                className={`w-5.5 h-0.5 bg-[#f3cf8a] rounded-full transition-all duration-300 ease-in-out ${
                   mobileMenuOpen
                     ? '-rotate-45 -translate-y-1 bg-[#f7d688] shadow-[0_0_8px_#d4a359]'
-                    : 'translate-y-1 group-hover:w-5.5'
+                    : 'translate-y-1 group-hover:w-6'
                 }`}
               />
             </button>
@@ -152,7 +152,7 @@ export const Header: React.FC<HeaderProps> = ({
               <img 
                 src="/images/flame-logo.png?v=4" 
                 alt="Flame International" 
-                className="h-16 sm:h-20 md:h-22 w-auto object-contain filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] max-h-full py-0.5" 
+                className="h-20 sm:h-24 md:h-28 lg:h-30 w-auto object-contain filter drop-shadow-[0_6px_20px_rgba(0,0,0,0.95)] max-h-full py-0.5" 
                 onError={(e) => {
                   e.currentTarget.src = '/flame_logo_whiteBORDER.svg';
                 }}

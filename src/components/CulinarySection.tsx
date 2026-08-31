@@ -68,7 +68,7 @@ export const CulinarySection: React.FC<CulinarySectionProps> = ({
           <div className="text-center space-y-4 max-w-2xl mx-auto">
             <div className="flex items-center justify-center space-x-3">
               <span className="w-10 h-[1px] bg-[#c6924b]/50" />
-              <span className={`text-xs font-bold uppercase tracking-[0.3em] ${isNight ? 'text-[#d4a359]' : 'text-[#9e6d2b]'}`}>
+              <span className={`text-xs sm:text-sm font-extrabold uppercase tracking-[0.3em] ${isNight ? 'text-[#d4a359]' : 'text-[#9e6d2b]'}`}>
                 ✦ Full-Service Catering ✦
               </span>
               <span className="w-10 h-[1px] bg-[#c6924b]/50" />
@@ -81,36 +81,36 @@ export const CulinarySection: React.FC<CulinarySectionProps> = ({
                 We Cater
               </h3>
               <h2 className={`font-serif text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight ${
-                isNight ? 'text-white' : 'text-[#1a1c20]'
+                isNight ? 'text-white' : 'text-stone-950'
               }`}>
                 Your Event, Our Kitchen
               </h2>
             </div>
 
-            <p className={`text-base sm:text-lg leading-relaxed font-light ${
-              isNight ? 'text-[#d1d5db]' : 'text-[#555e6b]'
+            <p className={`text-base sm:text-lg lg:text-xl leading-relaxed font-normal ${
+              isNight ? 'text-gray-100' : 'text-stone-900'
             }`}>
-              Whether it's a backyard birthday, a boardroom lunch, or a grand wedding banquet — <strong className={isNight ? 'text-white' : 'text-[#1a1c20]'}>Flame International</strong> brings authentic Persian flavours, charcoal-grilled kababs, and saffron feasts directly to your venue.
+              Whether it's a backyard birthday, a boardroom lunch, or a grand wedding banquet — <strong className={isNight ? 'text-white' : 'text-black'}>Flame International</strong> brings authentic Persian flavours, charcoal-grilled kababs, and saffron feasts directly to your venue.
             </p>
 
             <div className="pt-2 flex flex-wrap gap-4 items-center justify-center">
               <button
                 onClick={onMakeReservation}
-                className="px-7 py-3 rounded-full bg-gradient-to-r from-[#9e1c38] to-[#d4a359] hover:from-[#c22345] hover:to-[#f3cf8a] text-white font-bold text-xs uppercase tracking-widest shadow-lg hover:scale-105 transition-all cursor-pointer flex items-center space-x-2"
+                className="px-8 py-3.5 rounded-full bg-gradient-to-r from-[#9e1c38] to-[#d4a359] hover:from-[#c22345] hover:to-[#f3cf8a] text-white font-extrabold text-sm uppercase tracking-wider shadow-lg hover:scale-105 transition-all cursor-pointer flex items-center space-x-2"
               >
-                <Sparkles size={14} className="text-[#fbe8a6]" />
+                <Sparkles size={16} className="text-[#fbe8a6]" />
                 <span>Request Catering Quote</span>
               </button>
               <a
                 href="tel:3104440045"
-                className={`group inline-flex items-center space-x-2 text-xs uppercase tracking-[0.25em] font-semibold border-b pb-1 transition-all duration-300 cursor-pointer ${
+                className={`group inline-flex items-center space-x-2 text-sm uppercase tracking-widest font-bold border-b pb-1 transition-all duration-300 cursor-pointer ${
                   isNight
                     ? 'text-[#f3cf8a] hover:text-white border-[#f3cf8a]/70'
                     : 'text-[#8c6227] hover:text-[#212429] border-[#c6924b]'
                 }`}
               >
                 <span>Call 310-444-0045</span>
-                <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
               </a>
             </div>
           </div>
@@ -127,7 +127,7 @@ export const CulinarySection: React.FC<CulinarySectionProps> = ({
                   className={`group relative rounded-3xl overflow-hidden cursor-pointer transition-all duration-500 hover:-translate-y-2 shadow-xl hover:shadow-2xl border ${
                     isNight
                       ? 'bg-[#110308] border-[#2d0715] hover:border-[#d4a359]/60 hover:shadow-[0_20px_60px_rgba(212,163,89,0.2)]'
-                      : 'bg-white border-stone-200 hover:border-[#d4a359]/60 hover:shadow-[0_20px_60px_rgba(0,0,0,0.1)]'
+                      : 'bg-white border-stone-300 hover:border-[#d4a359]/60 hover:shadow-[0_20px_60px_rgba(0,0,0,0.12)]'
                   }`}
                 >
                   {/* Photo */}
@@ -137,41 +137,40 @@ export const CulinarySection: React.FC<CulinarySectionProps> = ({
                       alt={card.imageAlt}
                       loading="lazy"
                       onError={(e) => { e.currentTarget.src = '/images/hero-catering.png'; }}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out brightness-[0.92] contrast-[1.05]"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out contrast-[1.03]"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
                     {/* Badge pill */}
-                    <div className="absolute top-3 left-3 flex items-center space-x-1.5 px-3 py-1 rounded-full bg-[#180309]/85 border border-[#d4a359]/70 backdrop-blur-sm">
-                      <Icon size={11} className="text-[#d4a359]" />
-                      <span className="text-[#f3cf8a] text-[10px] font-bold uppercase tracking-widest">{card.badge}</span>
+                    <div className="absolute top-3 left-3 flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full bg-[#180309]/90 border border-[#d4a359]/80 backdrop-blur-sm shadow-md">
+                      <Icon size={13} className="text-[#d4a359]" />
+                      <span className="text-[#f3cf8a] text-xs font-extrabold uppercase tracking-wider">{card.badge}</span>
                     </div>
 
                     {/* Bottom image label */}
                     <div className="absolute bottom-3 left-3 right-3">
-                      <span className="text-[10px] font-bold uppercase tracking-widest text-[#f3cf8a]">{card.overlayLabel}</span>
+                      <span className="text-xs font-bold uppercase tracking-wider text-black bg-white/95 px-3 py-1 rounded-lg shadow-md inline-block">{card.overlayLabel}</span>
                     </div>
                   </div>
 
                   {/* Text Content */}
                   <div className="p-5 sm:p-6 space-y-3">
                     <h3 className={`font-serif text-xl sm:text-2xl font-bold tracking-tight ${
-                      isNight ? 'text-white' : 'text-[#1a1c20]'
+                      isNight ? 'text-white' : 'text-stone-950'
                     }`}>
                       {card.title}
                     </h3>
 
-                    <p className={`text-sm leading-relaxed font-light ${
-                      isNight ? 'text-gray-300' : 'text-stone-600'
+                    <p className={`text-sm sm:text-base leading-relaxed font-normal ${
+                      isNight ? 'text-gray-200' : 'text-stone-800'
                     }`}>
                       {card.description}
                     </p>
 
-                    <div className={`inline-flex items-center space-x-1.5 text-xs font-bold uppercase tracking-widest pt-1 transition-colors group-hover:translate-x-1 ${
+                    <div className={`inline-flex items-center space-x-1.5 text-xs sm:text-sm font-bold uppercase tracking-wider pt-1 transition-colors group-hover:translate-x-1 ${
                       isNight ? 'text-[#f3cf8a]' : 'text-[#9e1c38]'
                     }`}>
                       <span>{card.cta}</span>
-                      <ArrowRight size={13} className="transition-transform group-hover:translate-x-1" />
+                      <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
                     </div>
                   </div>
                 </div>
@@ -201,15 +200,14 @@ export const CulinarySection: React.FC<CulinarySectionProps> = ({
                   alt="Home party Persian food spread on dining table"
                   loading="lazy"
                   onError={(e) => { e.currentTarget.src = '/images/hero-dine-in.png'; }}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out brightness-[0.88] contrast-[1.05]"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out contrast-[1.03]"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
-                <div className="absolute top-3 left-3 flex items-center space-x-1.5 px-3 py-1 rounded-full bg-[#180309]/85 border border-[#d4a359]/70 backdrop-blur-sm">
+                <div className="absolute top-3 left-3 flex items-center space-x-1.5 px-3 py-1 rounded-full bg-[#180309]/85 border border-[#d4a359]/70 backdrop-blur-sm shadow-md">
                   <Home size={11} className="text-[#d4a359]" />
                   <span className="text-[#f3cf8a] text-[10px] font-bold uppercase tracking-widest">Home Party</span>
                 </div>
                 <div className="absolute bottom-3 left-4">
-                  <span className="text-white font-serif text-lg font-bold drop-shadow-lg">Home Gatherings</span>
+                  <span className="text-black bg-white/95 px-3 py-1 rounded-lg font-serif text-base font-bold shadow-md inline-block">Home Gatherings</span>
                 </div>
               </div>
 
@@ -243,15 +241,14 @@ export const CulinarySection: React.FC<CulinarySectionProps> = ({
                   alt="Office team lunch catering spread with kabab platters"
                   loading="lazy"
                   onError={(e) => { e.currentTarget.src = '/images/hero-catering.png'; }}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out brightness-[0.88] contrast-[1.05]"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out contrast-[1.03]"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
-                <div className="absolute top-3 left-3 flex items-center space-x-1.5 px-3 py-1 rounded-full bg-[#180309]/85 border border-[#d4a359]/70 backdrop-blur-sm">
+                <div className="absolute top-3 left-3 flex items-center space-x-1.5 px-3 py-1 rounded-full bg-[#180309]/85 border border-[#d4a359]/70 backdrop-blur-sm shadow-md">
                   <Building2 size={11} className="text-[#d4a359]" />
                   <span className="text-[#f3cf8a] text-[10px] font-bold uppercase tracking-widest">Office Catering</span>
                 </div>
                 <div className="absolute bottom-3 left-4">
-                  <span className="text-white font-serif text-lg font-bold drop-shadow-lg">Office Get-Together</span>
+                  <span className="text-black bg-white/95 px-3 py-1 rounded-lg font-serif text-base font-bold shadow-md inline-block">Office Get-Together</span>
                 </div>
               </div>
 

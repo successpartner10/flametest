@@ -11,8 +11,8 @@ import { HeroSection } from './components/HeroSection';
 import { StorySection } from './components/StorySection';
 import { MenuMatrixSection } from './components/MenuMatrixSection';
 import { MadieStoriesSection } from './components/MadieStoriesSection';
-import { MenuSection } from './components/MenuSection';
 import { CulinarySection } from './components/CulinarySection';
+import { ReserveSpaceSection } from './components/ReserveSpaceSection';
 import { FooterSection } from './components/FooterSection';
 import { BottomStickyNav, BottomNavAction } from './components/BottomStickyNav';
 import { MenuModal } from './components/MenuModal';
@@ -50,6 +50,7 @@ export default function App() {
   // Modal screen states
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isReserveOpen, setIsReserveOpen] = useState(false);
+  const [selectedReserveSpace, setSelectedReserveSpace] = useState<string | undefined>(undefined);
   const [isStoriesOpen, setIsStoriesOpen] = useState(false);
   const [isBagOpen, setIsBagOpen] = useState(false);
   const [isFunctionsOpen, setIsFunctionsOpen] = useState(false);
@@ -277,7 +278,10 @@ export default function App() {
             setIsAdminPanelOpen(true);
           }}
           onNavigateHome={() => handleSelectPage('home')}
-          onOpenReservation={() => setIsReserveOpen(true)}
+          onOpenReservation={(spaceName) => {
+            setSelectedReserveSpace(spaceName);
+            setIsReserveOpen(true);
+          }}
           onOpenTickets={() => handleOpenTickets()}
         />
       ) : (
@@ -315,18 +319,20 @@ export default function App() {
             mode={mode}
           />
 
-          {/* 5. Check out Our Menus (2x2 food photo grid + "Check out Our Menus" narrative) */}
-          <MenuSection
-            mode={mode}
-            onOpenMenu={() => handleSelectPage('reserve-space')}
-            onOpenDish={handleOpenDish}
-          />
-
-          {/* 6. Catering Showcase Section */}
+          {/* 5. Catering Showcase Section */}
           <CulinarySection
             mode={mode}
             onMakeReservation={() => handleSelectPage('reserve-space')}
             onOpenDish={handleOpenDish}
+          />
+
+          {/* 7. Reserve a Space for Events & Banquets (Just above Footer) */}
+          <ReserveSpaceSection
+            mode={mode}
+            onReserveSpace={(spaceName) => {
+              setSelectedReserveSpace(spaceName);
+              setIsReserveOpen(true);
+            }}
           />
 
         </main>
@@ -400,8 +406,11 @@ export default function App() {
       {/* Table Reservation Modal */}
       <ReservationModal
         isOpen={isReserveOpen}
+        mode={mode}
+        initialSpace={selectedReserveSpace}
         onClose={() => {
           setIsReserveOpen(false);
+          setSelectedReserveSpace(undefined);
           setActiveBottomAction('home');
         }}
       />

@@ -265,12 +265,12 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
         
         {/* Prominent Official Flame International Color Logo Header (Home Page Only) */}
         {isHomePage && (
-          <RevealOnScroll direction="up" delay={0} duration={800} className="text-center mb-8 flex flex-col items-center">
-            <div className="mb-5 hover:scale-105 transition-transform duration-300 cursor-pointer">
+          <RevealOnScroll direction="up" delay={0} duration={800} className="text-center mb-6 flex flex-col items-center">
+            <div className="mb-4 hover:scale-105 transition-transform duration-300 cursor-pointer">
               <img 
                 src="/images/flame-logo.png?v=4" 
                 alt="Flame International" 
-                className="h-30 sm:h-36 w-auto object-contain filter drop-shadow-[0_4px_12px_rgba(212,163,89,0.3)]" 
+                className="h-16 sm:h-20 md:h-24 w-auto object-contain filter drop-shadow-[0_4px_14px_rgba(212,163,89,0.3)]" 
                 onError={(e) => {
                   e.currentTarget.src = '/flame_logo_whiteBORDER.svg';
                 }}
@@ -941,7 +941,7 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
                     <img 
                       src="/images/flame-logo.png?v=4" 
                       alt="Flame International" 
-                      className="h-24 sm:h-28 w-auto object-contain filter drop-shadow-[0_4px_12px_rgba(212,163,89,0.3)] hover:scale-105 transition-transform duration-300" 
+                      className="h-16 sm:h-20 w-auto object-contain filter drop-shadow-[0_4px_12px_rgba(212,163,89,0.3)] hover:scale-105 transition-transform duration-300" 
                       onError={(e) => {
                         e.currentTarget.src = '/flame_logo_whiteBORDER.svg';
                       }}

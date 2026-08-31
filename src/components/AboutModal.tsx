@@ -33,17 +33,17 @@ export const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose, onOpenR
 
         {/* Content */}
         <div className="flex-1 overflow-y-auto p-6 sm:p-8 space-y-6">
-          <div className="relative aspect-[16/9] rounded-2xl overflow-hidden shadow-lg">
-            <img
-              src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80"
-              alt="Flame International dining room in Los Angeles"
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#180309]/90 via-transparent to-transparent flex items-end p-6">
-              <div>
-                <span className="text-[10px] uppercase font-mono tracking-widest text-[#d4a359]">Santa Monica Blvd, Los Angeles • Est. 1985</span>
-                <h4 className="font-serif text-xl sm:text-2xl text-white font-medium">A Sunlit Corner on Santa Monica Boulevard</h4>
-              </div>
+          <div className="rounded-2xl overflow-hidden shadow-lg border border-[#521324] bg-[#24060f]">
+            <div className="relative aspect-[16/9] w-full overflow-hidden">
+              <img
+                src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80"
+                alt="Flame International dining room in Los Angeles"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="p-4 bg-[#24060f] border-t border-[#521324]">
+              <span className="text-[10px] uppercase font-mono tracking-widest text-[#d4a359] block font-bold">Santa Monica Blvd, Los Angeles • Est. 1985</span>
+              <h4 className="font-serif text-lg sm:text-xl text-white font-medium">A Sunlit Corner on Santa Monica Boulevard</h4>
             </div>
           </div>
 

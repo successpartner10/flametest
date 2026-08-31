@@ -45,18 +45,18 @@ export const MadieStoriesSection: React.FC<MadieStoriesSectionProps> = ({
           
           {/* Catering Badge */}
           <div className="flex flex-col items-center lg:items-start space-y-2">
-            <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-[#3d0917]/90 border border-[#831f3b]/70 text-[#f5d79e] text-[11px] sm:text-xs font-['Raleway'] font-black uppercase tracking-[0.2em] shadow-lg">
-              <Sparkles size={13} className="text-[#f5d79e]" />
+            <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-[#3d0917]/90 border border-[#831f3b]/70 text-[#f5d79e] text-xs font-['Raleway'] font-extrabold uppercase tracking-[0.2em] shadow-lg">
+              <Sparkles size={14} className="text-[#f5d79e]" />
               <span>Full-Service Catering</span>
             </div>
           </div>
 
           {/* Catering-focused copy */}
           <div className="space-y-3">
-            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-white font-extrabold tracking-tight leading-tight">
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-white font-extrabold tracking-tight leading-tight">
               We Bring the Feast <span className="text-[#f3cf8a]">To You</span>
             </h2>
-            <p className="text-base sm:text-lg text-[#f3d2d8] leading-relaxed font-light max-w-md">
+            <p className="text-base sm:text-lg lg:text-xl text-[#f3d2d8] leading-relaxed font-normal max-w-md">
               From intimate home dinners to grand wedding banquets and corporate luncheons — <span className="font-bold text-white tracking-wider">FLAME INTERNATIONAL</span> delivers authentic Persian kababs, saffron feasts, and full banquet setups directly to your venue.
             </p>
           </div>
@@ -139,14 +139,11 @@ export const MadieStoriesSection: React.FC<MadieStoriesSectionProps> = ({
                     onError={(e) => {
                       e.currentTarget.src = '/images/hero-catering.png';
                     }}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 filter brightness-95"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 contrast-[1.02]"
                   />
                   
-                  {/* Subtle Dark Vignette Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#180309]/95 via-[#180309]/40 to-[#180309]/50" />
-
                   {/* Flame Logo Crest in top-center */}
-                  <div className="absolute top-4 left-1/2 transform -translate-x-1/2 flex items-center space-x-1.5 px-3 py-1 rounded-full bg-[#24060f]/80 backdrop-blur-md border border-[#d4a359]/40">
+                  <div className="absolute top-4 left-1/2 transform -translate-x-1/2 flex items-center space-x-1.5 px-3 py-1 rounded-full bg-[#24060f]/90 backdrop-blur-md border border-[#d4a359]/60 shadow-lg">
                     <Flame size={13} className="text-[#d4a359]" />
                     <span className="font-['Raleway'] text-[10px] tracking-[0.2em] font-extrabold uppercase text-[#f5d79e]">
                       FLAME
@@ -154,20 +151,20 @@ export const MadieStoriesSection: React.FC<MadieStoriesSectionProps> = ({
                   </div>
 
                   {/* Card bottom info */}
-                  <div className="absolute bottom-6 left-6 right-6 text-white space-y-1.5">
-                    <span className="text-[9px] sm:text-[10px] uppercase font-mono tracking-[0.25em] text-[#f5d79e] px-2.5 py-0.5 rounded-full bg-[#1b030b]/85 border border-[#831f3b]/70 backdrop-blur-sm inline-block font-semibold">
+                  <div className="absolute bottom-4 left-4 right-4 text-white space-y-1 bg-black/80 backdrop-blur-md p-3.5 rounded-2xl border border-white/10 shadow-lg">
+                    <span className="text-[9px] sm:text-[10px] uppercase font-mono tracking-[0.25em] text-[#f5d79e] px-2 py-0.5 rounded-full bg-[#1b030b] border border-[#831f3b] inline-block font-semibold">
                       {slide.category}
                     </span>
-                    <h3 className="font-serif text-xl sm:text-2xl text-white font-medium drop-shadow-md leading-snug">
+                    <h3 className="font-serif text-lg sm:text-xl text-white font-bold leading-snug">
                       {slide.title}
                     </h3>
-                    <p className="text-xs text-[#fce4ec]/85 line-clamp-1">
+                    <p className="text-xs text-gray-200 line-clamp-1">
                       {slide.subtitle}
                     </p>
                     
                     {isTop && (
-                      <div className="pt-2 flex items-center space-x-2 text-[11px] text-[#ffd54f] font-semibold">
-                        <Play size={12} fill="currentColor" />
+                      <div className="pt-1 flex items-center space-x-1.5 text-[11px] text-[#ffd54f] font-bold">
+                        <Play size={11} fill="currentColor" />
                         <span>Tap to request catering</span>
                       </div>
                     )}

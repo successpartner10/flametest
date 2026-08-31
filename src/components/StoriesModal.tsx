@@ -98,9 +98,8 @@ export const StoriesModal: React.FC<StoriesModalProps> = ({
           <img
             src={currentSlide.image}
             alt={currentSlide.title}
-            className="w-full h-full object-cover filter brightness-[0.88] contrast-[1.05]"
+            className="w-full h-full object-cover contrast-[1.03]"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#180309]/80 via-transparent to-[#180309]/95" />
         </div>
 
         {/* Top Interactive Bar: Progress Indicators & Controls */}
