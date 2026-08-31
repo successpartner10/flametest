@@ -43,21 +43,21 @@ export const MadieStoriesSection: React.FC<MadieStoriesSectionProps> = ({
           className="lg:col-span-5 flex flex-col items-center lg:items-start text-center lg:text-left space-y-7"
         >
           
-          {/* Authentic Persian Culinary Badge */}
+          {/* Catering Badge */}
           <div className="flex flex-col items-center lg:items-start space-y-2">
             <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-[#3d0917]/90 border border-[#831f3b]/70 text-[#f5d79e] text-[11px] sm:text-xs font-['Raleway'] font-black uppercase tracking-[0.2em] shadow-lg">
               <Sparkles size={13} className="text-[#f5d79e]" />
-              <span>Persian Culinary Stories</span>
+              <span>Full-Service Catering</span>
             </div>
           </div>
 
-          {/* Copy highlighting authentic Persian culinary heritage */}
+          {/* Catering-focused copy */}
           <div className="space-y-3">
             <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-white font-extrabold tracking-tight leading-tight">
-              The Heritage of <span className="text-[#f3cf8a]">Persian Gastronomy</span>
+              We Bring the Feast <span className="text-[#f3cf8a]">To You</span>
             </h2>
             <p className="text-base sm:text-lg text-[#f3d2d8] leading-relaxed font-light max-w-md">
-              At <span className="font-bold text-white tracking-wider">FLAME INTERNATIONAL</span>, every dish is an ode to ancient Persian culinary art — flame-charbroiled skewers, jewel-toned saffron rice, and vibrant live melodies.
+              From intimate home dinners to grand wedding banquets and corporate luncheons — <span className="font-bold text-white tracking-wider">FLAME INTERNATIONAL</span> delivers authentic Persian kababs, saffron feasts, and full banquet setups directly to your venue.
             </p>
           </div>
 
@@ -66,7 +66,7 @@ export const MadieStoriesSection: React.FC<MadieStoriesSectionProps> = ({
             <button
               id="madie-prev-btn"
               onClick={handlePrev}
-              aria-label="Previous story slide"
+              aria-label="Previous catering slide"
               className="w-11 h-11 rounded-full bg-[#3d0917]/90 hover:bg-[#5e1026] border border-[#831f3b]/70 flex items-center justify-center text-[#f5d79e] transition-all duration-200 cursor-pointer shadow-lg hover:scale-105 active:scale-95"
             >
               <ArrowLeft size={16} />
@@ -75,7 +75,7 @@ export const MadieStoriesSection: React.FC<MadieStoriesSectionProps> = ({
             <button
               id="madie-next-btn"
               onClick={handleNext}
-              aria-label="Next story slide"
+              aria-label="Next catering slide"
               className="w-11 h-11 rounded-full bg-[#3d0917]/90 hover:bg-[#5e1026] border border-[#831f3b]/70 flex items-center justify-center text-[#f5d79e] transition-all duration-200 cursor-pointer shadow-lg hover:scale-105 active:scale-95"
             >
               <ArrowRight size={16} />
@@ -165,7 +165,7 @@ export const MadieStoriesSection: React.FC<MadieStoriesSectionProps> = ({
                     {isTop && (
                       <div className="pt-2 flex items-center space-x-2 text-[11px] text-[#ffd54f] font-semibold">
                         <Play size={12} fill="currentColor" />
-                        <span>Tap to explore story</span>
+                        <span>Tap to request catering</span>
                       </div>
                     )}
                   </div>
