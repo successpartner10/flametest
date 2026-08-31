@@ -48,22 +48,17 @@ export const PublicPageViewer: React.FC<PublicPageViewerProps> = ({
     >
       {/* Full-width Screen Hero Banner Header (Matches Home Page Hero Screen Width) */}
       <header className="relative w-full overflow-hidden shadow-2xl mb-10">
-        <div className="relative h-[480px] sm:h-[650px] md:h-[750px] min-h-[60vh] w-full overflow-hidden">
-          {/* Dynamic Video or Image Hero Media - Always Plays Smoothly */}
+        <div className="relative h-[440px] sm:h-[540px] md:h-[600px] w-full overflow-hidden">
+          {/* Dynamic Video or Image Hero Media */}
           {frontmatter.coverImage && (frontmatter.coverImage.endsWith('.mp4') || frontmatter.coverImage.endsWith('.webm') || frontmatter.coverImage.endsWith('.mov')) ? (
             <video
-              ref={(el) => {
-                if (el) {
-                  el.muted = true;
-                  el.play().catch(() => {});
-                }
-              }}
+              key={frontmatter.coverImage}
               src={frontmatter.coverImage}
               autoPlay
               loop
               muted
               playsInline
-              preload="auto"
+              preload="metadata"
               className="w-full h-full object-cover brightness-[0.95] contrast-[1.05]"
             />
           ) : (
@@ -78,7 +73,7 @@ export const PublicPageViewer: React.FC<PublicPageViewerProps> = ({
           )}
 
           {/* Minimal Subtle Overlay to let the video shine clearly while keeping text legible */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#180309]/85 via-black/25 to-black/30" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#180309]/90 via-black/30 to-black/35" />
 
           {/* Floating Gold Sparkle Accent in top right */}
           <div className="absolute top-6 right-6 px-4 py-1.5 rounded-full bg-[#180309]/80 border border-[#d4a359]/60 text-[#f3cf8a] text-xs font-bold uppercase tracking-widest backdrop-blur-md hidden sm:flex items-center space-x-1.5 shadow-lg z-20">
@@ -86,20 +81,20 @@ export const PublicPageViewer: React.FC<PublicPageViewerProps> = ({
             <span>FLAME EXPERIENCE</span>
           </div>
 
-          {/* Title & Subtitle Content Overlay - Golden & Cream Luxury Palette */}
+          {/* Title & Subtitle Content Overlay - Lifted Up with Bottom Padding to avoid Bottom Sticky Menu Clipping */}
           <div className="absolute inset-x-0 bottom-0 z-10">
-            <div className="max-w-7xl mx-auto p-6 sm:p-10 md:p-12 space-y-3">
+            <div className="max-w-7xl mx-auto p-6 sm:p-10 md:p-12 pb-16 sm:pb-20 md:pb-24 space-y-3">
               <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-[#180309]/80 border border-[#d4a359]/70 text-[#f3cf8a] text-[10px] sm:text-xs uppercase tracking-[0.2em] font-bold backdrop-blur-md shadow-md">
                 <Sparkles size={12} className="text-[#d4a359]" />
                 <span>{frontmatter.navTitle || 'Flame International'}</span>
               </div>
 
-              <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight text-[#f3cf8a] drop-shadow-[0_4px_16px_rgba(0,0,0,0.9)]">
+              <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-tight text-[#f3cf8a] drop-shadow-[0_4px_16px_rgba(0,0,0,0.9)]">
                 {frontmatter.title}
               </h1>
 
               {frontmatter.subtitle && (
-                <p className="text-sm sm:text-lg md:text-xl max-w-3xl font-normal leading-relaxed text-[#f7e8ea] drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
+                <p className="text-sm sm:text-base md:text-lg max-w-3xl font-normal leading-relaxed text-[#f7e8ea] drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
                   {frontmatter.subtitle}
                 </p>
               )}
