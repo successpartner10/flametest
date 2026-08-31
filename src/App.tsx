@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AppMode, CartItem, MenuItem } from './types';
 import { MENU_ITEMS } from './data/mockData';
 import { Header } from './components/Header';
@@ -12,7 +12,6 @@ import { StorySection } from './components/StorySection';
 import { MenuMatrixSection } from './components/MenuMatrixSection';
 import { MadieStoriesSection } from './components/MadieStoriesSection';
 import { MenuSection } from './components/MenuSection';
-import { CulinarySection } from './components/CulinarySection';
 import { FooterSection } from './components/FooterSection';
 import { BottomStickyNav, BottomNavAction } from './components/BottomStickyNav';
 import { MenuModal } from './components/MenuModal';
@@ -23,7 +22,13 @@ import { FunctionsModal } from './components/FunctionsModal';
 import { AboutModal } from './components/AboutModal';
 import { TicketModal } from './components/TicketModal';
 import { CateringModal } from './components/CateringModal';
-import { ScrollProgressBar } from './components/ScrollProgressBar';
+import { CMSPage, AdminUser } from './types/cms';
+import { fetchAllPages } from './services/cmsService';
+import { AuthModal } from './components/cms/AuthModal';
+import { AdminPanel } from './components/cms/AdminPanel';
+import { PublicPageViewer } from './components/cms/PublicPageViewer';
+import { signOutUser } from './lib/firebase';
+import { isAuthorizedAdmin } from './config/adminConfig';
 
 export default function App() {
   // Mode state: 'lunch' (☀️ Lunch Hub) or 'night' (🌙 Cabaret & Night)
@@ -32,6 +37,13 @@ export default function App() {
   // Bottom Navigation state (Home, Live Entertainment, Dine-In, Lunch, Dinner, Contact Us)
   const [activeBottomAction, setActiveBottomAction] = useState<BottomNavAction>('home');
   const [menuInitialCategory, setMenuInitialCategory] = useState<string>('all');
+
+  // CMS Dynamic State
+  const [pages, setPages] = useState<CMSPage[]>([]);
+  const [activePageSlug, setActivePageSlug] = useState<string>('home');
+  const [adminUser, setAdminUser] = useState<AdminUser | null>(null);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isAdminPanelOpen, setIsAdminPanelOpen] = useState(false);
 
   // Modal screen states
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -58,6 +70,61 @@ export default function App() {
   ]);
 
   const totalCartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+  // Load CMS Pages and persistent auth state + URL hash trigger for direct CMS login
+  useEffect(() => {
+    loadCMSPages();
+
+    // Check stored admin credentials
+    try {
+      const stored = localStorage.getItem('flame_cms_user');
+      if (stored) {
+        const parsed: AdminUser = JSON.parse(stored);
+        if (parsed.email && isAuthorizedAdmin(parsed.email)) {
+          setAdminUser(parsed);
+        } else {
+          localStorage.removeItem('flame_cms_user');
+        }
+      }
+    } catch (e) {
+      console.warn('Could not restore CMS user:', e);
+    }
+
+    // Direct CMS link handler (e.g. #admin, #cms, ?admin=true)
+    const checkAdminRoute = () => {
+      const hash = window.location.hash.toLowerCase();
+      const search = window.location.search.toLowerCase();
+      if (hash === '#admin' || hash === '#cms' || hash === '#login' || search.includes('admin') || search.includes('cms')) {
+        const stored = localStorage.getItem('flame_cms_user');
+        if (stored) {
+          try {
+            const parsed = JSON.parse(stored);
+            if (parsed.email && isAuthorizedAdmin(parsed.email)) {
+              setAdminUser(parsed);
+              setIsAdminPanelOpen(true);
+              return;
+            }
+          } catch {
+            // fallback to auth modal
+          }
+        }
+        setIsAuthModalOpen(true);
+      }
+    };
+
+    checkAdminRoute();
+    window.addEventListener('hashchange', checkAdminRoute);
+    return () => window.removeEventListener('hashchange', checkAdminRoute);
+  }, []);
+
+  const loadCMSPages = async () => {
+    try {
+      const list = await fetchAllPages();
+      setPages(list);
+    } catch (err) {
+      console.error('Failed to load CMS pages:', err);
+    }
+  };
 
   // Cart operations
   const handleAddToCart = (item: MenuItem) => {
@@ -127,10 +194,17 @@ export default function App() {
     setIsCateringOpen(true);
   };
 
-  // Bottom Navigation tab selector (Home, Live Events, Order Online, Lunch, Dinner)
+  // Handle Dynamic Page Navigation
+  const handleSelectPage = (slug: string) => {
+    setActivePageSlug(slug);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Bottom Navigation tab selector
   const handleBottomNavigate = (action: BottomNavAction) => {
     if (action === 'home') {
       setActiveBottomAction('home');
+      setActivePageSlug('home');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else if (action === 'live-events') {
       setActiveBottomAction('live-events');
@@ -155,15 +229,21 @@ export default function App() {
     }
   };
 
+  const handleAdminSignOut = async () => {
+    await signOutUser();
+    setAdminUser(null);
+    setIsAdminPanelOpen(false);
+  };
+
+  // Active custom page object if navigating away from 'home'
+  const activeCustomPage = activePageSlug !== 'home' ? pages.find((p) => p.slug === activePageSlug) : null;
+
   return (
-    <div className={`min-h-screen bg-[#121619] text-[#f5f1ea] transition-colors duration-700 ${
+    <div className={`min-h-screen bg-[#180309] text-[#f7e8ea] transition-colors duration-700 ${
       mode === 'night' ? 'night-atmosphere' : 'lunch-atmosphere'
     }`}>
       
-      {/* Dynamic Gold Scroll Progress Indicator */}
-      <ScrollProgressBar />
-
-      {/* Fixed Top Header */}
+      {/* Fixed Top Header with CMS Navigation */}
       <Header
         mode={mode}
         onToggleMode={(newMode) => setMode(newMode)}
@@ -181,74 +261,116 @@ export default function App() {
           }
         }}
         cartCount={totalCartCount}
+        pages={pages}
+        activePageSlug={activePageSlug}
+        onSelectPage={handleSelectPage}
+        adminUser={adminUser}
+        onOpenAdmin={() => setIsAdminPanelOpen(true)}
+        onOpenAuth={() => setIsAuthModalOpen(true)}
       />
 
-      {/* Main Editorial Screens */}
-      <main className="relative">
-        
-        {/* 1. Hero Section ("The true taste of Flame International") */}
-        <HeroSection
+      {/* Dynamic Public Content System */}
+      {activeCustomPage ? (
+        <PublicPageViewer
+          page={activeCustomPage}
           mode={mode}
-          onExploreMenu={() => setIsMenuOpen(true)}
-          onBookTable={() => setIsReserveOpen(true)}
-          onScrollToStory={scrollToStory}
+          adminUser={adminUser}
+          onOpenAdminToPage={(slug) => {
+            setActivePageSlug(slug);
+            setIsAdminPanelOpen(true);
+          }}
+          onNavigateHome={() => handleSelectPage('home')}
+          onOpenReservation={() => setIsReserveOpen(true)}
+          onOpenTickets={() => handleOpenTickets()}
         />
+      ) : (
+        /* Main Home Editorial Screens */
+        <main className="relative">
+          
+          {/* 1. Hero Section ("The true taste of Flame International") */}
+          <HeroSection
+            mode={mode}
+            onExploreMenu={() => setIsMenuOpen(true)}
+            onBookTable={() => setIsReserveOpen(true)}
+            onScrollToStory={scrollToStory}
+          />
 
-        {/* 2. Four Images Matrix: Lunch, Dinner, Online Order, Catering */}
-        <MenuMatrixSection
-          mode={mode}
-          onOpenLunch={handleOpenLunch}
-          onOpenDinner={handleOpenDinner}
-          onOpenOrderOnline={handleOpenOrderOnline}
-          onOpenCatering={handleOpenCatering}
-        />
+          {/* 2. Persian Live Events & Heritage + September 12 Concert Poster + Ticket Links (1st Section under Hero) */}
+          <StorySection
+            mode={mode}
+            onLearnMore={() => setIsAboutOpen(true)}
+            onReserve={() => setIsReserveOpen(true)}
+            onOpenTickets={handleOpenTickets}
+          />
 
-        {/* 3. Discover Our Story (Persian Live Events & Heritage + September 12 Concert Poster + Ticket Links) */}
-        <StorySection
-          mode={mode}
-          onLearnMore={() => setIsAboutOpen(true)}
-          onReserve={() => setIsReserveOpen(true)}
-          onOpenTickets={handleOpenTickets}
-        />
+          {/* 3. Four Ways to Experience: Lunch, Dinner, Online Order, Catering (Below Live Events) */}
+          <MenuMatrixSection
+            mode={mode}
+            onOpenLunch={handleOpenLunch}
+            onOpenDinner={handleOpenDinner}
+            onOpenOrderOnline={handleOpenOrderOnline}
+            onOpenCatering={handleOpenCatering}
+          />
 
-        {/* 4. Madie Section (Burgundy wave + French Bulldog vector + draggable 3D story card stack) */}
-        <MadieStoriesSection
-          onOpenStory={handleOpenStory}
-          mode={mode}
-        />
+          {/* 4. Madie Section (Burgundy wave + French Bulldog vector + draggable 3D story card stack) */}
+          <MadieStoriesSection
+            onOpenStory={handleOpenStory}
+            mode={mode}
+          />
 
-        {/* 5. Check out Our Menus (2x2 food photo grid + "Check out Our Menus" narrative) */}
-        <MenuSection
-          mode={mode}
-          onOpenMenu={() => setIsMenuOpen(true)}
-          onOpenDish={handleOpenDish}
-        />
+          {/* 5. Check out Our Menus (2x2 food photo grid + "Check out Our Menus" narrative) */}
+          <MenuSection
+            mode={mode}
+            onOpenMenu={() => setIsMenuOpen(true)}
+            onOpenDish={handleOpenDish}
+          />
 
-        {/* 6. Culinary Delightful (Gourmet quenelles + spun caramel sugar dessert + "Culinary Delightful") */}
-        <CulinarySection
-          mode={mode}
-          onMakeReservation={() => setIsReserveOpen(true)}
-          onOpenDish={handleOpenDish}
-        />
+          {/* 6. Footer & Los Angeles Map (Emblem + ENCUÉNTRANOS EN Los Angeles + 6 Easy Buttons + Interactive Zoom Map & hours) */}
+          <FooterSection
+            mode={mode}
+            onScrollToTop={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            onOpenMenu={() => setIsMenuOpen(true)}
+            onOpenStories={() => { setSelectedStoryIndex(0); setIsStoriesOpen(true); }}
+            onOpenReserve={() => setIsReserveOpen(true)}
+            onOpenFunctions={() => setIsFunctionsOpen(true)}
+            onOpenAbout={() => setIsAboutOpen(true)}
+          />
 
-        {/* 7. Footer & Los Angeles Map (Emblem + ENCUÉNTRANOS EN Los Angeles + 6 Easy Buttons + Interactive Zoom Map & hours) */}
-        <FooterSection
-          mode={mode}
-          onScrollToTop={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          onOpenMenu={() => setIsMenuOpen(true)}
-          onOpenStories={() => { setSelectedStoryIndex(0); setIsStoriesOpen(true); }}
-          onOpenReserve={() => setIsReserveOpen(true)}
-          onOpenFunctions={() => setIsFunctionsOpen(true)}
-          onOpenAbout={() => setIsAboutOpen(true)}
-        />
-
-      </main>
+        </main>
+      )}
 
       {/* Sticky Bottom Navigation (Home, Live Entertainment, Dine-In, Lunch, Dinner, Contact Us) */}
       <BottomStickyNav
         mode={mode}
         activeAction={activeBottomAction}
         onNavigate={handleBottomNavigate}
+      />
+
+      {/* Admin CMS Panel */}
+      {isAdminPanelOpen && adminUser && (
+        <AdminPanel
+          user={adminUser}
+          onCloseAdmin={() => {
+            setIsAdminPanelOpen(false);
+            loadCMSPages();
+          }}
+          onSignOut={handleAdminSignOut}
+          onViewPageOnSite={(slug) => {
+            setIsAdminPanelOpen(false);
+            handleSelectPage(slug);
+            loadCMSPages();
+          }}
+        />
+      )}
+
+      {/* Firebase Google Auth Modal */}
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        onSuccess={(user) => {
+          setAdminUser(user);
+          setIsAdminPanelOpen(true);
+        }}
       />
 
       {/* Interactive Modal Screens */}
@@ -275,7 +397,7 @@ export default function App() {
         isOpen={isReserveOpen}
         onClose={() => {
           setIsReserveOpen(false);
-          if (activeBottomAction === 'dine-in') setActiveBottomAction('home');
+          setActiveBottomAction('home');
         }}
       />
 
@@ -343,4 +465,3 @@ export default function App() {
     </div>
   );
 }
-

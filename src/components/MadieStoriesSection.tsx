@@ -140,10 +140,10 @@ export const MadieStoriesSection: React.FC<MadieStoriesSectionProps> = ({
                   />
                   
                   {/* Subtle Dark Vignette Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#180309]/95 via-black/30 to-black/50" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#180309]/95 via-[#180309]/40 to-[#180309]/50" />
 
                   {/* Flame Logo Crest in top-center */}
-                  <div className="absolute top-4 left-1/2 transform -translate-x-1/2 flex items-center space-x-1.5 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-[#d4a359]/40">
+                  <div className="absolute top-4 left-1/2 transform -translate-x-1/2 flex items-center space-x-1.5 px-3 py-1 rounded-full bg-[#24060f]/80 backdrop-blur-md border border-[#d4a359]/40">
                     <Flame size={13} className="text-[#d4a359]" />
                     <span className="font-['Raleway'] text-[10px] tracking-[0.2em] font-extrabold uppercase text-[#f5d79e]">
                       FLAME
@@ -178,16 +178,51 @@ export const MadieStoriesSection: React.FC<MadieStoriesSectionProps> = ({
 
       </div>
 
-      {/* Seamless Curvy Bottom Transition */}
+      {/* Seamless Curvy Bottom Transition with Animated Glowing Gold Line */}
       <div className="absolute -bottom-[1px] left-0 right-0 w-full overflow-hidden leading-none z-20 pointer-events-none select-none">
         <svg 
           viewBox="0 0 1440 90" 
           preserveAspectRatio="none" 
           className="w-full h-10 sm:h-16 md:h-20 lg:h-24 block transition-colors duration-700"
         >
+          <defs>
+            <linearGradient id="madieGoldShimmerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#b37a2b" />
+              <stop offset="25%" stopColor="#f7d688" />
+              <stop offset="50%" stopColor="#ffffff" />
+              <stop offset="75%" stopColor="#f7d688" />
+              <stop offset="100%" stopColor="#b37a2b" />
+              <animate
+                attributeName="x1"
+                from="-100%"
+                to="100%"
+                dur="4s"
+                repeatCount="indefinite"
+              />
+              <animate
+                attributeName="x2"
+                from="0%"
+                to="200%"
+                dur="4s"
+                repeatCount="indefinite"
+              />
+            </linearGradient>
+            <filter id="madieGoldGlow" x="-10%" y="-20%" width="120%" height="140%">
+              <feDropShadow dx="0" dy="0" stdDeviation="3" floodColor="#d4a359" floodOpacity="0.85" />
+            </filter>
+          </defs>
           <path 
             d="M 0,90 L 0,40 C 220,85 540,88 920,42 C 1140,16 1320,25 1440,30 L 1440,90 Z" 
-            fill={isNight ? '#000000' : '#ffffff'} 
+            fill={isNight ? '#180309' : '#ffffff'} 
+          />
+          {/* Animated Gold Shimmer Edge */}
+          <path 
+            d="M 0,40 C 220,85 540,88 920,42 C 1140,16 1320,25 1440,30" 
+            fill="none"
+            stroke="url(#madieGoldShimmerGrad)"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            filter="url(#madieGoldGlow)"
           />
         </svg>
       </div>

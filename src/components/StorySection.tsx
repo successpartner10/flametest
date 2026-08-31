@@ -30,13 +30,21 @@ export const StorySection: React.FC<StorySectionProps> = ({
   return (
     <section 
       id="our-story-section" 
-      className={`py-20 lg:py-28 px-4 sm:px-6 lg:px-12 transition-colors duration-700 font-['Raleway'] ${
+      className={`relative py-20 lg:py-28 px-4 sm:px-6 lg:px-12 transition-colors duration-700 font-['Raleway'] overflow-hidden ${
         isNight 
-          ? 'bg-[#000000] text-[#f5f1ea]' 
+          ? 'bg-[#180309] text-[#f7e8ea]' 
           : 'bg-[#ffffff] text-[#1c1f24]'
       }`}
     >
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+      {/* Subtle Warm Amber & Crimson Radial Ambiance in Dark Mode */}
+      {isNight && (
+        <>
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(212,163,89,0.12),transparent_60%)] pointer-events-none" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(158,28,56,0.15),transparent_60%)] pointer-events-none" />
+        </>
+      )}
+
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center relative z-10">
         
         {/* Left Editorial Text Column */}
         <RevealOnScroll 
@@ -72,7 +80,7 @@ export const StorySection: React.FC<StorySectionProps> = ({
           <p className={`text-base sm:text-lg leading-relaxed font-light max-w-md ${
             isNight ? 'text-[#d1d5db]' : 'text-[#555e6b]'
           }`}>
-            Flame International is Los Angeles' premier destination for authentic Persian cuisine, world-class Persian musical concerts, and vibrant weekend cabaret on Santa Monica Boulevard. Join us for exquisite saffron banquets, legendary performers, and an unforgettable cultural atmosphere.
+            <span className="font-black font-[900]">FLAME</span> <span className="font-black font-[900] tracking-wider">INTERNATIONAL</span> is Los Angeles' premier destination for authentic Persian cuisine, world-class Persian musical concerts, and vibrant weekend cabaret on Santa Monica Boulevard. Join us for exquisite saffron banquets, legendary performers, and an unforgettable cultural atmosphere.
           </p>
 
           {/* Action Button & Link */}

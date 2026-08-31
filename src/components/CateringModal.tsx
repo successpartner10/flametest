@@ -38,8 +38,12 @@ export const CateringModal: React.FC<CateringModalProps> = ({ isOpen, onClose })
               <span className="text-[10px] uppercase font-mono tracking-widest text-[#d4a359] block">
                 Full-Service &amp; Express Platters
               </span>
-              <h3 className="font-serif text-lg sm:text-xl text-white font-medium">
-                Flame Persian Catering &amp; Events
+              <div className="font-['Raleway'] flex items-center space-x-1.5">
+                <span className="text-lg sm:text-xl font-black font-[900] text-white">FLAME</span>
+                <span className="text-xs sm:text-sm font-black font-[900] text-white tracking-[0.2em] uppercase">INTERNATIONAL</span>
+              </div>
+              <h3 className="font-serif text-sm sm:text-base text-white/90 font-medium">
+                Persian Catering &amp; Events
               </h3>
             </div>
           </div>

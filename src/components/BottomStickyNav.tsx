@@ -61,7 +61,7 @@ export const BottomStickyNav: React.FC<BottomStickyNavProps> = ({
       aria-label="Bottom Navigation Bar"
       className={`fixed bottom-0 left-0 right-0 z-50 backdrop-blur-xl transition-colors duration-500 shadow-[0_-8px_32px_rgba(0,0,0,0.7)] font-['Raleway'] ${
         isNight
-          ? 'bg-[#000000]/95 border-t border-[#2a2a2a]'
+          ? 'bg-[#180309]/95 border-t border-[#4a0d1e]'
           : 'bg-[#18030b]/95 border-t border-[#4f1022]'
       }`}
     >

@@ -15,11 +15,19 @@ export const MenuSection: React.FC<MenuSectionProps> = ({ onOpenMenu, onOpenDish
   return (
     <section 
       id="our-menus-section" 
-      className={`py-20 lg:py-28 px-4 sm:px-6 lg:px-12 transition-colors duration-700 ${
-        isNight ? 'bg-[#000000] text-[#f5f1ea]' : 'bg-[#ffffff] text-[#1a1d22]'
+      className={`relative py-20 lg:py-28 px-4 sm:px-6 lg:px-12 transition-colors duration-700 overflow-hidden ${
+        isNight ? 'bg-[#180309] text-[#f7e8ea]' : 'bg-[#ffffff] text-[#1a1d22]'
       }`}
     >
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+      {/* Subtle Warm Amber & Crimson Radial Ambiance in Dark Mode */}
+      {isNight && (
+        <>
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(212,163,89,0.1),transparent_60%)] pointer-events-none" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(158,28,56,0.12),transparent_60%)] pointer-events-none" />
+        </>
+      )}
+
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center relative z-10">
         
         {/* Left 2x2 Photo Grid (Authentic Persian Culinary Dishes) */}
         <div className="lg:col-span-7 grid grid-cols-2 gap-3 sm:gap-4 md:gap-5">
@@ -30,7 +38,7 @@ export const MenuSection: React.FC<MenuSectionProps> = ({ onOpenMenu, onOpenDish
               onClick={() => onOpenDish('item-7')}
               className={`group relative aspect-square rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 hover:-translate-y-1 ${
                 isNight 
-                  ? 'bg-[#0a0a0a] border border-[#2a2a2a] shadow-[0_15px_40px_rgba(0,0,0,0.95)] ring-1 ring-white/10 hover:border-[#d4a359]/70 hover:shadow-[0_20px_50px_rgba(212,163,89,0.15)]' 
+                  ? 'bg-[#24060f] border border-[#4a0d1e] shadow-[0_15px_40px_rgba(0,0,0,0.95)] ring-1 ring-white/10 hover:border-[#d4a359]/70 hover:shadow-[0_20px_50px_rgba(212,163,89,0.15)]' 
                   : 'bg-[#ece7df] shadow-[0_10px_30px_rgba(0,0,0,0.1)] hover:shadow-lg'
               }`}
             >
@@ -54,7 +62,7 @@ export const MenuSection: React.FC<MenuSectionProps> = ({ onOpenMenu, onOpenDish
               onClick={() => onOpenDish('item-2')}
               className={`group relative aspect-square rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 hover:-translate-y-1 ${
                 isNight 
-                  ? 'bg-[#0a0a0a] border border-[#2a2a2a] shadow-[0_15px_40px_rgba(0,0,0,0.95)] ring-1 ring-white/10 hover:border-[#d4a359]/70 hover:shadow-[0_20px_50px_rgba(212,163,89,0.15)]' 
+                  ? 'bg-[#24060f] border border-[#4a0d1e] shadow-[0_15px_40px_rgba(0,0,0,0.95)] ring-1 ring-white/10 hover:border-[#d4a359]/70 hover:shadow-[0_20px_50px_rgba(212,163,89,0.15)]' 
                   : 'bg-[#ece7df] shadow-[0_10px_30px_rgba(0,0,0,0.1)] hover:shadow-lg'
               }`}
             >
@@ -78,7 +86,7 @@ export const MenuSection: React.FC<MenuSectionProps> = ({ onOpenMenu, onOpenDish
               onClick={() => onOpenDish('item-4')}
               className={`group relative aspect-square rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 hover:-translate-y-1 ${
                 isNight 
-                  ? 'bg-[#0a0a0a] border border-[#2a2a2a] shadow-[0_15px_40px_rgba(0,0,0,0.95)] ring-1 ring-white/10 hover:border-[#d4a359]/70 hover:shadow-[0_20px_50px_rgba(212,163,89,0.15)]' 
+                  ? 'bg-[#24060f] border border-[#4a0d1e] shadow-[0_15px_40px_rgba(0,0,0,0.95)] ring-1 ring-white/10 hover:border-[#d4a359]/70 hover:shadow-[0_20px_50px_rgba(212,163,89,0.15)]' 
                   : 'bg-[#ece7df] shadow-[0_10px_30px_rgba(0,0,0,0.1)] hover:shadow-lg'
               }`}
             >
@@ -102,7 +110,7 @@ export const MenuSection: React.FC<MenuSectionProps> = ({ onOpenMenu, onOpenDish
               onClick={() => onOpenDish('item-1')}
               className={`group relative aspect-square rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 hover:-translate-y-1 ${
                 isNight 
-                  ? 'bg-[#0a0a0a] border border-[#2a2a2a] shadow-[0_15px_40px_rgba(0,0,0,0.95)] ring-1 ring-white/10 hover:border-[#d4a359]/70 hover:shadow-[0_20px_50px_rgba(212,163,89,0.15)]' 
+                  ? 'bg-[#24060f] border border-[#4a0d1e] shadow-[0_15px_40px_rgba(0,0,0,0.95)] ring-1 ring-white/10 hover:border-[#d4a359]/70 hover:shadow-[0_20px_50px_rgba(212,163,89,0.15)]' 
                   : 'bg-[#ece7df] shadow-[0_10px_30px_rgba(0,0,0,0.1)] hover:shadow-lg'
               }`}
             >

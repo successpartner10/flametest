@@ -70,11 +70,19 @@ export const MenuMatrixSection: React.FC<MenuMatrixSectionProps> = ({
   return (
     <section 
       id="menu-matrix-section" 
-      className={`py-16 sm:py-24 px-4 sm:px-6 lg:px-12 transition-colors duration-700 font-['Raleway'] ${
-        isNight ? 'bg-[#050103] text-[#f5f1ea]' : 'bg-[#fcfaf7] text-[#1a1d22]'
+      className={`relative py-16 sm:py-24 px-4 sm:px-6 lg:px-12 transition-colors duration-700 font-['Raleway'] overflow-hidden ${
+        isNight ? 'bg-[#180309] text-[#f7e8ea]' : 'bg-[#fcfaf7] text-[#1a1d22]'
       }`}
     >
-      <div className="max-w-7xl mx-auto">
+      {/* Subtle Warm Amber Ambiance in Dark Mode */}
+      {isNight && (
+        <>
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(212,163,89,0.1),transparent_60%)] pointer-events-none" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(158,28,56,0.12),transparent_60%)] pointer-events-none" />
+        </>
+      )}
+
+      <div className="max-w-7xl mx-auto relative z-10">
         
         {/* Section Header */}
         <RevealOnScroll direction="up" delay={0} duration={750} className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
@@ -105,7 +113,7 @@ export const MenuMatrixSection: React.FC<MenuMatrixSectionProps> = ({
                   onClick={item.action}
                   className={`group relative rounded-3xl overflow-hidden cursor-pointer h-[380px] sm:h-[420px] flex flex-col justify-between p-6 transition-all duration-500 hover:-translate-y-2 border ${
                     isNight
-                      ? 'bg-[#0f0408] border-[#38081a] hover:border-[#d4a359] shadow-[0_20px_50px_rgba(0,0,0,0.85)] hover:shadow-[0_25px_60px_rgba(212,163,89,0.25)]'
+                      ? 'bg-[#24060f] border-[#4a0d1e] hover:border-[#d4a359] shadow-[0_20px_50px_rgba(0,0,0,0.85)] hover:shadow-[0_25px_60px_rgba(212,163,89,0.25)]'
                       : 'bg-white border-stone-200 hover:border-[#d4a359] shadow-[0_15px_35px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_45px_rgba(212,163,89,0.2)]'
                   }`}
                 >

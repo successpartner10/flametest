@@ -46,15 +46,14 @@ function formatTravelTime(minutes: number): string {
   return `${hourText}, ${minText}`;
 }
 
-// Preset origin locations for quick route calculations on the street map
+// Preset origin locations for quick route calculations on the street map (clean 2-row layout)
 const ROUTE_ORIGINS = [
-  { id: 'santa-monica', name: 'Santa Monica Pier', distance: '3.9 mi', minutes: 11, traffic: 'Smooth (🟢)', linePath: 'M 0 175 L 255 175 L 255 140' },
+  { id: 'santa-monica', name: 'Santa Monica', distance: '3.9 mi', minutes: 11, traffic: 'Smooth (🟢)', linePath: 'M 0 175 L 255 175 L 255 140' },
   { id: 'beverly-hills', name: 'Beverly Hills', distance: '4.2 mi', minutes: 13, traffic: 'Light (🟢)', linePath: 'M 500 175 L 255 175 L 255 140' },
   { id: 'ucla', name: 'Westwood / UCLA', distance: '1.8 mi', minutes: 6, traffic: 'Smooth (🟢)', linePath: 'M 255 0 L 255 140' },
-  { id: 'culver-city', name: 'Culver City / Arts', distance: '4.8 mi', minutes: 12, traffic: 'Smooth (🟢)', linePath: 'M 180 350 L 180 180 L 255 180 L 255 130' },
   { id: 'century-city', name: 'Century City', distance: '2.7 mi', minutes: 8, traffic: 'Smooth (🟢)', linePath: 'M 500 175 L 255 175 L 255 140' },
+  { id: 'culver-city', name: 'Culver City', distance: '4.8 mi', minutes: 12, traffic: 'Smooth (🟢)', linePath: 'M 180 350 L 180 180 L 255 180 L 255 130' },
   { id: 'lax', name: 'LAX Airport', distance: '10.5 mi', minutes: 18, traffic: 'Moderate (🟡)', linePath: 'M 100 350 L 100 175 L 255 175 L 255 140' },
-  { id: 'brentwood', name: 'Brentwood Village', distance: '2.3 mi', minutes: 7, traffic: 'Smooth (🟢)', linePath: 'M 0 100 L 255 100 L 255 140' },
   { id: 'dtla', name: 'Downtown LA', distance: '12.4 mi', minutes: 22, traffic: 'Normal (🟢)', linePath: 'M 500 175 L 255 175 L 255 140' },
 ];
 
@@ -204,7 +203,7 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
   return (
     <footer id="find-us-footer" className="relative bg-[#180309] text-[#f7e8ea] pt-20 sm:pt-28 pb-28 px-4 sm:px-6 lg:px-12 overflow-hidden font-['Raleway']">
       
-      {/* Curved Architectural Top Wave Transition matching user mockup - No black line */}
+      {/* Curved Architectural Top Wave Transition - With Animated Continuous Moving Gold Glow Line */}
       <div className="absolute top-0 left-0 right-0 pointer-events-none overflow-hidden leading-none z-10">
         <svg 
           viewBox="0 0 1440 100" 
@@ -212,12 +211,47 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
           xmlns="http://www.w3.org/2000/svg"
           preserveAspectRatio="none"
           className={`w-full h-10 sm:h-16 md:h-20 transition-colors duration-700 ${
-            mode === 'night' ? 'text-[#000000]' : 'text-[#ffffff]'
+            mode === 'night' ? 'text-[#180309]' : 'text-[#ffffff]'
           }`}
         >
+          <defs>
+            <linearGradient id="footerGoldWaveGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#b37a2b" />
+              <stop offset="25%" stopColor="#f7d688" />
+              <stop offset="50%" stopColor="#ffffff" />
+              <stop offset="75%" stopColor="#f7d688" />
+              <stop offset="100%" stopColor="#b37a2b" />
+              <animate
+                attributeName="x1"
+                from="-100%"
+                to="100%"
+                dur="4s"
+                repeatCount="indefinite"
+              />
+              <animate
+                attributeName="x2"
+                from="0%"
+                to="200%"
+                dur="4s"
+                repeatCount="indefinite"
+              />
+            </linearGradient>
+            <filter id="footerGoldGlow" x="-10%" y="-20%" width="120%" height="140%">
+              <feDropShadow dx="0" dy="0" stdDeviation="3.5" floodColor="#d4a359" floodOpacity="0.85" />
+            </filter>
+          </defs>
           <path 
             d="M 0,0 L 1440,0 L 1440,28 C 860,10 380,95 0,55 Z" 
             fill="currentColor" 
+          />
+          {/* Radiant Gold Indicator Line with Animated Continuous Moving Shimmer */}
+          <path 
+            d="M 0,55 C 380,95 860,10 1440,28" 
+            fill="none" 
+            stroke="url(#footerGoldWaveGrad)" 
+            strokeWidth="3"
+            strokeLinecap="round"
+            filter="url(#footerGoldGlow)"
           />
         </svg>
       </div>
@@ -276,14 +310,13 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
                     <button
                       onClick={handleUseCurrentLocation}
                       disabled={isLocating}
-                      className={`px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-medium transition-all cursor-pointer font-['Raleway'] flex items-center space-x-1.5 border shadow-sm ${
+                      className={`px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-medium transition-all cursor-pointer font-['Raleway'] flex items-center justify-center text-center border shadow-sm ${
                         customOrigin
-                          ? 'bg-gradient-to-r from-[#d4a359] to-[#f3cf8a] text-black border-[#d4a359] shadow-md scale-105 ring-2 ring-[#d4a359]/40'
+                          ? 'bg-gradient-to-r from-[#d4a359] to-[#f3cf8a] text-black border-[#d4a359] shadow-md scale-105 ring-2 ring-[#d4a359]/40 font-semibold'
                           : 'bg-[#400918] hover:bg-[#5e1026] text-[#f5d79e] border-[#a32b4b] hover:border-[#d4a359]'
                       }`}
                     >
-                      <LocateFixed size={14} className={isLocating ? 'animate-spin' : 'text-[#f3cf8a]'} />
-                      <span>{isLocating ? 'Locating...' : 'Use My GPS'}</span>
+                      <span>{isLocating ? 'LOCATING...' : 'MY GPS'}</span>
                     </button>
 
                     {/* Presets */}
@@ -306,6 +339,43 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
                     ))}
                   </div>
                 </div>
+
+                {/* Live Route Metrics: Straight Line on Top of Map, Centralised Alignment */}
+                <div className="py-2.5 px-4 rounded-2xl bg-[#280510]/80 border border-[#521324] flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-center shadow-inner">
+                  {/* Estimated Time Header & Number */}
+                  <div className="flex items-center space-x-2">
+                    <span className="text-[11px] sm:text-xs uppercase font-medium tracking-widest text-[#f5a7b8]">
+                      Estimated Time
+                    </span>
+                    <span className="text-xl sm:text-2xl font-medium text-[#f3cf8a] leading-none">
+                      {displayTime}
+                    </span>
+                  </div>
+
+                  <span className="text-[#6b152d] hidden sm:inline">•</span>
+
+                  {/* Miles / Distance */}
+                  <div className="flex items-center space-x-1.5">
+                    <span className="text-xs sm:text-sm text-[#e2e8f0]/90 font-normal">
+                      {displayDistance}
+                    </span>
+                  </div>
+
+                  <span className="text-[#6b152d] hidden sm:inline">•</span>
+
+                  {/* Traffic Badge */}
+                  <div className="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-green-950/80 border border-green-500/40 text-green-300 text-xs font-medium shadow-sm">
+                    <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse shrink-0"></span>
+                    <span>{customOrigin ? 'Live GPS (🟢)' : activeOrigin.traffic}</span>
+                  </div>
+                </div>
+
+                {locationStatus && (
+                  <p className="text-[11px] sm:text-xs text-[#f5d79e] font-normal flex items-center justify-center space-x-1 bg-[#280510] px-3 py-1 rounded-lg border border-[#6b152d] mx-auto text-center">
+                    <CheckCircle2 size={13} className="text-green-400 shrink-0" />
+                    <span className="truncate">{locationStatus}</span>
+                  </p>
+                )}
 
                 {/* Map Viewport Area with Street Names & Route Overlay Line */}
                 <div className="relative h-84 sm:h-96 rounded-2xl overflow-hidden bg-[#24050f] border border-[#5c1125] p-2 select-none">
@@ -345,6 +415,17 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
                     {/* ZOOM LEVEL 1: SUPER REGIONAL OVERVIEW (GREATER WEST LA & FREEWAYS) */}
                     {zoomLevel === 1 && (
                       <svg viewBox="0 0 500 350" className="w-full h-full font-['Raleway',sans-serif]">
+                        <defs>
+                          <linearGradient id="mapGoldRouteGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stopColor="#b37a2b" />
+                            <stop offset="35%" stopColor="#f7d688" />
+                            <stop offset="70%" stopColor="#d4a359" />
+                            <stop offset="100%" stopColor="#f3cf8a" />
+                          </linearGradient>
+                          <filter id="goldRouteGlow1" x="-20%" y="-20%" width="140%" height="140%">
+                            <feDropShadow dx="0" dy="0" stdDeviation="4" floodColor="#d4a359" floodOpacity="0.9" />
+                          </filter>
+                        </defs>
                         <rect width="500" height="350" fill="#1b030b" />
                         
                         {/* Freeway: I-405 (San Diego Freeway) */}
@@ -414,16 +495,32 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
                         <path d="M 0 230 L 500 230" stroke="#1f040b" strokeWidth="16" />
                         <text x="160" y="234" fill="#f3cf8a" fontSize="9.5" fontWeight="700" letterSpacing="0.08em">OLYMPIC BLVD</text>
 
-                        {/* Route Line Overlay (Soft Transparent White Route Overlay) */}
+                        {/* Route Line Overlay (Golden Yellow Glowing Route matching Reserve Table Button) */}
                         <g>
                           <path
                             d={getRoutePathForZoom(1, selectedOriginId)}
                             fill="none"
-                            stroke="#ffffff"
-                            strokeWidth="6"
+                            stroke="#b37a2b"
+                            strokeWidth="11"
                             strokeLinecap="round"
-                            strokeOpacity="0.55"
-                            className="filter drop-shadow-[0_0_6px_rgba(255,255,255,0.55)] opacity-60"
+                            strokeOpacity="0.4"
+                          />
+                          <path
+                            d={getRoutePathForZoom(1, selectedOriginId)}
+                            fill="none"
+                            stroke="url(#mapGoldRouteGrad1)"
+                            strokeWidth="6.5"
+                            strokeLinecap="round"
+                            strokeOpacity="0.95"
+                            filter="url(#goldRouteGlow1)"
+                          />
+                          <path
+                            d={getRoutePathForZoom(1, selectedOriginId)}
+                            fill="none"
+                            stroke="#fff9e6"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeOpacity="0.9"
                           />
                         </g>
 
@@ -441,6 +538,17 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
                     {/* ZOOM LEVEL 2: REGIONAL FREEWAY & ARTERIES (I-405 & WEST LA) */}
                     {zoomLevel === 2 && (
                       <svg viewBox="0 0 500 350" className="w-full h-full font-['Raleway',sans-serif]">
+                        <defs>
+                          <linearGradient id="mapGoldRouteGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stopColor="#b37a2b" />
+                            <stop offset="35%" stopColor="#f7d688" />
+                            <stop offset="70%" stopColor="#d4a359" />
+                            <stop offset="100%" stopColor="#f3cf8a" />
+                          </linearGradient>
+                          <filter id="goldRouteGlow2" x="-20%" y="-20%" width="140%" height="140%">
+                            <feDropShadow dx="0" dy="0" stdDeviation="4.5" floodColor="#d4a359" floodOpacity="0.9" />
+                          </filter>
+                        </defs>
                         <rect width="500" height="350" fill="#1b030b" />
                         
                         {/* Highway 405 (San Diego Freeway) */}
@@ -488,16 +596,32 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
                         <path d="M 0 265 L 500 265" stroke="#1f040b" strokeWidth="22" />
                         <text x="130" y="270" fill="#f3cf8a" fontSize="10.5" fontWeight="700" letterSpacing="0.1em">OLYMPIC BLVD</text>
 
-                        {/* Route Line Overlay (Soft Transparent White Route Overlay) */}
+                        {/* Route Line Overlay (Golden Yellow Glowing Route matching Reserve Table Button) */}
                         <g>
                           <path
                             d={getRoutePathForZoom(2, selectedOriginId)}
                             fill="none"
-                            stroke="#ffffff"
-                            strokeWidth="7"
+                            stroke="#b37a2b"
+                            strokeWidth="12"
                             strokeLinecap="round"
-                            strokeOpacity="0.55"
-                            className="filter drop-shadow-[0_0_6px_rgba(255,255,255,0.55)] opacity-60"
+                            strokeOpacity="0.4"
+                          />
+                          <path
+                            d={getRoutePathForZoom(2, selectedOriginId)}
+                            fill="none"
+                            stroke="url(#mapGoldRouteGrad2)"
+                            strokeWidth="7.5"
+                            strokeLinecap="round"
+                            strokeOpacity="0.95"
+                            filter="url(#goldRouteGlow2)"
+                          />
+                          <path
+                            d={getRoutePathForZoom(2, selectedOriginId)}
+                            fill="none"
+                            stroke="#fff9e6"
+                            strokeWidth="2.5"
+                            strokeLinecap="round"
+                            strokeOpacity="0.9"
                           />
                         </g>
 
@@ -515,6 +639,17 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
                     {/* ZOOM LEVEL 3: DISTRICT LEVEL (SAWTELLE & CORINTH) */}
                     {zoomLevel === 3 && (
                       <svg viewBox="0 0 500 350" className="w-full h-full font-['Raleway',sans-serif]">
+                        <defs>
+                          <linearGradient id="mapGoldRouteGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stopColor="#b37a2b" />
+                            <stop offset="35%" stopColor="#f7d688" />
+                            <stop offset="70%" stopColor="#d4a359" />
+                            <stop offset="100%" stopColor="#f3cf8a" />
+                          </linearGradient>
+                          <filter id="goldRouteGlow3" x="-20%" y="-20%" width="140%" height="140%">
+                            <feDropShadow dx="0" dy="0" stdDeviation="5" floodColor="#d4a359" floodOpacity="0.9" />
+                          </filter>
+                        </defs>
                         <rect width="500" height="350" fill="#1b030b" />
 
                         {/* Streets Grid */}
@@ -533,16 +668,32 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
                         <path d="M 0 160 L 500 160" stroke="#121619" strokeWidth="38" />
                         <text x="240" y="165" fill="#ffffff" fontSize="12" fontWeight="700" letterSpacing="0.14em" textAnchor="middle">SANTA MONICA BOULEVARD (CA-2)</text>
 
-                        {/* Route Line Overlay (Soft Transparent White Route Overlay) */}
+                        {/* Route Line Overlay (Golden Yellow Glowing Route matching Reserve Table Button) */}
                         <g>
                           <path
                             d={getRoutePathForZoom(3, selectedOriginId)}
                             fill="none"
-                            stroke="#ffffff"
-                            strokeWidth="8"
+                            stroke="#b37a2b"
+                            strokeWidth="14"
                             strokeLinecap="round"
-                            strokeOpacity="0.55"
-                            className="filter drop-shadow-[0_0_6px_rgba(255,255,255,0.55)] opacity-60"
+                            strokeOpacity="0.4"
+                          />
+                          <path
+                            d={getRoutePathForZoom(3, selectedOriginId)}
+                            fill="none"
+                            stroke="url(#mapGoldRouteGrad3)"
+                            strokeWidth="8.5"
+                            strokeLinecap="round"
+                            strokeOpacity="0.95"
+                            filter="url(#goldRouteGlow3)"
+                          />
+                          <path
+                            d={getRoutePathForZoom(3, selectedOriginId)}
+                            fill="none"
+                            stroke="#fff9e6"
+                            strokeWidth="2.5"
+                            strokeLinecap="round"
+                            strokeOpacity="0.9"
                           />
                         </g>
 
@@ -561,6 +712,17 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
                     {/* ZOOM LEVEL 4: CORRIDOR FOCUS */}
                     {zoomLevel === 4 && (
                       <svg viewBox="0 0 500 350" className="w-full h-full font-['Raleway',sans-serif]">
+                        <defs>
+                          <linearGradient id="mapGoldRouteGrad4" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stopColor="#b37a2b" />
+                            <stop offset="35%" stopColor="#f7d688" />
+                            <stop offset="70%" stopColor="#d4a359" />
+                            <stop offset="100%" stopColor="#f3cf8a" />
+                          </linearGradient>
+                          <filter id="goldRouteGlow4" x="-20%" y="-20%" width="140%" height="140%">
+                            <feDropShadow dx="0" dy="0" stdDeviation="5.5" floodColor="#d4a359" floodOpacity="0.9" />
+                          </filter>
+                        </defs>
                         <rect width="500" height="350" fill="#1b030b" />
 
                         {/* Western Boundary: SAWTELLE BLVD (ON LEFT) */}
@@ -597,16 +759,32 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
                           <text x="75" y="89" fill="#f3cf8a" fontSize="11" fontWeight="600" letterSpacing="0.06em" textAnchor="middle">SANTA MONICA BLVD</text>
                         </g>
 
-                        {/* Route Line Overlay (Soft Transparent White Route Overlay) */}
+                        {/* Route Line Overlay (Golden Yellow Glowing Route matching Reserve Table Button) */}
                         <g>
                           <path
                             d={getRoutePathForZoom(4, selectedOriginId)}
                             fill="none"
-                            stroke="#ffffff"
-                            strokeWidth="9"
+                            stroke="#b37a2b"
+                            strokeWidth="15"
                             strokeLinecap="round"
-                            strokeOpacity="0.55"
-                            className="filter drop-shadow-[0_0_6px_rgba(255,255,255,0.55)] opacity-60"
+                            strokeOpacity="0.4"
+                          />
+                          <path
+                            d={getRoutePathForZoom(4, selectedOriginId)}
+                            fill="none"
+                            stroke="url(#mapGoldRouteGrad4)"
+                            strokeWidth="9.5"
+                            strokeLinecap="round"
+                            strokeOpacity="0.95"
+                            filter="url(#goldRouteGlow4)"
+                          />
+                          <path
+                            d={getRoutePathForZoom(4, selectedOriginId)}
+                            fill="none"
+                            stroke="#fff9e6"
+                            strokeWidth="3"
+                            strokeLinecap="round"
+                            strokeOpacity="0.9"
                           />
                         </g>
                       </svg>
@@ -615,6 +793,17 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
                     {/* ZOOM LEVEL 5: ULTRA CLOSE-UP STREET & BUILDING DETAIL */}
                     {zoomLevel === 5 && (
                       <svg viewBox="0 0 500 350" className="w-full h-full font-['Raleway',sans-serif]">
+                        <defs>
+                          <linearGradient id="mapGoldRouteGrad5" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stopColor="#b37a2b" />
+                            <stop offset="35%" stopColor="#f7d688" />
+                            <stop offset="70%" stopColor="#d4a359" />
+                            <stop offset="100%" stopColor="#f3cf8a" />
+                          </linearGradient>
+                          <filter id="goldRouteGlow5" x="-20%" y="-20%" width="140%" height="140%">
+                            <feDropShadow dx="0" dy="0" stdDeviation="6" floodColor="#d4a359" floodOpacity="0.9" />
+                          </filter>
+                        </defs>
                         <rect width="500" height="350" fill="#1b030b" />
 
                         {/* Left Street Boundary: Sawtelle Blvd */}
@@ -636,16 +825,32 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
                           SANTA MONICA BOULEVARD (CA-2)
                         </text>
 
-                        {/* Route Line Overlay (Soft Transparent White Route Overlay) */}
+                        {/* Route Line Overlay (Golden Yellow Glowing Route matching Reserve Table Button) */}
                         <g>
                           <path
                             d={getRoutePathForZoom(5, selectedOriginId)}
                             fill="none"
-                            stroke="#ffffff"
-                            strokeWidth="10"
+                            stroke="#b37a2b"
+                            strokeWidth="16"
                             strokeLinecap="round"
-                            strokeOpacity="0.55"
-                            className="filter drop-shadow-[0_0_6px_rgba(255,255,255,0.55)] opacity-60"
+                            strokeOpacity="0.4"
+                          />
+                          <path
+                            d={getRoutePathForZoom(5, selectedOriginId)}
+                            fill="none"
+                            stroke="url(#mapGoldRouteGrad5)"
+                            strokeWidth="10.5"
+                            strokeLinecap="round"
+                            strokeOpacity="0.95"
+                            filter="url(#goldRouteGlow5)"
+                          />
+                          <path
+                            d={getRoutePathForZoom(5, selectedOriginId)}
+                            fill="none"
+                            stroke="#fff9e6"
+                            strokeWidth="3.5"
+                            strokeLinecap="round"
+                            strokeOpacity="0.9"
                           />
                         </g>
 
@@ -691,40 +896,8 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
 
                 </div>
 
-                {/* Integrated Estimated Time & Navigation Action Bar */}
-                <div className="pt-3 border-t border-[#521324] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                  <div className="flex flex-col items-start space-y-1.5">
-                    {/* Header Label: Estimated Time */}
-                    <span className="text-[11px] sm:text-xs uppercase font-medium tracking-widest text-[#f5a7b8]">
-                      Estimated Time
-                    </span>
-                    
-                    {/* Time (smaller size, e.g. 11 mins) */}
-                    <span className="text-xl sm:text-2xl font-medium text-[#f3cf8a] leading-none">
-                      {displayTime}
-                    </span>
-
-                    {/* Miles / Distance below the time */}
-                    <span className="text-xs sm:text-sm text-[#e2e8f0]/90 font-normal">
-                      {displayDistance}
-                    </span>
-
-                    {/* Smooth Icon Centered / Positioned below the distance */}
-                    <div className="pt-0.5">
-                      <span className="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-green-950/80 border border-green-500/40 text-green-300 text-xs font-medium shadow-sm">
-                        <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse shrink-0"></span>
-                        <span>{customOrigin ? 'Live GPS (🟢)' : activeOrigin.traffic}</span>
-                      </span>
-                    </div>
-
-                    {locationStatus && (
-                      <p className="text-[11px] sm:text-xs text-[#f5d79e] font-normal flex items-center space-x-1 bg-[#280510] px-2.5 py-1 rounded-lg border border-[#6b152d] mt-1">
-                        <CheckCircle2 size={13} className="text-green-400 shrink-0" />
-                        <span className="truncate">{locationStatus}</span>
-                      </p>
-                    )}
-                  </div>
-
+                {/* Centralized Live Google Navigation Button */}
+                <div className="pt-2 flex justify-center">
                   <a
                     href={
                       gpsData && gpsData.coords
@@ -735,11 +908,9 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
                     }
                     target="_blank"
                     rel="noreferrer"
-                    className="py-3 px-5 rounded-xl bg-gradient-to-r from-[#d4a359] via-[#e2b46b] to-[#f3cf8a] text-black font-medium text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center space-x-2 shadow-md hover:brightness-110 active:scale-95 transition-all cursor-pointer shrink-0 self-stretch sm:self-center"
+                    className="w-full sm:w-auto py-3 px-8 rounded-xl bg-gradient-to-r from-[#d4a359] via-[#e2b46b] to-[#f3cf8a] text-black font-bold text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center text-center shadow-md hover:brightness-110 active:scale-95 transition-all cursor-pointer"
                   >
-                    <Car size={16} />
-                    <span>Open Live Google Navigation</span>
-                    <ArrowRight size={15} />
+                    <span>OPEN LIVE GOOGLE NAVIGATION</span>
                   </a>
                 </div>
 
@@ -780,94 +951,118 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
                 {/* Direct Phone Bar */}
                 <a
                   href="tel:+13104440045"
-                  className="flex items-center justify-between p-4 rounded-2xl bg-[#280510] hover:bg-[#3d0818] border border-[#831f3b] transition-all group cursor-pointer"
+                  className="flex items-center justify-between p-3.5 rounded-2xl bg-[#280510] hover:bg-[#3d0818] border border-[#831f3b] transition-all group cursor-pointer"
+                  title="Direct Phone Concierge: (310) 444-0045"
                 >
                   <div className="flex items-center space-x-3">
                     <div className="w-10 h-10 rounded-xl bg-[#521324] flex items-center justify-center text-[#d4a359] group-hover:scale-110 transition-transform">
                       <Phone size={18} />
                     </div>
                     <div>
-                      <span className="text-xs text-[#f5a7b8] uppercase font-normal tracking-wider block">Direct Concierge</span>
-                      <span className="text-base sm:text-lg font-medium text-white group-hover:text-[#f3cf8a] transition-colors">(310) 444-0045</span>
+                      <span className="text-[11px] text-[#f5a7b8] uppercase font-normal tracking-wider block">Direct Concierge</span>
+                      <span className="text-sm sm:text-base font-medium text-white group-hover:text-[#f3cf8a] transition-colors">(310) 444-0045</span>
                     </div>
                   </div>
-                  <span className="text-xs sm:text-sm font-medium text-[#f5d79e] bg-[#521324] px-3 py-1.5 rounded-xl">Call Now</span>
+                  <span className="text-xs font-semibold text-[#f5d79e] bg-[#521324] px-3.5 py-1.5 rounded-xl flex flex-col items-center justify-center text-center leading-tight">
+                    <span>CALL</span>
+                    <span>NOW</span>
+                  </span>
                 </a>
 
-                {/* 6 Prominent Social & Messaging Buttons */}
-                <div>
-                  <span className="text-xs sm:text-sm uppercase font-['Raleway'] font-medium tracking-widest text-[#f5a7b8] block mb-3">
-                    Connect &amp; Message Online
-                  </span>
-                  
-                  <div className="grid grid-cols-6 gap-2.5">
+                {/* Unified Social & Communication Icon Row with Interactive Hover Tooltips */}
+                <div className="pt-1">
+                  <div className="grid grid-cols-6 gap-2">
                     {/* 1. Phone */}
-                    <a
-                      href="tel:+13104440045"
-                      className="w-full h-12 rounded-xl bg-[#280510] hover:bg-[#d4a359] text-[#f5d79e] hover:text-black border border-[#831f3b]/70 flex items-center justify-center transition-all duration-300 shadow-md hover:scale-105 active:scale-95 cursor-pointer group"
-                      aria-label="Direct Phone Call"
-                      title="Call: (310) 444-0045"
-                    >
-                      <Phone size={20} className="group-hover:scale-110 transition-transform" />
-                    </a>
+                    <div className="relative group flex justify-center">
+                      <a
+                        href="tel:+13104440045"
+                        className="w-full h-11 rounded-xl bg-[#280510] hover:bg-[#d4a359] text-[#f5d79e] hover:text-black border border-[#831f3b]/70 flex items-center justify-center transition-all duration-300 shadow-md hover:scale-105 active:scale-95 cursor-pointer"
+                        aria-label="Call: (310) 444-0045"
+                      >
+                        <Phone size={18} />
+                      </a>
+                      <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded bg-black/90 border border-[#d4a359]/60 text-[10px] text-[#f5d79e] whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity shadow-lg z-30 font-medium">
+                        Call (310) 444-0045
+                      </span>
+                    </div>
 
                     {/* 2. WhatsApp */}
-                    <a
-                      href="https://wa.me/13104440045"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="w-full h-12 rounded-xl bg-[#280510] hover:bg-[#25D366] text-[#25D366] hover:text-white border border-[#831f3b]/70 flex items-center justify-center transition-all duration-300 shadow-md hover:scale-105 active:scale-95 cursor-pointer group"
-                      aria-label="WhatsApp Concierge"
-                      title="WhatsApp Direct Concierge"
-                    >
-                      <MessageCircle size={20} className="group-hover:scale-110 transition-transform" />
-                    </a>
+                    <div className="relative group flex justify-center">
+                      <a
+                        href="https://wa.me/13104440045"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="w-full h-11 rounded-xl bg-[#280510] hover:bg-[#25D366] text-[#25D366] hover:text-white border border-[#831f3b]/70 flex items-center justify-center transition-all duration-300 shadow-md hover:scale-105 active:scale-95 cursor-pointer"
+                        aria-label="WhatsApp Concierge"
+                      >
+                        <MessageCircle size={18} />
+                      </a>
+                      <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded bg-black/90 border border-green-500/60 text-[10px] text-green-300 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity shadow-lg z-30 font-medium">
+                        WhatsApp Chat
+                      </span>
+                    </div>
 
                     {/* 3. Email */}
-                    <a
-                      href="mailto:contact@flameinternational.com"
-                      className="w-full h-12 rounded-xl bg-[#280510] hover:bg-[#ea4335] text-[#f5d79e] hover:text-white border border-[#831f3b]/70 flex items-center justify-center transition-all duration-300 shadow-md hover:scale-105 active:scale-95 cursor-pointer group"
-                      aria-label="Send Email"
-                      title="Email: contact@flameinternational.com"
-                    >
-                      <Mail size={20} className="group-hover:scale-110 transition-transform" />
-                    </a>
+                    <div className="relative group flex justify-center">
+                      <a
+                        href="mailto:contact@flameinternational.com"
+                        className="w-full h-11 rounded-xl bg-[#280510] hover:bg-[#ea4335] text-[#f5d79e] hover:text-white border border-[#831f3b]/70 flex items-center justify-center transition-all duration-300 shadow-md hover:scale-105 active:scale-95 cursor-pointer"
+                        aria-label="Email Concierge"
+                      >
+                        <Mail size={18} />
+                      </a>
+                      <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded bg-black/90 border border-red-500/60 text-[10px] text-red-200 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity shadow-lg z-30 font-medium">
+                        Email Concierge
+                      </span>
+                    </div>
 
                     {/* 4. Instagram */}
-                    <a
-                      href="https://instagram.com/flameinternational"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="w-full h-12 rounded-xl bg-[#280510] hover:bg-gradient-to-tr hover:from-[#f58529] hover:via-[#dd2a7b] hover:to-[#8134af] text-[#f5d79e] hover:text-white border border-[#831f3b]/70 flex items-center justify-center transition-all duration-300 shadow-md hover:scale-105 active:scale-95 cursor-pointer group"
-                      aria-label="Instagram Profile"
-                      title="Follow on Instagram"
-                    >
-                      <Instagram size={20} className="group-hover:scale-110 transition-transform" />
-                    </a>
+                    <div className="relative group flex justify-center">
+                      <a
+                        href="https://instagram.com/flameinternational"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="w-full h-11 rounded-xl bg-[#280510] hover:bg-gradient-to-tr hover:from-[#f58529] hover:via-[#dd2a7b] hover:to-[#8134af] text-[#f5d79e] hover:text-white border border-[#831f3b]/70 flex items-center justify-center transition-all duration-300 shadow-md hover:scale-105 active:scale-95 cursor-pointer"
+                        aria-label="Instagram Profile"
+                      >
+                        <Instagram size={18} />
+                      </a>
+                      <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded bg-black/90 border border-pink-500/60 text-[10px] text-pink-200 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity shadow-lg z-30 font-medium">
+                        Instagram @flame
+                      </span>
+                    </div>
 
                     {/* 5. Facebook */}
-                    <a
-                      href="https://facebook.com/flameinternational"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="w-full h-12 rounded-xl bg-[#280510] hover:bg-[#1877F2] text-[#f5d79e] hover:text-white border border-[#831f3b]/70 flex items-center justify-center transition-all duration-300 shadow-md hover:scale-105 active:scale-95 cursor-pointer group"
-                      aria-label="Facebook Page"
-                      title="Visit Flame on Facebook"
-                    >
-                      <Facebook size={20} className="group-hover:scale-110 transition-transform" />
-                    </a>
+                    <div className="relative group flex justify-center">
+                      <a
+                        href="https://facebook.com/flameinternational"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="w-full h-11 rounded-xl bg-[#280510] hover:bg-[#1877F2] text-[#f5d79e] hover:text-white border border-[#831f3b]/70 flex items-center justify-center transition-all duration-300 shadow-md hover:scale-105 active:scale-95 cursor-pointer"
+                        aria-label="Facebook Page"
+                      >
+                        <Facebook size={18} />
+                      </a>
+                      <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded bg-black/90 border border-blue-500/60 text-[10px] text-blue-200 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity shadow-lg z-30 font-medium">
+                        Facebook Page
+                      </span>
+                    </div>
 
                     {/* 6. LinkedIn */}
-                    <a
-                      href="https://linkedin.com/company/flame-international"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="w-full h-12 rounded-xl bg-[#280510] hover:bg-[#0A66C2] text-[#f5d79e] hover:text-white border border-[#831f3b]/70 flex items-center justify-center transition-all duration-300 shadow-md hover:scale-105 active:scale-95 cursor-pointer group"
-                      aria-label="LinkedIn Company Profile"
-                      title="Connect on LinkedIn"
-                    >
-                      <Linkedin size={20} className="group-hover:scale-110 transition-transform" />
-                    </a>
+                    <div className="relative group flex justify-center">
+                      <a
+                        href="https://linkedin.com/company/flame-international"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="w-full h-11 rounded-xl bg-[#280510] hover:bg-[#0A66C2] text-[#f5d79e] hover:text-white border border-[#831f3b]/70 flex items-center justify-center transition-all duration-300 shadow-md hover:scale-105 active:scale-95 cursor-pointer"
+                        aria-label="LinkedIn Profile"
+                      >
+                        <Linkedin size={18} />
+                      </a>
+                      <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded bg-black/90 border border-sky-500/60 text-[10px] text-sky-200 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity shadow-lg z-30 font-medium">
+                        LinkedIn Profile
+                      </span>
+                    </div>
                   </div>
                 </div>
 
@@ -875,16 +1070,18 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
                 <div className="pt-2 grid grid-cols-2 gap-2.5">
                   <button
                     onClick={onOpenReserve}
-                    className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-[#d4a359] to-[#f3cf8a] text-black font-medium text-xs sm:text-sm uppercase tracking-wider transition-all hover:brightness-110 active:scale-95 cursor-pointer shadow-md"
+                    className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-[#d4a359] to-[#f3cf8a] text-black font-bold text-xs sm:text-sm uppercase tracking-wider transition-all hover:brightness-110 active:scale-95 cursor-pointer shadow-md flex flex-col items-center justify-center text-center leading-tight"
                   >
-                    Reserve Table
+                    <span>RESERVE</span>
+                    <span>TABLE</span>
                   </button>
                   {onOpenMenu && (
                     <button
                       onClick={onOpenMenu}
-                      className="w-full py-3 px-4 rounded-xl bg-[#280510] hover:bg-[#3d0818] text-[#f5d79e] border border-[#831f3b] font-medium text-xs sm:text-sm uppercase tracking-wider transition-all active:scale-95 cursor-pointer"
+                      className="w-full py-3 px-4 rounded-xl bg-[#280510] hover:bg-[#3d0818] text-[#f5d79e] border border-[#831f3b] font-bold text-xs sm:text-sm uppercase tracking-wider transition-all active:scale-95 cursor-pointer flex flex-col items-center justify-center text-center leading-tight"
                     >
-                      Explore Menu
+                      <span>EXPLORE</span>
+                      <span>MENU</span>
                     </button>
                   )}
                 </div>
@@ -896,9 +1093,20 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
           </div>
         </RevealOnScroll>
 
-        {/* Bottom Credits */}
-        <div className="mt-12 text-center text-sm text-[#f5a7b8]/90 font-['Raleway']">
-          <p className="font-normal text-sm sm:text-base text-white/90">© 2026 Flame International. All rights reserved.</p>
+        {/* Bottom Credits - Reduced Text Size & Direct CMS Admin Link */}
+        <div className="mt-10 text-center font-['Raleway'] space-y-1">
+          <p className="font-normal text-[11px] sm:text-xs text-white/50 tracking-wider">
+            © 2026 FLAME INTERNATIONAL. All rights reserved.
+          </p>
+          <p>
+            <a
+              href="#admin"
+              className="text-[10px] text-white/20 hover:text-[#f3cf8a] transition-colors underline decoration-dotted"
+              title="Direct CMS Login Link"
+            >
+              CMS Admin Login
+            </a>
+          </p>
         </div>
 
       </div>

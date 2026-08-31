@@ -244,7 +244,7 @@ export const FlameLogo: React.FC<FlameLogoProps> = ({
         x="120"
         y="148"
         textAnchor="middle"
-        fill={color}
+        fill="#ffffff"
         fontSize="44"
         fontFamily="'Raleway', sans-serif"
         fontWeight="900"
@@ -253,17 +253,17 @@ export const FlameLogo: React.FC<FlameLogoProps> = ({
         FLAME
       </text>
 
-      <line x1="26" y1="160" x2="214" y2="160" stroke={color} strokeWidth="3.5" />
-      <line x1="26" y1="184" x2="214" y2="184" stroke={color} strokeWidth="3.5" />
+      <line x1="26" y1="160" x2="214" y2="160" stroke="#ffffff" strokeWidth="3.5" />
+      <line x1="26" y1="184" x2="214" y2="184" stroke="#ffffff" strokeWidth="3.5" />
 
       <text
         x="120"
         y="177"
         textAnchor="middle"
-        fill={color}
+        fill="#ffffff"
         fontSize="13.5"
         fontFamily="'Raleway', sans-serif"
-        fontWeight="800"
+        fontWeight="900"
         letterSpacing="5"
       >
         INTERNATIONAL
@@ -306,14 +306,12 @@ export const FlameLogo: React.FC<FlameLogoProps> = ({
     return (
       <div className={`flex flex-col text-left font-['Raleway'] tracking-tight ${className}`}>
         <span 
-          style={{ color }}
-          className={`${textSize} font-black tracking-wider leading-none`}
+          className={`${textSize} font-black font-[900] tracking-wider leading-none text-white`}
         >
           FLAME
         </span>
         <span 
-          style={{ color }}
-          className={`${subTextSize} font-extrabold tracking-[0.45em] uppercase leading-tight mt-1 opacity-90`}
+          className={`${subTextSize} font-black font-[900] tracking-[0.32em] uppercase leading-none mt-1 text-white`}
         >
           INTERNATIONAL
         </span>
@@ -324,18 +322,16 @@ export const FlameLogo: React.FC<FlameLogoProps> = ({
   // Variant: Monochrome Full Lockup
   if (variant === 'full-lockup') {
     return (
-      <div className={`inline-flex items-center space-x-4 sm:space-x-6 ${className}`}>
+      <div className={`inline-flex items-center space-x-3 sm:space-x-4 ${className}`}>
         {renderMonochromeSvg(emblemSize, emblemSize)}
         <div className="flex flex-col text-left font-['Raleway']">
           <span 
-            style={{ color }} 
-            className={`${textSize} font-black tracking-widest leading-none drop-shadow-sm`}
+            className={`${textSize} font-black font-[900] tracking-wider leading-none text-white drop-shadow-sm`}
           >
             FLAME
           </span>
           <span 
-            style={{ color }} 
-            className={`${subTextSize} font-extrabold tracking-[0.42em] uppercase leading-tight mt-1.5 opacity-95`}
+            className={`${subTextSize} font-black font-[900] tracking-[0.32em] uppercase leading-none mt-1 sm:mt-1.5 text-white`}
           >
             INTERNATIONAL
           </span>
@@ -344,19 +340,19 @@ export const FlameLogo: React.FC<FlameLogoProps> = ({
     );
   }
 
-  // Default: Exact Full Color Logo Lockup matching color_logo_transbkgrd (1).webp
-  // (Fiery Red/Orange Orb with flames + Bold crisp White "FLAME INTERNATIONAL" text)
+  // Default: Exact Full Color Logo Lockup matching reference image
+  // (Fiery Red/Orange Orb with flames on left + Ultra Bold Pure White FLAME on top + Tracked Pure White INTERNATIONAL below)
   return (
-    <div className={`inline-flex items-center space-x-4 sm:space-x-6 lg:space-x-8 ${className}`}>
+    <div className={`inline-flex items-center space-x-3.5 sm:space-x-4 lg:space-x-5 ${className}`}>
       {renderColorEmblemSvg(emblemSize, emblemSize)}
       <div className="flex flex-col text-left font-['Raleway'] select-none">
         <span 
-          className={`${textSize} font-black tracking-wider leading-none text-white drop-shadow-[0_4px_15px_rgba(0,0,0,0.8)]`}
+          className={`${textSize} font-black font-[900] tracking-wider leading-none text-white drop-shadow-[0_4px_15px_rgba(0,0,0,0.8)]`}
         >
           FLAME
         </span>
         <span 
-          className={`${subTextSize} font-extrabold tracking-[0.42em] uppercase leading-tight mt-1.5 sm:mt-2 text-white/95 drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]`}
+          className={`${subTextSize} font-black font-[900] tracking-[0.32em] uppercase leading-none mt-1 sm:mt-1.5 text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]`}
         >
           INTERNATIONAL
         </span>

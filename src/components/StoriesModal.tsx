@@ -88,7 +88,7 @@ export const StoriesModal: React.FC<StoriesModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-0 sm:p-4 backdrop-blur-xl select-none animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 bg-[#180309]/95 flex items-center justify-center p-0 sm:p-4 backdrop-blur-xl select-none animate-in fade-in duration-200">
       
       {/* Story Mobile Device Frame / Container */}
       <div className="relative w-full h-full sm:h-[88vh] sm:max-w-md bg-[#18050c] sm:rounded-3xl overflow-hidden shadow-2xl flex flex-col justify-between">
@@ -100,7 +100,7 @@ export const StoriesModal: React.FC<StoriesModalProps> = ({
             alt={currentSlide.title}
             className="w-full h-full object-cover filter brightness-[0.88] contrast-[1.05]"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/90" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#180309]/80 via-transparent to-[#180309]/95" />
         </div>
 
         {/* Top Interactive Bar: Progress Indicators & Controls */}
@@ -137,19 +137,19 @@ export const StoriesModal: React.FC<StoriesModalProps> = ({
             <div className="flex items-center space-x-2">
               <button
                 onClick={() => setIsPaused(!isPaused)}
-                className="p-2 rounded-full bg-black/40 text-white hover:bg-black/60 backdrop-blur-sm"
+                className="p-2 rounded-full bg-[#2d0713]/80 text-white hover:bg-[#430b1c] backdrop-blur-sm"
               >
                 {isPaused ? <Play size={14} /> : <Pause size={14} />}
               </button>
               <button
                 onClick={() => setIsMuted(!isMuted)}
-                className="p-2 rounded-full bg-black/40 text-white hover:bg-black/60 backdrop-blur-sm"
+                className="p-2 rounded-full bg-[#2d0713]/80 text-white hover:bg-[#430b1c] backdrop-blur-sm"
               >
                 {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
               </button>
               <button
                 onClick={onClose}
-                className="p-2 rounded-full bg-black/40 text-white hover:bg-black/60 backdrop-blur-sm"
+                className="p-2 rounded-full bg-[#2d0713]/80 text-white hover:bg-[#430b1c] backdrop-blur-sm"
               >
                 <X size={16} />
               </button>
@@ -182,7 +182,7 @@ export const StoriesModal: React.FC<StoriesModalProps> = ({
           {/* Action CTA Button */}
           <button
             onClick={handleActionClick}
-            className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-[#d4a359] via-[#e2b775] to-[#b8863b] text-black font-bold text-xs uppercase tracking-[0.2em] shadow-2xl flex items-center justify-center space-x-2 hover:scale-[1.02] transition-transform cursor-pointer"
+            className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-[#d4a359] via-[#e2b775] to-[#b8863b] text-[#180309] font-bold text-xs uppercase tracking-[0.2em] shadow-2xl flex items-center justify-center space-x-2 hover:scale-[1.02] transition-transform cursor-pointer"
           >
             {currentSlide.dishId ? <ShoppingBag size={16} /> : <Calendar size={16} />}
             <span>{currentSlide.actionText || 'Explore Dish'}</span>
