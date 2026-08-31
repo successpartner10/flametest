@@ -140,7 +140,7 @@ export const Header: React.FC<HeaderProps> = ({
               <img 
                 src="/images/flame-logo.png" 
                 alt="Flame International" 
-                className="h-10 sm:h-12 w-auto object-contain filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]" 
+                className="h-20 sm:h-24 w-auto object-contain filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]" 
               />
             </div>
           </div>
