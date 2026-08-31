@@ -42,11 +42,11 @@ export const PublicPageViewer: React.FC<PublicPageViewerProps> = ({
 
   return (
     <article
-      className={`min-h-screen pt-24 pb-20 px-4 sm:px-6 lg:px-12 transition-colors duration-500 font-['Raleway'] ${
+      className={`min-h-screen pt-24 pb-20 px-2 sm:px-6 lg:px-8 transition-colors duration-500 font-['Raleway'] ${
         isNight ? 'bg-[#180309] text-[#f7e8ea]' : 'bg-[#faf8f5] text-[#1a1e24]'
       }`}
     >
-      <div className="max-w-5xl mx-auto space-y-10">
+      <div className="max-w-7xl mx-auto space-y-10">
         
         {/* Navigation Breadcrumb & Admin Edit Trigger */}
         <div className="flex items-center justify-between">

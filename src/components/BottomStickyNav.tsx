@@ -1,8 +1,8 @@
 import React from 'react';
-import { Home, Sparkles, Utensils, ShoppingBag, Users, Calendar } from 'lucide-react';
+import { Home, Sparkles, Utensils, ShoppingBag, Users, Calendar, PhoneCall } from 'lucide-react';
 import { AppMode } from '../types';
 
-export type BottomNavAction = 'home' | 'live-events' | 'dine-in' | 'order-online' | 'catering' | 'reserve' | 'lunch' | 'dinner';
+export type BottomNavAction = 'home' | 'live-events' | 'dine-in' | 'order-online' | 'catering' | 'reserve' | 'contact' | 'lunch' | 'dinner';
 
 interface BottomStickyNavProps {
   mode: AppMode;
@@ -25,9 +25,9 @@ export const BottomStickyNav: React.FC<BottomStickyNavProps> = ({
     },
     {
       id: 'live-events' as BottomNavAction,
-      label: 'LIVE EVENTS',
+      label: 'LIVE',
       icon: Sparkles,
-      badge: 'LIVE',
+      badge: 'GALA',
       ariaLabel: 'View Live Events & Concerts',
     },
     {
@@ -39,7 +39,7 @@ export const BottomStickyNav: React.FC<BottomStickyNavProps> = ({
     },
     {
       id: 'order-online' as BottomNavAction,
-      label: 'ONLINE ORDER',
+      label: 'ORDER',
       icon: ShoppingBag,
       badge: null,
       ariaLabel: 'Order Food Online',
@@ -53,10 +53,17 @@ export const BottomStickyNav: React.FC<BottomStickyNavProps> = ({
     },
     {
       id: 'reserve' as BottomNavAction,
-      label: 'RESERVE SPACE',
+      label: 'RESERVE',
       icon: Calendar,
       badge: null,
       ariaLabel: 'Reserve Table or Space',
+    },
+    {
+      id: 'contact' as BottomNavAction,
+      label: 'CONTACT',
+      icon: PhoneCall,
+      badge: null,
+      ariaLabel: 'Contact Us & Fillable Inquiry Form',
     },
   ];
 
@@ -66,8 +73,8 @@ export const BottomStickyNav: React.FC<BottomStickyNavProps> = ({
       aria-label="Bottom Navigation Bar"
       className="fixed bottom-0 left-0 right-0 z-50 backdrop-blur-xl transition-colors duration-500 shadow-[0_-8px_32px_rgba(0,0,0,0.7)] font-['Raleway'] bg-gradient-to-r from-[#180309]/95 via-[#24060f]/95 to-[#180309]/95 border-t border-[#521324]/60"
     >
-      <div className="max-w-4xl mx-auto px-1 sm:px-4 pt-1.5 pb-[max(0.65rem,env(safe-area-inset-bottom))] sm:py-2">
-        <nav className="grid grid-cols-6 gap-0.5 sm:gap-1.5 items-stretch">
+      <div className="max-w-5xl mx-auto px-1 sm:px-4 pt-1.5 pb-[max(0.65rem,env(safe-area-inset-bottom))] sm:py-2">
+        <nav className="grid grid-cols-7 gap-0.5 sm:gap-1.5 items-stretch">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeAction === item.id;

@@ -216,6 +216,8 @@ export default function App() {
       handleSelectPage('catering');
     } else if (action === 'reserve') {
       handleSelectPage('reserve-space');
+    } else if (action === 'contact') {
+      handleSelectPage('contact');
     } else if (action === 'lunch') {
       handleOpenLunch();
     } else if (action === 'dinner') {
