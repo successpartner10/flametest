@@ -131,21 +131,17 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
           </div>
 
-          {/* Brand Logo / Title Lockup - Matches official white bold lockup */}
+          {/* Brand Logo / Title Lockup */}
           <div 
-            className="flex items-center space-x-2.5 sm:space-x-3.5 cursor-pointer select-none py-1 group"
+            className="flex items-center cursor-pointer select-none py-1 group"
             onClick={() => handleNavClick('home')}
           >
-            <div className="group-hover:scale-105 transition-transform duration-300 drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">
-              <FlameLogo variant="color-emblem" size="sm" />
-            </div>
-            <div className="text-left flex flex-col justify-center">
-              <span className="font-['Raleway'] text-lg sm:text-2xl font-black font-[900] tracking-wider text-white leading-none drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
-                FLAME
-              </span>
-              <span className="font-['Raleway'] text-[9px] sm:text-[11px] font-black font-[900] tracking-[0.32em] text-white uppercase leading-none mt-1 sm:mt-1.5 drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]">
-                INTERNATIONAL
-              </span>
+            <div className="group-hover:scale-105 transition-transform duration-300">
+              <img 
+                src="/images/flame-logo.png" 
+                alt="Flame International" 
+                className="h-10 sm:h-12 w-auto object-contain filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]" 
+              />
             </div>
           </div>
 
