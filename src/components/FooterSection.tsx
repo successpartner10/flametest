@@ -66,6 +66,7 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
   onOpenStories,
   onOpenAbout,
   mode = 'lunch',
+  isHomePage = true,
 }) => {
   // Map zoom level: 1 = Super Regional (West LA & Freeways), 2 = Regional (HWY 405 & Arteries), 3 = District (Sawtelle + Corinth), 4 = Corridor Focus, 5 = Close-Up
   const [zoomLevel, setZoomLevel] = useState<number>(3);
