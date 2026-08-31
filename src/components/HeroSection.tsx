@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { UtensilsCrossed, Calendar, Play, Pause, Ticket, Sparkles, Volume2, VolumeX } from 'lucide-react';
+import { UtensilsCrossed, Calendar, Ticket, Sparkles, Volume2, VolumeX } from 'lucide-react';
 import { AppMode } from '../types';
 import flameConcertHero from '../assets/images/flame_concert_hero_1788098658069.jpg';
 import flameDiningRoom from '../assets/images/flame_dining_room.jpg';
@@ -158,27 +158,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         <div className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-[#180309]/95 via-[#180309]/40 to-transparent z-15 pointer-events-none" />
       </div>
 
-      {/* Floating Scene Controls (Play/Pause & Scene Switcher) */}
-      <div className="absolute top-24 right-4 sm:right-8 z-30 flex items-center space-x-2 bg-[#2d0713]/80 backdrop-blur-md px-3 py-1.5 rounded-full border border-[#831f3b]/60 shadow-lg text-white text-xs">
-        <button
-          onClick={() => setIsPlaying(!isPlaying)}
-          className="flex items-center space-x-1.5 hover:text-[#f3cf8a] transition-colors cursor-pointer"
-          title={isPlaying ? 'Pause motion' : 'Play motion'}
-        >
-          {isPlaying ? <Pause size={14} /> : <Play size={14} />}
-          <span className="text-[11px] font-medium uppercase tracking-wider">
-            {isPlaying ? 'Live Stage Motion' : 'Paused'}
-          </span>
-        </button>
-        <span className="text-white/30">|</span>
-        <button
-          onClick={() => setActiveSceneIndex((prev) => (prev + 1) % CINEMATIC_SCENES.length)}
-          className="text-[11px] hover:text-[#f3cf8a] transition-colors cursor-pointer text-white/80"
-          title="Switch scene"
-        >
-          Scene {activeSceneIndex + 1}/{CINEMATIC_SCENES.length}
-        </button>
-      </div>
+
+
 
       {/* Clean, Non-Intrusive Bottom Actions (Removed heavy text overlay to keep hero fully visible) */}
       <div className="relative z-30 max-w-5xl mx-auto px-4 w-full flex flex-col sm:flex-row items-center justify-between gap-4">
