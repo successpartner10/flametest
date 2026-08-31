@@ -261,41 +261,62 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
       {/* Subtle Warm Amber Ambiance */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(212,163,89,0.1),transparent_70%)] pointer-events-none" />
 
-      <div className="max-w-6xl mx-auto flex flex-col items-center relative z-10">
-        
-        {/* Prominent Official Flame International Color Logo Header */}
-        <RevealOnScroll direction="up" delay={0} duration={800} className="text-center mb-8 flex flex-col items-center">
-          <div className="mb-5 hover:scale-105 transition-transform duration-300 cursor-pointer">
-            <FlameLogo variant="color-full" size="xl" />
-          </div>
+      <div className="max-w-7xl mx-auto relative z-10">
 
-          <span className="text-xs sm:text-sm tracking-[0.3em] text-[#f5a7b8] uppercase font-['Raleway'] font-medium block mb-1">
-            FIND US / VISIT US
-          </span>
-          <h2 className="font-['Raleway'] text-lg sm:text-2xl text-white font-medium tracking-wider uppercase">
-            ON <span className="text-[#f3cf8a] font-semibold ml-1">SANTA MONICA BOULEVARD</span>
-          </h2>
-          {/* Address + valet shown in header only on Home; inner pages show it in Column 1 of the footer grid */}
-          {isHomePage && (
-            <>
-              <p className="text-base sm:text-lg text-white font-normal mt-2 font-['Raleway']">
-                11330 Santa Monica Blvd, West Los Angeles, CA 90025
-              </p>
-              <div className="mt-3 inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-[#3d0a1c]/95 border border-[#831f3b] text-sm text-[#f3cf8a] font-medium shadow-lg">
-                <Car size={18} className="text-[#f3cf8a] shrink-0" />
-                <span>Complimentary Guest Valet Parking at Main Entrance</span>
-              </div>
-            </>
-          )}
-        </RevealOnScroll>
-
-        {/* Unified 2-Column Responsive Layout: Map Functionality Grouped Together (Left) vs Hours & Contact (Right) */}
-        <RevealOnScroll direction="up" delay={150} duration={850} className="w-full max-w-6xl">
-          <div className={`w-full grid ${isHomePage ? 'grid-cols-1 lg:grid-cols-12 gap-7' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'} items-start font-['Raleway']`}>
+        {/* HOME PAGE: TRUE 3-COLUMN FOOTER GRID */}
+        <RevealOnScroll direction="up" delay={0} duration={800} className="w-full">
+          <div className={`w-full grid ${
+            isHomePage
+              ? 'grid-cols-1 lg:grid-cols-3 gap-7'
+              : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'
+          } items-start font-['Raleway']`}>
             
-            {/* 🗺️ LEFT COLUMN (lg:col-span-7): UNIFIED STREET MAP & DIRECTIONS MODULE */}
+            {/* ═══════════════════════════════════════════════════ */}
+            {/* COLUMN 1: LOGO, ADDRESS & BRAND INFO (HOME ONLY)  */}
+            {/* ═══════════════════════════════════════════════════ */}
             {isHomePage && (
-              <div className="lg:col-span-7">
+              <div className="bg-[#1c030b]/90 border border-[#6b152d]/60 rounded-3xl p-6 backdrop-blur-md shadow-[0_20px_50px_rgba(0,0,0,0.6)] flex flex-col items-center text-center space-y-5">
+                {/* Logo Image */}
+                <img
+                  src="/images/flame-logo.png"
+                  alt="Flame International"
+                  className="w-48 sm:w-56 object-contain drop-shadow-[0_8px_20px_rgba(212,163,89,0.4)] hover:scale-105 transition-transform duration-300"
+                />
+
+                {/* Address block */}
+                <div className="space-y-1">
+                  <span className="text-xs tracking-[0.25em] text-[#f5a7b8] uppercase font-medium block">Find Us / Visit Us</span>
+                  <h2 className="text-white font-semibold text-sm sm:text-base uppercase tracking-wider">
+                    On <span className="text-[#f3cf8a]">Santa Monica Blvd</span>
+                  </h2>
+                  <p className="text-xs sm:text-sm text-white/80 leading-relaxed">
+                    11330 Santa Monica Blvd<br />West Los Angeles, CA 90025
+                  </p>
+                </div>
+
+                {/* Valet pill */}
+                <div className="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-[#3d0a1c]/95 border border-[#831f3b] text-xs text-[#f3cf8a] font-medium shadow-lg">
+                  <Car size={15} className="shrink-0" />
+                  <span>Complimentary Valet Parking</span>
+                </div>
+
+                {/* Google Maps CTA */}
+                <a
+                  href="https://www.google.com/maps/dir/?api=1&destination=11330+Santa+Monica+Blvd,+Los+Angeles,+CA+90025"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#d4a359] to-[#f3cf8a] text-black font-bold text-xs uppercase tracking-wider flex items-center justify-center shadow hover:brightness-110 transition-all cursor-pointer"
+                >
+                  Google Maps Directions
+                </a>
+              </div>
+            )}
+
+            {/* ═══════════════════════════════════════════════════ */}
+            {/* COLUMN 2: INTERACTIVE MAP MODULE (HOME ONLY)       */}
+            {/* ═══════════════════════════════════════════════════ */}
+            {isHomePage && (
+              <div>
               
               <div className="bg-[#1c030b]/90 border border-[#6b152d]/70 rounded-3xl p-4 sm:p-6 backdrop-blur-md shadow-[0_20px_50px_rgba(0,0,0,0.6)] space-y-3.5">
                 
@@ -923,12 +944,12 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
             </div>
             )}
 
-            {/* ========================================================================= */}
-            {/* 📍 RIGHT / MAIN COLUMNS (lg:col-span-5 on Home, 3 distinct columns on other pages) */}
-            {/* ========================================================================= */}
+            {/* ═══════════════════════════════════════════════════ */}
+            {/* COLUMN 3: HOURS + CONTACT + ACTIONS (HOME ONLY)    */}
+            {/* ═══════════════════════════════════════════════════ */}
             {isHomePage ? (
-              <div className="lg:col-span-5 space-y-6">
-                {/* 1. HOURS OF OPERATION CARD */}
+              <div className="space-y-6">
+                {/* HOURS OF OPERATION CARD */}
                 <div className="bg-[#1c030b]/90 border border-[#6b152d]/60 rounded-3xl p-6 backdrop-blur-md shadow-[0_20px_50px_rgba(0,0,0,0.6)] space-y-4">
                   <div className="flex items-center space-x-2 text-[#d4a359] border-b border-[#521324] pb-3">
                     <Clock size={20} />
