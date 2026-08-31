@@ -42,69 +42,40 @@ export const PublicPageViewer: React.FC<PublicPageViewerProps> = ({
 
   return (
     <article
-      className={`min-h-screen pt-24 pb-20 px-2 sm:px-6 lg:px-8 transition-colors duration-500 font-['Raleway'] ${
+      className={`min-h-screen pt-24 pb-20 transition-colors duration-500 font-['Raleway'] ${
         isNight ? 'bg-[#180309] text-[#f7e8ea]' : 'bg-[#faf8f5] text-[#1a1e24]'
       }`}
     >
-      <div className="max-w-7xl mx-auto space-y-10">
-        
-        {/* Navigation Breadcrumb & Admin Edit Trigger */}
-        <div className="flex items-center justify-between">
-          <button
-            onClick={onNavigateHome}
-            className={`inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-widest transition-colors cursor-pointer ${
-              isNight ? 'text-[#d4a359] hover:text-[#f3cf8a]' : 'text-[#9e1c38] hover:text-[#b82544]'
+      {/* Full-width Screen Hero Banner Header (Matches Home Page Hero Screen Width) */}
+      <header className="relative w-full overflow-hidden shadow-2xl mb-10">
+        <div className="relative h-56 sm:h-72 md:h-96 w-full overflow-hidden">
+          <img
+            src={
+              frontmatter.coverImage ||
+              'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1600&q=80'
+            }
+            alt={frontmatter.title}
+            className="w-full h-full object-cover brightness-[0.75] contrast-[1.08] scale-105 hover:scale-100 transition-transform duration-1000 ease-out"
+          />
+
+          {/* Dark Burgundy & Gold Shimmer Gradient Overlay */}
+          <div
+            className={`absolute inset-0 ${
+              isNight
+                ? 'bg-gradient-to-t from-[#180309] via-[#180309]/60 to-black/40'
+                : 'bg-gradient-to-t from-[#faf8f5] via-[#faf8f5]/60 to-black/40'
             }`}
-          >
-            <ArrowLeft size={14} />
-            <span>Return to Home</span>
-          </button>
+          />
 
-          {adminUser?.isAuthorized && (
-            <button
-              onClick={() => onOpenAdminToPage(page.slug)}
-              className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-[#d4a359]/20 hover:bg-[#d4a359]/30 border border-[#d4a359]/60 text-[#f3cf8a] text-xs font-bold transition-all cursor-pointer shadow-sm"
-            >
-              <Edit3 size={13} />
-              <span>Edit in CMS ({page.slug}.md)</span>
-            </button>
-          )}
-        </div>
+          {/* Floating Gold Sparkle Accent in top right */}
+          <div className="absolute top-6 right-6 px-4 py-1.5 rounded-full bg-[#180309]/80 border border-[#d4a359]/60 text-[#f3cf8a] text-xs font-bold uppercase tracking-widest backdrop-blur-md hidden sm:flex items-center space-x-1.5 shadow-lg z-20">
+            <Sparkles size={14} className="text-[#d4a359]" />
+            <span>FLAME EXPERIENCE</span>
+          </div>
 
-        {/* Cinematic Luxury Hero Image Header */}
-        <header
-          className={`relative rounded-3xl overflow-hidden shadow-2xl border transition-all duration-500 ${
-            isNight ? 'border-[#521324] bg-[#280510]' : 'border-stone-300 bg-white'
-          }`}
-        >
-          {/* Hero Cover Image Container - Half height of home hero (h-48 sm:h-64 md:h-80) */}
-          <div className="relative h-48 sm:h-64 md:h-80 w-full overflow-hidden">
-            <img
-              src={
-                frontmatter.coverImage ||
-                'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1600&q=80'
-              }
-              alt={frontmatter.title}
-              className="w-full h-full object-cover brightness-[0.70] contrast-[1.08] scale-105 hover:scale-100 transition-transform duration-1000 ease-out"
-            />
-
-            {/* Dark Burgundy & Gold Shimmer Gradient Overlay */}
-            <div
-              className={`absolute inset-0 ${
-                isNight
-                  ? 'bg-gradient-to-t from-[#180309] via-[#180309]/70 to-black/40'
-                  : 'bg-gradient-to-t from-[#faf8f5] via-[#faf8f5]/70 to-black/40'
-              }`}
-            />
-
-            {/* Floating Gold Sparkle Accent in top right */}
-            <div className="absolute top-6 right-6 px-4 py-1.5 rounded-full bg-[#180309]/80 border border-[#d4a359]/60 text-[#f3cf8a] text-xs font-bold uppercase tracking-widest backdrop-blur-md hidden sm:flex items-center space-x-1.5 shadow-lg">
-              <Sparkles size={14} className="text-[#d4a359]" />
-              <span>FLAME EXPERIENCE</span>
-            </div>
-
-            {/* Title & Subtitle Content Overlay */}
-            <div className="absolute inset-x-0 bottom-0 p-6 sm:p-10 md:p-12 z-10 space-y-3">
+          {/* Title & Subtitle Content Overlay - Aligned with Max-W Content grid */}
+          <div className="absolute inset-x-0 bottom-0 z-10">
+            <div className="max-w-7xl mx-auto p-6 sm:p-10 md:p-12 space-y-3">
               <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-[#d4a359]/25 border border-[#d4a359]/60 text-[#f3cf8a] text-[10px] sm:text-xs uppercase tracking-[0.2em] font-bold backdrop-blur-md shadow-md">
                 <Sparkles size={12} />
                 <span>{frontmatter.navTitle || 'Flame International'}</span>
@@ -148,19 +119,41 @@ export const PublicPageViewer: React.FC<PublicPageViewerProps> = ({
                 )}
                 <a
                   href="tel:3104440045"
-                  className={`px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-colors flex items-center space-x-1.5 border backdrop-blur-md shadow-md ${
-                    isNight
-                      ? 'bg-[#180309]/80 border-[#6b152d] hover:bg-[#280510] text-gray-100'
-                      : 'bg-white/80 border-stone-300 hover:bg-stone-100 text-gray-900'
-                  }`}
+                  className="px-6 py-2.5 rounded-full bg-[#180309]/80 border border-[#831f3b] text-[#f3cf8a] font-bold text-xs uppercase tracking-widest hover:bg-[#2d0713] transition-all cursor-pointer shadow-lg backdrop-blur-md flex items-center space-x-1.5"
                 >
-                  <Phone size={13} className="text-[#d4a359]" />
-                  <span>Call (310) 444-0045</span>
+                  <Phone size={14} />
+                  <span>310-444-0045</span>
                 </a>
               </div>
             </div>
           </div>
-        </header>
+        </div>
+      </header>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+        
+        {/* Navigation Breadcrumb & Admin Edit Trigger */}
+        <div className="flex items-center justify-between">
+          <button
+            onClick={onNavigateHome}
+            className={`inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-widest transition-colors cursor-pointer ${
+              isNight ? 'text-[#d4a359] hover:text-[#f3cf8a]' : 'text-[#9e1c38] hover:text-[#b82544]'
+            }`}
+          >
+            <ArrowLeft size={14} />
+            <span>Return to Home</span>
+          </button>
+
+          {adminUser?.isAuthorized && (
+            <button
+              onClick={() => onOpenAdminToPage(page.slug)}
+              className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-[#d4a359]/20 hover:bg-[#d4a359]/30 border border-[#d4a359]/60 text-[#f3cf8a] text-xs font-bold transition-all cursor-pointer shadow-sm"
+            >
+              <Edit3 size={13} />
+              <span>Edit in CMS ({page.slug}.md)</span>
+            </button>
+          )}
+        </div>
 
         {/* Dynamic Body: Custom Interactive Modules or Standard CMS Markdown */}
         {page.slug === 'live-events' ? (

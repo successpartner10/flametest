@@ -95,7 +95,7 @@ export const Header: React.FC<HeaderProps> = ({
         }`}
       >
         
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-20 sm:h-24 md:h-28 flex items-center justify-between">
           
           {/* Mobile Hamburger on TOP-LEFT with stunning custom 3-line morphing animation */}
           <div className="flex items-center lg:hidden">
@@ -136,11 +136,11 @@ export const Header: React.FC<HeaderProps> = ({
             className="flex items-center cursor-pointer select-none py-1 group"
             onClick={() => handleNavClick('home')}
           >
-            <div className="group-hover:scale-105 transition-transform duration-300">
+            <div className="group-hover:scale-105 transition-transform duration-300 flex items-center justify-center">
               <img 
                 src="/images/flame-logo.png" 
                 alt="Flame International" 
-                className="h-24 sm:h-28 md:h-32 w-auto object-contain filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]" 
+                className="h-16 sm:h-20 md:h-22 w-auto object-contain filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] max-h-full py-0.5" 
               />
             </div>
           </div>
