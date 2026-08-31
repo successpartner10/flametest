@@ -194,42 +194,64 @@ export const MENU_ITEMS: MenuItem[] = [
 export const STORY_SLIDES: StorySlide[] = [
   {
     id: 'story-1',
-    title: 'Flame Charbroiled Kababs',
-    subtitle: 'Koobideh & Saffron Joojeh over real hardwood charcoal',
-    image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=900&q=80',
-    category: 'PERSIAN FLAME GRILL',
-    tagline: 'Prime lamb & beef ground fresh daily and charbroiled over open live hardwood embers.',
-    actionText: 'Taste Kababs',
+    title: 'Office Conference Catering',
+    subtitle: 'Hot saffron trays & kabab platters delivered boardroom-ready',
+    image: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=900&q=85',
+    category: 'CORPORATE CATERING',
+    tagline: 'Impress your team and clients with a full Persian kabab and saffron rice spread — set up, served, and cleared by our catering crew.',
+    actionText: 'Book Corporate Lunch',
     dishId: 'item-4'
   },
   {
     id: 'story-2',
-    title: 'Jeweled Saffron Rice & Tahdig',
-    subtitle: 'Golden crispy crust with tart Persian barberries & pistachios',
-    image: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=900&q=80',
-    category: 'HERITAGE KITCHEN',
-    tagline: 'Fluffy steamed basmati infused with pure saffron essence and crunchy golden tahdig.',
-    actionText: 'Taste Tahdig',
-    dishId: 'item-7'
+    title: 'Team Celebrations & Milestones',
+    subtitle: 'Group feasts for company parties, launches & award dinners',
+    image: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=900&q=85',
+    category: 'CORPORATE EVENTS',
+    tagline: 'From 15 to 500 guests — full Persian banquet setups with live charcoal grill masters, chafing racks, and dedicated service staff.',
+    actionText: 'Plan Team Event',
+    dishId: 'item-5'
   },
   {
     id: 'story-3',
-    title: 'Slow-Simmered Khoresht & Mazzeh',
-    subtitle: 'Ghormeh Sabzi, Kashk-e Bademjan & Warm Sangak Bread',
-    image: 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=900&q=80',
-    category: 'ROYAL PERSIAN DISHES',
-    tagline: 'Centuries-old slow-braised herb stews with sun-dried Persian limes and roasted eggplant.',
-    actionText: 'Explore Stews',
+    title: 'Family Dinner at Home',
+    subtitle: 'Steaming kababs & saffron feasts brought straight to your table',
+    image: 'https://images.unsplash.com/photo-1529543544282-ea669407fca3?auto=format&fit=crop&w=900&q=85',
+    category: 'HOME GATHERINGS',
+    tagline: 'Nowruz, birthdays, anniversaries — our team sets up a full Persian feast at your home so you celebrate with family, not the kitchen.',
+    actionText: 'Plan Home Dinner',
     dishId: 'item-6'
   },
   {
     id: 'story-4',
-    title: 'Live Persian Stage & Cabaret',
-    subtitle: 'Live acoustic Persian melodies, Santur & late night dining',
-    image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=900&q=80',
-    category: 'NIGHT LIFE & CABARET',
-    tagline: 'Every weekend: Live legendary Persian musicians, santur, and curated night dining.',
-    actionText: 'Book Night Table'
+    title: 'Backyard & Friends Parties',
+    subtitle: 'Live charcoal grill masters at your backyard — joyful & sizzling',
+    image: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=900&q=85',
+    category: 'FRIENDS & BACKYARD',
+    tagline: 'We bring the mesquite charcoal grills, the saffron, the crew — you bring the guests. Perfect for summer parties and casual get-togethers.',
+    actionText: 'Book Backyard Party',
+    dishId: 'item-7'
+  },
+  {
+    id: 'story-5',
+    title: 'Wedding Banquets & Galas',
+    subtitle: 'Royal Soltani platters, jeweled rice & full dessert stations',
+    image: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=900&q=85',
+    category: 'WEDDINGS & GALAS',
+    tagline: 'Make your wedding unforgettable — grand Persian banquet tables, rose-garnished platters, bastani stations, and baklava towers for your guests.',
+    actionText: 'Get Wedding Quote',
+    dishId: 'item-5'
+  },
+  {
+    id: 'story-6',
+    title: 'Steaming Hot Persian Feasts',
+    subtitle: 'Sizzling kababs, crispy tahdig & rich saffron aromas',
+    image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=900&q=85',
+    category: 'THE FOOD',
+    tagline: 'Every tray arrives steaming hot — charbroiled koobideh, joojeh, slow-simmered ghormeh sabzi and golden saffron tahdig. Flame quality, at your venue.',
+    actionText: 'Request Catering Quote',
+    dishId: 'item-4'
   }
 ];
+
 
