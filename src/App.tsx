@@ -12,6 +12,7 @@ import { StorySection } from './components/StorySection';
 import { MenuMatrixSection } from './components/MenuMatrixSection';
 import { MadieStoriesSection } from './components/MadieStoriesSection';
 import { MenuSection } from './components/MenuSection';
+import { CulinarySection } from './components/CulinarySection';
 import { FooterSection } from './components/FooterSection';
 import { BottomStickyNav, BottomNavAction } from './components/BottomStickyNav';
 import { MenuModal } from './components/MenuModal';
@@ -318,6 +319,13 @@ export default function App() {
           <MenuSection
             mode={mode}
             onOpenMenu={() => handleSelectPage('dine-in')}
+            onOpenDish={handleOpenDish}
+          />
+
+          {/* 6. Catering Showcase Section */}
+          <CulinarySection
+            mode={mode}
+            onMakeReservation={() => handleSelectPage('reserve-space')}
             onOpenDish={handleOpenDish}
           />
 
