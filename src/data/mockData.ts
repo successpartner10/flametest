@@ -196,7 +196,7 @@ export const STORY_SLIDES: StorySlide[] = [
     id: 'story-1',
     title: 'Boardroom & Corporate Banquets',
     subtitle: 'Long boardroom tables packed with guests & hot saffron kabab platters',
-    image: 'https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=1200&q=85',
+    image: '/images/hero-catering.png',
     category: 'CORPORATE CATERING',
     tagline: 'Close-ups of charbroiled Koobideh and saffron basmati leading down long tables filled with corporate guests enjoying a full Persian feast.',
     actionText: 'Book Corporate Banquet',
@@ -206,7 +206,7 @@ export const STORY_SLIDES: StorySlide[] = [
     id: 'story-2',
     title: 'Grand Company Gala Feasts',
     subtitle: 'Packed hall of attendees celebrating along long tables brimming with food',
-    image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=85',
+    image: '/images/hero-reserve-space.png',
     category: 'CORPORATE GALAS',
     tagline: 'Massive company galas featuring long banquet tables laden with Ghormeh Sabzi stews, royal Soltani skewers, and dozens of happy guests.',
     actionText: 'Plan Gala Event',
@@ -216,7 +216,7 @@ export const STORY_SLIDES: StorySlide[] = [
     id: 'story-3',
     title: 'Family Reunions & Nowruz Banquets',
     subtitle: 'Generational family gatherings around long tables loaded with Persian food',
-    image: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1200&q=85',
+    image: '/images/hero-dine-in.png',
     category: 'FAMILY GATHERINGS',
     tagline: 'Foreground close-up of steaming saffron rice and lamb shanks on long family tables overflowing with smiling relatives and zero empty seats.',
     actionText: 'Plan Family Banquet',
@@ -226,7 +226,7 @@ export const STORY_SLIDES: StorySlide[] = [
     id: 'story-4',
     title: 'Backyard Charcoal Grill Parties',
     subtitle: 'Outdoor long tables packed with friends sharing sizzling Joojeh skewers',
-    image: 'https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=1200&q=85',
+    image: '/images/hero-online-order.png',
     category: 'BACKYARD PARTIES',
     tagline: 'Live mesquite grill masters serving crowds of friends along long outdoor tables stacked with skewers, pita, herbs, and cold Doogh.',
     actionText: 'Book Backyard Grill',
@@ -236,7 +236,7 @@ export const STORY_SLIDES: StorySlide[] = [
     id: 'story-5',
     title: 'Royal Wedding Banquet Tables',
     subtitle: 'Elaborately set long banquet tables filled with celebrating wedding guests',
-    image: 'https://images.unsplash.com/photo-1529042410759-befb1204b468?auto=format&fit=crop&w=1200&q=85',
+    image: '/images/poster_cabaret_gala.png',
     category: 'WEDDING BANQUETS',
     tagline: 'Grand wedding banquets with close-ups of rose-garnished Soltani platters and jeweled rice stretching down long tables of celebrating guests.',
     actionText: 'Get Wedding Quote',
@@ -246,16 +246,10 @@ export const STORY_SLIDES: StorySlide[] = [
     id: 'story-6',
     title: 'Bustling Persian Party Feasts',
     subtitle: 'Long party tables piled high with charbroiled kababs, tahdig & appetizers',
-    image: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=1200&q=85',
+    image: '/images/poster_shahyar_arand.png',
     category: 'PARTY FEASTS',
     tagline: 'Host large parties with ease — foreground close-up of crunchy saffron tahdig and skewers with crowds of friends dining together.',
     actionText: 'Request Party Quote',
     dishId: 'item-4'
   }
 ];
-
-
-
-
-
-
