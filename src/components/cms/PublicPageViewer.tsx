@@ -285,14 +285,14 @@ export const PublicPageViewer: React.FC<PublicPageViewerProps> = ({
                         isNight ? 'border-[#38081a] bg-[#14040b]' : 'border-stone-200 bg-stone-50'
                       }`}
                     >
-                      <table className="w-full text-left text-xs sm:text-sm border-collapse">
+                      <table className="w-full text-left text-sm sm:text-base border-collapse">
                         {children}
                       </table>
                     </div>
                   ),
                   th: ({ children }) => (
                     <th
-                      className={`px-4 sm:px-6 py-3.5 border-b font-bold uppercase tracking-wider text-[11px] sm:text-xs ${
+                      className={`px-4 sm:px-6 py-4 border-b font-bold uppercase tracking-wider text-xs sm:text-sm ${
                         isNight
                           ? 'bg-[#20050f] border-[#38081a] text-[#f3cf8a]'
                           : 'bg-stone-100 border-stone-200 text-[#9e1c38]'
@@ -303,8 +303,8 @@ export const PublicPageViewer: React.FC<PublicPageViewerProps> = ({
                   ),
                   td: ({ children }) => (
                     <td
-                      className={`px-4 sm:px-6 py-3.5 border-b ${
-                        isNight ? 'border-[#260511] text-gray-300' : 'border-stone-200 text-stone-700'
+                      className={`px-4 sm:px-6 py-4 border-b text-sm sm:text-base leading-relaxed ${
+                        isNight ? 'border-[#260511] text-gray-100' : 'border-stone-200 text-stone-900'
                       }`}
                     >
                       {children}
