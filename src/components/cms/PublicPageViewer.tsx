@@ -48,16 +48,23 @@ export const PublicPageViewer: React.FC<PublicPageViewerProps> = ({
     >
       {/* Full-width Screen Hero Banner Header (Matches Home Page Hero Screen Width) */}
       <header className="relative w-full overflow-hidden shadow-2xl mb-10">
-        <div className="relative h-[380px] sm:h-[480px] md:h-[540px] w-full overflow-hidden">
+        <div className="relative h-[480px] sm:h-[650px] md:h-[750px] min-h-[60vh] w-full overflow-hidden">
           {/* Dynamic Video or Image Hero Media - Always Plays Smoothly */}
           {frontmatter.coverImage && (frontmatter.coverImage.endsWith('.mp4') || frontmatter.coverImage.endsWith('.webm') || frontmatter.coverImage.endsWith('.mov')) ? (
             <video
+              ref={(el) => {
+                if (el) {
+                  el.muted = true;
+                  el.play().catch(() => {});
+                }
+              }}
               src={frontmatter.coverImage}
               autoPlay
               loop
               muted
               playsInline
-              className="w-full h-full object-cover brightness-[0.92] contrast-[1.05]"
+              preload="auto"
+              className="w-full h-full object-cover brightness-[0.95] contrast-[1.05]"
             />
           ) : (
             <img
