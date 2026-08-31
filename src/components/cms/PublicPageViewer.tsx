@@ -58,14 +58,8 @@ export const PublicPageViewer: React.FC<PublicPageViewerProps> = ({
             className="w-full h-full object-cover brightness-[0.75] contrast-[1.08] scale-105 hover:scale-100 transition-transform duration-1000 ease-out"
           />
 
-          {/* Dark Burgundy & Gold Shimmer Gradient Overlay */}
-          <div
-            className={`absolute inset-0 ${
-              isNight
-                ? 'bg-gradient-to-t from-[#180309] via-[#180309]/60 to-black/40'
-                : 'bg-gradient-to-t from-[#faf8f5] via-[#faf8f5]/60 to-black/40'
-            }`}
-          />
+          {/* Deep Luxury Dark Burgundy Gradient Overlay (No light/white fade) */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#180309] via-[#180309]/60 to-black/50" />
 
           {/* Floating Gold Sparkle Accent in top right */}
           <div className="absolute top-6 right-6 px-4 py-1.5 rounded-full bg-[#180309]/80 border border-[#d4a359]/60 text-[#f3cf8a] text-xs font-bold uppercase tracking-widest backdrop-blur-md hidden sm:flex items-center space-x-1.5 shadow-lg z-20">
