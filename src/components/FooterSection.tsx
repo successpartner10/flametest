@@ -275,15 +275,18 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
           <h2 className="font-['Raleway'] text-lg sm:text-2xl text-white font-medium tracking-wider uppercase">
             ON <span className="text-[#f3cf8a] font-semibold ml-1">SANTA MONICA BOULEVARD</span>
           </h2>
-          <p className="text-base sm:text-lg text-white font-normal mt-2 font-['Raleway']">
-            11330 Santa Monica Blvd, West Los Angeles, CA 90025
-          </p>
-          
-          {/* Valet Parking Info Pill directly below Address */}
-          <div className="mt-3 inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-[#3d0a1c]/95 border border-[#831f3b] text-sm text-[#f3cf8a] font-medium shadow-lg">
-            <Car size={18} className="text-[#f3cf8a] shrink-0" />
-            <span>Complimentary Guest Valet Parking at Main Entrance</span>
-          </div>
+          {/* Address + valet shown in header only on Home; inner pages show it in Column 1 of the footer grid */}
+          {isHomePage && (
+            <>
+              <p className="text-base sm:text-lg text-white font-normal mt-2 font-['Raleway']">
+                11330 Santa Monica Blvd, West Los Angeles, CA 90025
+              </p>
+              <div className="mt-3 inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-[#3d0a1c]/95 border border-[#831f3b] text-sm text-[#f3cf8a] font-medium shadow-lg">
+                <Car size={18} className="text-[#f3cf8a] shrink-0" />
+                <span>Complimentary Guest Valet Parking at Main Entrance</span>
+              </div>
+            </>
+          )}
         </RevealOnScroll>
 
         {/* Unified 2-Column Responsive Layout: Map Functionality Grouped Together (Left) vs Hours & Contact (Right) */}
@@ -988,7 +991,31 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
             ) : (
               /* NON-HOME PAGE: CLEAN 3-COLUMN FOOTER LAYOUT */
               <>
-                {/* COLUMN 1: HOURS OF OPERATION */}
+                {/* COLUMN 1: ADDRESS, VALET & DIRECTIONS — single source of truth */}
+                <div className="bg-[#1c030b]/90 border border-[#6b152d]/60 rounded-3xl p-6 backdrop-blur-md shadow-xl space-y-4">
+                  <div className="flex items-center space-x-2 text-[#d4a359] border-b border-[#521324] pb-3">
+                    <MapPin size={20} />
+                    <h4 className="text-sm sm:text-base uppercase tracking-[0.2em] font-['Raleway'] font-medium">Location &amp; Valet</h4>
+                  </div>
+                  <p className="text-sm text-white font-medium leading-relaxed">
+                    11330 Santa Monica Blvd<br />
+                    West Los Angeles, CA 90025
+                  </p>
+                  <div className="p-3 rounded-2xl bg-[#3d0a1c]/80 border border-[#831f3b] text-xs text-[#f3cf8a] font-medium flex items-center space-x-2">
+                    <Car size={16} className="shrink-0" />
+                    <span>Complimentary Guest Valet Parking</span>
+                  </div>
+                  <a
+                    href="https://www.google.com/maps/dir/?api=1&destination=11330+Santa+Monica+Blvd,+Los+Angeles,+CA+90025"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#d4a359] to-[#f3cf8a] text-black font-bold text-xs uppercase tracking-wider flex items-center justify-center shadow hover:brightness-110 transition-all cursor-pointer"
+                  >
+                    <span>Google Maps Directions</span>
+                  </a>
+                </div>
+
+                {/* COLUMN 2: HOURS OF OPERATION */}
                 <div className="bg-[#1c030b]/90 border border-[#6b152d]/60 rounded-3xl p-6 backdrop-blur-md shadow-xl space-y-4">
                   <div className="flex items-center space-x-2 text-[#d4a359] border-b border-[#521324] pb-3">
                     <Clock size={20} />
@@ -1013,30 +1040,6 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
                   </p>
                 </div>
 
-                {/* COLUMN 2: LOCATION & VALET PARKING */}
-                <div className="bg-[#1c030b]/90 border border-[#6b152d]/60 rounded-3xl p-6 backdrop-blur-md shadow-xl space-y-4">
-                  <div className="flex items-center space-x-2 text-[#d4a359] border-b border-[#521324] pb-3">
-                    <MapPin size={20} />
-                    <h4 className="text-sm sm:text-base uppercase tracking-[0.2em] font-['Raleway'] font-medium">Location &amp; Valet</h4>
-                  </div>
-                  <p className="text-xs sm:text-sm text-white font-medium">
-                    11330 Santa Monica Blvd<br />
-                    West Los Angeles, CA 90025
-                  </p>
-                  <div className="p-3 rounded-2xl bg-[#3d0a1c]/80 border border-[#831f3b] text-xs text-[#f3cf8a] font-medium flex items-center space-x-2">
-                    <Car size={16} className="shrink-0" />
-                    <span>Complimentary Guest Valet Parking</span>
-                  </div>
-                  <a
-                    href="https://www.google.com/maps/dir/?api=1&destination=11330+Santa+Monica+Blvd,+Los+Angeles,+CA+90025"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#d4a359] to-[#f3cf8a] text-black font-bold text-xs uppercase tracking-wider flex items-center justify-center shadow hover:brightness-110 transition-all cursor-pointer"
-                  >
-                    <span>Google Maps Directions</span>
-                  </a>
-                </div>
-
                 {/* COLUMN 3: DIRECT CONCIERGE & QUICK ACTIONS */}
                 <div className="bg-[#1c030b]/90 border border-[#6b152d]/60 rounded-3xl p-6 backdrop-blur-md shadow-xl space-y-4">
                   <div className="flex items-center space-x-2 text-[#d4a359] border-b border-[#521324] pb-3">
@@ -1051,6 +1054,10 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
                     <div className="flex justify-between items-center text-white">
                       <span>Tickets &amp; Events:</span>
                       <a href="tel:+13104440046" className="text-[#f3cf8a] font-bold hover:underline">(310) 444-0046</a>
+                    </div>
+                    <div className="flex justify-between items-center text-white">
+                      <span>Email:</span>
+                      <a href="mailto:contact@flameinternational.com" className="text-[#f3cf8a] font-bold hover:underline text-right">contact@flame<wbr/>international.com</a>
                     </div>
                   </div>
                   <div className="grid grid-cols-2 gap-2 pt-1">
