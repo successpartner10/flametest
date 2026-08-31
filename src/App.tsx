@@ -318,7 +318,7 @@ export default function App() {
           {/* 5. Check out Our Menus (2x2 food photo grid + "Check out Our Menus" narrative) */}
           <MenuSection
             mode={mode}
-            onOpenMenu={() => handleSelectPage('dine-in')}
+            onOpenMenu={() => handleSelectPage('reserve-space')}
             onOpenDish={handleOpenDish}
           />
 

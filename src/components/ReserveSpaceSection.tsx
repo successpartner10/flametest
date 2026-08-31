@@ -16,31 +16,28 @@ export const ReserveSpaceSection: React.FC<ReserveSpaceSectionProps> = ({
 
   const SPACES = [
     {
-      id: 'grand-banquet-hall',
-      title: 'Grand Ballroom & Concert Stage',
+      id: 'flame-patio',
+      title: 'Flame Patio',
+      capacity: '30 – 80 Guests',
+      description: 'An enchanting covered outdoor oasis adorned with red carpets, hanging Moroccan lanterns, sun shade sails, and lush greenery. Perfect for alfresco dining, hookah lounging, and sunlit afternoon receptions on Santa Monica Boulevard.',
+      imageUrl: '/images/flame-patio.png',
+      features: ['Covered Outdoor Seating', 'Moroccan Lantern Ambiance', 'Alfresco Dining & Hookah'],
+    },
+    {
+      id: 'flame-restaurant',
+      title: 'Flame Restaurant',
+      capacity: 'Up to 120 Guests',
+      description: 'Our warm, stylish main dining hall featuring high ceilings, ambient glow, and crisp linen-wrapped tables. Enjoy full-service Persian saffron kababs, signature appetizers, and intimate family gatherings in an elegant setting.',
+      imageUrl: '/images/flame-restaurant.png',
+      features: ['Spacious Indoor Seating', 'Full Persian Saffron Menu', 'Dedicated Table Service'],
+    },
+    {
+      id: 'flame-events-lounge',
+      title: 'Flame Events Lounge',
       capacity: 'Up to 250 Guests',
-      description: 'Ideal for lavish Persian weddings, concert banquets, galas, and milestone anniversaries with full stage, concert lighting, and dance floor.',
-      imageUrl: '/images/hero-reserve-space.png',
-      badge: 'Main Hall & Stage',
-      features: ['Full Stage & Sound System', 'Custom Buffet or Plated Menus', 'Private Bar Setup'],
-    },
-    {
-      id: 'saffron-vip-dining',
-      title: 'The Saffron VIP Dining Alcove',
-      capacity: '12 – 35 Guests',
-      description: 'An intimate, luxurious dining sanctuary for executive dinners, rehearsal celebrations, family reunions, and birthdays.',
-      imageUrl: '/images/hero-dine-in.png',
-      badge: 'Private Dining Room',
-      features: ['Dedicated Service Team', 'Family-Style Saffron Platters', 'Private Audio Control'],
-    },
-    {
-      id: 'cocktail-reception-lounge',
-      title: 'Cocktail Lounge & Reception Mezzanine',
-      capacity: '40 – 80 Guests',
-      description: 'Vibrant ambient lounge setting for cocktail mixers, corporate happy hours, birthday bashes, and Persian hors d’oeuvres receptions.',
-      imageUrl: '/images/poster_cabaret_gala.png',
-      badge: 'Lounge & Bar',
-      features: ['Craft Persian Mixology Bar', 'Mazzeh & Hors d’Oeuvres', 'Dedicated Bartender'],
+      description: 'An opulent, royal banquet hall with dramatic candlelit chandelier lighting, lavish velvet seating, and long feast tables. Designed for grand wedding receptions, live musical galas, corporate banquets, and milestone anniversaries.',
+      imageUrl: '/images/flame-events-lounge.jpg',
+      features: ['Full Concert Stage & AV', 'Custom Banquet Feasts', 'Private Bar & Dance Floor'],
     },
   ];
 
@@ -84,11 +81,11 @@ export const ReserveSpaceSection: React.FC<ReserveSpaceSectionProps> = ({
           <p className={`text-base sm:text-lg font-light leading-relaxed max-w-2xl mx-auto ${
             isNight ? 'text-gray-300' : 'text-gray-600'
           }`}>
-            Celebrate your most memorable moments at Flame International. From grand banquet spreads and live musical galas to private family gatherings and corporate events on Santa Monica Boulevard.
+            Celebrate your most memorable moments at Flame International. Choose between the outdoor Flame Patio, main Flame Restaurant, or the opulent Flame Events Lounge on Santa Monica Boulevard.
           </p>
         </RevealOnScroll>
 
-        {/* 3 Photos Grid of Event Spaces with Stock Photos */}
+        {/* 3 Photos Grid of Event Spaces */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
           {SPACES.map((space, idx) => (
             <RevealOnScroll 
@@ -104,7 +101,7 @@ export const ReserveSpaceSection: React.FC<ReserveSpaceSectionProps> = ({
                     : 'bg-[#faf8f5] border border-[#e8dfd3] shadow-[0_10px_30px_rgba(0,0,0,0.06)] hover:border-[#d4a359] hover:shadow-xl'
                 }`}
               >
-                {/* Photo with Overlay Badge & Capacity Pill */}
+                {/* Clean Photo Container WITHOUT any text overlay or captions on top of image */}
                 <div className="relative aspect-[16/10] overflow-hidden bg-[#24060f]">
                   <img 
                     src={space.imageUrl} 
@@ -113,30 +110,22 @@ export const ReserveSpaceSection: React.FC<ReserveSpaceSectionProps> = ({
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#180309]/90 via-[#180309]/20 to-transparent pointer-events-none" />
-
-                  {/* Top Badge */}
-                  <div className="absolute top-3.5 left-3.5">
-                    <span className="px-3 py-1 rounded-full bg-[#2d0713]/85 border border-[#d4a359]/60 text-[#f5d79e] text-[10px] uppercase tracking-widest font-semibold backdrop-blur-md">
-                      {space.badge}
-                    </span>
-                  </div>
-
-                  {/* Bottom Capacity Pill */}
-                  <div className="absolute bottom-3.5 left-3.5 flex items-center space-x-1.5 px-3 py-1 rounded-full bg-[#3d0917]/90 border border-[#831f3b] text-white text-xs font-medium backdrop-blur-sm shadow-md">
-                    <Users size={13} className="text-[#f3cf8a]" />
-                    <span>{space.capacity}</span>
-                  </div>
                 </div>
 
-                {/* Card Content & Features */}
+                {/* Text Content next to / below the image */}
                 <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
                   <div className="space-y-2">
-                    <h3 className={`font-serif text-xl sm:text-2xl font-medium tracking-tight ${
-                      isNight ? 'text-white' : 'text-[#1a1d22]'
-                    }`}>
-                      {space.title}
-                    </h3>
+                    <div className="flex items-center justify-between">
+                      <h3 className={`font-serif text-xl sm:text-2xl font-bold tracking-tight ${
+                        isNight ? 'text-white' : 'text-[#1a1d22]'
+                      }`}>
+                        {space.title}
+                      </h3>
+                      <div className="flex items-center space-x-1 px-2.5 py-1 rounded-full bg-[#d4a359]/15 border border-[#d4a359]/40 text-[#d4a359] text-xs font-semibold">
+                        <Users size={12} />
+                        <span>{space.capacity}</span>
+                      </div>
+                    </div>
                     <p className={`text-xs sm:text-sm leading-relaxed ${
                       isNight ? 'text-gray-300' : 'text-gray-600'
                     }`}>

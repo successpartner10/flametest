@@ -18,14 +18,14 @@ Whether planning an intimate dinner date, a family weekend feast, or securing VI
 
 ## Dining & Space Options
 
-### 1. Main Dining Room
-Enjoy our luxurious dining hall surrounded by warm burgundy velvet seating and ambient Persian chandeliers. Perfect for lunch hubs, dinner parties, and casual evenings.
+### 1. Flame Patio (30 – 80 Guests)
+An enchanting covered outdoor oasis adorned with red carpets, hanging Moroccan lanterns, sun shade sails, and lush greenery. Perfect for alfresco dining, hookah lounging, and sunlit afternoon receptions on Santa Monica Boulevard.
 
-### 2. Live Concert VIP Stage Tables
-Front-row prime seating during weekend live Persian concerts and cabaret events. Includes full table service and direct view of the stage.
+### 2. Flame Restaurant (Up to 120 Guests)
+Our warm, stylish main dining hall featuring high ceilings, ambient glow, and crisp linen-wrapped tables. Enjoy full-service Persian saffron kababs, signature appetizers, and intimate family gatherings in an elegant setting.
 
-### 3. Outdoor Patio & Sunset Lounge
-Heated outdoor seating along Santa Monica Boulevard with valet service access and evening cocktail service.
+### 3. Flame Events Lounge (Up to 250 Guests)
+An opulent, royal banquet hall with dramatic candlelit chandelier lighting, lavish velvet seating, and long feast tables. Designed for grand wedding receptions, live musical galas, corporate banquets, and milestone anniversaries.
 
 ---
 

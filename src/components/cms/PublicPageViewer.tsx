@@ -19,6 +19,7 @@ import { LiveEventsView } from '../LiveEventsView';
 import { ContactFormView } from '../ContactFormView';
 import { MenuSection } from './MenuSection';
 import { CulinarySection } from '../CulinarySection';
+import { ReserveSpaceSection } from '../ReserveSpaceSection';
 
 /* ── VideoHero: cycles through multiple video srcs automatically ── */
 const VideoHero: React.FC<{ srcs: string[]; className: string }> = ({ srcs, className }) => {
@@ -218,6 +219,13 @@ export const PublicPageViewer: React.FC<PublicPageViewerProps> = ({
             onOpenTickets={onOpenTickets}
             onOpenReservation={onOpenReservation}
           />
+        ) : page.slug === 'reserve-space' ? (
+          <div className="space-y-12">
+            <ReserveSpaceSection
+              mode={mode}
+              onReserveSpace={onOpenReservation || (() => {})}
+            />
+          </div>
         ) : page.slug === 'contact' ? (
           <ContactFormView
             mode={mode}
