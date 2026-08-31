@@ -164,36 +164,56 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
             <button
               id="nav-link-live-events"
-              onClick={onOpenLiveEntertainment}
-              className="hover:text-[#d4a359] text-white/90 transition-colors cursor-pointer py-1 font-medium"
+              onClick={() => handleNavClick('live-events')}
+              className={`transition-all cursor-pointer py-1 font-medium ${
+                activePageSlug === 'live-events'
+                  ? 'text-[#f3cf8a] font-bold drop-shadow-[0_0_8px_rgba(212,163,89,0.5)]'
+                  : 'text-white/90 hover:text-[#d4a359]'
+              }`}
             >
               LIVE EVENTS
             </button>
             <button
               id="nav-link-dine-in"
-              onClick={onOpenMenu}
-              className="hover:text-[#d4a359] text-white/90 transition-colors cursor-pointer py-1 font-medium"
+              onClick={() => handleNavClick('dine-in')}
+              className={`transition-all cursor-pointer py-1 font-medium ${
+                activePageSlug === 'dine-in' || activePageSlug === 'menus'
+                  ? 'text-[#f3cf8a] font-bold drop-shadow-[0_0_8px_rgba(212,163,89,0.5)]'
+                  : 'text-white/90 hover:text-[#d4a359]'
+              }`}
             >
               DINE IN
             </button>
             <button
               id="nav-link-online-order"
-              onClick={onOpenOnlineOrders}
-              className="hover:text-[#d4a359] text-white/90 transition-colors cursor-pointer py-1 font-medium"
+              onClick={() => handleNavClick('online-order')}
+              className={`transition-all cursor-pointer py-1 font-medium ${
+                activePageSlug === 'online-order'
+                  ? 'text-[#f3cf8a] font-bold drop-shadow-[0_0_8px_rgba(212,163,89,0.5)]'
+                  : 'text-white/90 hover:text-[#d4a359]'
+              }`}
             >
               ONLINE ORDER
             </button>
             <button
               id="nav-link-catering"
-              onClick={onOpenCatering}
-              className="hover:text-[#d4a359] text-white/90 transition-colors cursor-pointer py-1 font-medium"
+              onClick={() => handleNavClick('catering')}
+              className={`transition-all cursor-pointer py-1 font-medium ${
+                activePageSlug === 'catering'
+                  ? 'text-[#f3cf8a] font-bold drop-shadow-[0_0_8px_rgba(212,163,89,0.5)]'
+                  : 'text-white/90 hover:text-[#d4a359]'
+              }`}
             >
               CATERING
             </button>
             <button
               id="nav-link-reserve-space"
-              onClick={onOpenReserve}
-              className="hover:text-[#d4a359] text-white/90 transition-colors cursor-pointer py-1 font-medium"
+              onClick={() => handleNavClick('reserve-space')}
+              className={`transition-all cursor-pointer py-1 font-medium ${
+                activePageSlug === 'reserve-space'
+                  ? 'text-[#f3cf8a] font-bold drop-shadow-[0_0_8px_rgba(212,163,89,0.5)]'
+                  : 'text-white/90 hover:text-[#d4a359]'
+              }`}
             >
               RESERVE SPACE
             </button>
@@ -233,31 +253,31 @@ export const Header: React.FC<HeaderProps> = ({
               HOME
             </button>
             <button
-              onClick={() => { onOpenLiveEntertainment(); setMobileMenuOpen(false); }}
+              onClick={() => handleNavClick('live-events')}
               className="block w-full text-left py-2.5 text-base font-medium tracking-wider uppercase text-[#f5f1ea] hover:text-[#d4a359] border-b border-[#3d0917]"
             >
               LIVE EVENTS
             </button>
             <button
-              onClick={() => { onOpenMenu(); setMobileMenuOpen(false); }}
+              onClick={() => handleNavClick('dine-in')}
               className="block w-full text-left py-2.5 text-base font-medium tracking-wider uppercase text-[#f5f1ea] hover:text-[#d4a359] border-b border-[#3d0917]"
             >
               DINE IN
             </button>
             <button
-              onClick={() => { onOpenOnlineOrders(); setMobileMenuOpen(false); }}
+              onClick={() => handleNavClick('online-order')}
               className="block w-full text-left py-2.5 text-base font-medium tracking-wider uppercase text-[#f5f1ea] hover:text-[#d4a359] border-b border-[#3d0917]"
             >
               ONLINE ORDER
             </button>
             <button
-              onClick={() => { onOpenCatering?.(); setMobileMenuOpen(false); }}
+              onClick={() => handleNavClick('catering')}
               className="block w-full text-left py-2.5 text-base font-medium tracking-wider uppercase text-[#f5f1ea] hover:text-[#d4a359] border-b border-[#3d0917]"
             >
               CATERING
             </button>
             <button
-              onClick={() => { onOpenReserve(); setMobileMenuOpen(false); }}
+              onClick={() => handleNavClick('reserve-space')}
               className="block w-full text-left py-2.5 text-base font-medium tracking-wider uppercase text-[#f5f1ea] hover:text-[#d4a359]"
             >
               RESERVE SPACE

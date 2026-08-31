@@ -204,20 +204,17 @@ export default function App() {
   const handleBottomNavigate = (action: BottomNavAction) => {
     setActiveBottomAction(action);
     if (action === 'home') {
-      setActivePageSlug('home');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      handleSelectPage('home');
     } else if (action === 'live-events') {
-      setSelectedStoryIndex(0);
-      setIsStoriesOpen(true);
+      handleSelectPage('live-events');
     } else if (action === 'dine-in') {
-      setMenuInitialCategory('all');
-      setIsMenuOpen(true);
+      handleSelectPage('dine-in');
     } else if (action === 'order-online') {
-      setIsBagOpen(true);
+      handleSelectPage('online-order');
     } else if (action === 'catering') {
-      setIsCateringOpen(true);
+      handleSelectPage('catering');
     } else if (action === 'reserve') {
-      setIsReserveOpen(true);
+      handleSelectPage('reserve-space');
     } else if (action === 'lunch') {
       handleOpenLunch();
     } else if (action === 'dinner') {
@@ -246,24 +243,16 @@ export default function App() {
       mode === 'night' ? 'night-atmosphere' : 'lunch-atmosphere'
     }`}>
       
-      {/* Fixed Top Header with CMS Navigation */}
+      {/* Fixed Top Header with CMS Navigation (Constant) */}
       <Header
         mode={mode}
         onToggleMode={(newMode) => setMode(newMode)}
-        onOpenMenu={() => setIsMenuOpen(true)}
-        onOpenReserve={() => setIsReserveOpen(true)}
-        onOpenLiveEntertainment={() => {
-          setSelectedStoryIndex(0);
-          setIsStoriesOpen(true);
-        }}
-        onOpenOnlineOrders={() => setIsBagOpen(true)}
-        onOpenCatering={() => setIsCateringOpen(true)}
-        onOpenContact={() => {
-          const el = document.getElementById('find-us-footer');
-          if (el) {
-            el.scrollIntoView({ behavior: 'smooth' });
-          }
-        }}
+        onOpenMenu={() => handleSelectPage('dine-in')}
+        onOpenReserve={() => handleSelectPage('reserve-space')}
+        onOpenLiveEntertainment={() => handleSelectPage('live-events')}
+        onOpenOnlineOrders={() => handleSelectPage('online-order')}
+        onOpenCatering={() => handleSelectPage('catering')}
+        onOpenContact={() => handleSelectPage('contact')}
         cartCount={totalCartCount}
         pages={pages}
         activePageSlug={activePageSlug}
@@ -294,26 +283,26 @@ export default function App() {
           {/* 1. Hero Section ("The true taste of Flame International") */}
           <HeroSection
             mode={mode}
-            onExploreMenu={() => setIsMenuOpen(true)}
-            onBookTable={() => setIsReserveOpen(true)}
+            onExploreMenu={() => handleSelectPage('dine-in')}
+            onBookTable={() => handleSelectPage('reserve-space')}
             onScrollToStory={scrollToStory}
           />
 
           {/* 2. Persian Live Events & Heritage + September 12 Concert Poster + Ticket Links (1st Section under Hero) */}
           <StorySection
             mode={mode}
-            onLearnMore={() => setIsAboutOpen(true)}
-            onReserve={() => setIsReserveOpen(true)}
+            onLearnMore={() => handleSelectPage('about')}
+            onReserve={() => handleSelectPage('reserve-space')}
             onOpenTickets={handleOpenTickets}
           />
 
           {/* 3. Four Ways to Experience: Lunch, Dinner, Online Order, Catering (Below Live Events) */}
           <MenuMatrixSection
             mode={mode}
-            onOpenLunch={handleOpenLunch}
-            onOpenDinner={handleOpenDinner}
-            onOpenOrderOnline={handleOpenOrderOnline}
-            onOpenCatering={handleOpenCatering}
+            onOpenLunch={() => handleSelectPage('dine-in')}
+            onOpenDinner={() => handleSelectPage('dine-in')}
+            onOpenOrderOnline={() => handleSelectPage('online-order')}
+            onOpenCatering={() => handleSelectPage('catering')}
           />
 
           {/* 4. Madie Section (Burgundy wave + French Bulldog vector + draggable 3D story card stack) */}
@@ -325,23 +314,23 @@ export default function App() {
           {/* 5. Check out Our Menus (2x2 food photo grid + "Check out Our Menus" narrative) */}
           <MenuSection
             mode={mode}
-            onOpenMenu={() => setIsMenuOpen(true)}
+            onOpenMenu={() => handleSelectPage('dine-in')}
             onOpenDish={handleOpenDish}
-          />
-
-          {/* 6. Footer & Los Angeles Map (Emblem + ENCUÉNTRANOS EN Los Angeles + 6 Easy Buttons + Interactive Zoom Map & hours) */}
-          <FooterSection
-            mode={mode}
-            onScrollToTop={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            onOpenMenu={() => setIsMenuOpen(true)}
-            onOpenStories={() => { setSelectedStoryIndex(0); setIsStoriesOpen(true); }}
-            onOpenReserve={() => setIsReserveOpen(true)}
-            onOpenFunctions={() => setIsFunctionsOpen(true)}
-            onOpenAbout={() => setIsAboutOpen(true)}
           />
 
         </main>
       )}
+
+      {/* Footer & Los Angeles Map (Constant across all pages) */}
+      <FooterSection
+        mode={mode}
+        onScrollToTop={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        onOpenMenu={() => handleSelectPage('dine-in')}
+        onOpenStories={() => handleSelectPage('live-events')}
+        onOpenReserve={() => handleSelectPage('reserve-space')}
+        onOpenFunctions={() => handleSelectPage('functions')}
+        onOpenAbout={() => handleSelectPage('about')}
+      />
 
       {/* Sticky Bottom Navigation (Home, Live Entertainment, Dine-In, Lunch, Dinner, Contact Us) */}
       <BottomStickyNav
