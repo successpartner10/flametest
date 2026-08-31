@@ -5,6 +5,7 @@ export interface PageFrontmatter {
   order?: number;
   slug: string;
   coverImage?: string;
+  coverVideos?: string[];
   metaDescription?: string;
   [key: string]: any;
 }

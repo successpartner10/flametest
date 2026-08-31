@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import {
@@ -18,32 +18,52 @@ import { AppMode } from '../../types';
 import { LiveEventsView } from '../LiveEventsView';
 import { ContactFormView } from '../ContactFormView';
 
-/* ── VideoHero: guaranteed silent autoplay via imperative ref ── */
-const VideoHero: React.FC<{ src: string; className: string }> = ({ src, className }) => {
+/* ── VideoHero: cycles through multiple video srcs automatically ── */
+const VideoHero: React.FC<{ srcs: string[]; className: string }> = ({ srcs, className }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const currentSrc = srcs[currentIndex] ?? srcs[0];
+
   useEffect(() => {
     const vid = videoRef.current;
     if (!vid) return;
     vid.muted = true;
     vid.defaultMuted = true;
     vid.volume = 0;
+    vid.src = currentSrc;
+    vid.load();
     const attempt = () => vid.play().catch(() => {});
     if (vid.readyState >= 2) {
       attempt();
     } else {
       vid.addEventListener('canplay', attempt, { once: true });
     }
-    return () => vid.removeEventListener('canplay', attempt);
-  }, [src]);
+    // Advance to next video when current ends (only if multiple videos)
+    const onEnded = () => {
+      if (srcs.length > 1) {
+        setCurrentIndex((i) => (i + 1) % srcs.length);
+      }
+    };
+    if (srcs.length > 1) {
+      vid.loop = false;
+      vid.addEventListener('ended', onEnded);
+    } else {
+      vid.loop = true;
+    }
+    return () => {
+      vid.removeEventListener('canplay', attempt);
+      vid.removeEventListener('ended', onEnded);
+    };
+  }, [currentSrc, srcs.length]);
+
   return (
     <video
       ref={videoRef}
-      src={src}
-      loop
+      key={currentSrc}
       muted
       playsInline
       preload="auto"
-      className={className}
+      className={`${className} transition-opacity duration-700`}
     />
   );
 };
@@ -70,6 +90,16 @@ export const PublicPageViewer: React.FC<PublicPageViewerProps> = ({
   const isNight = mode === 'night';
   const { frontmatter, content } = page;
 
+  // Build ordered video playlist: coverImage first (if video), then any coverVideos
+  const isVideoUrl = (url: string) =>
+    url.endsWith('.mp4') || url.endsWith('.webm') || url.endsWith('.mov');
+  const videoSrcs: string[] = [
+    ...(frontmatter.coverImage && isVideoUrl(frontmatter.coverImage)
+      ? [frontmatter.coverImage]
+      : []),
+    ...(Array.isArray(frontmatter.coverVideos) ? frontmatter.coverVideos : []),
+  ];
+
   return (
     <article
       className={`min-h-screen pt-24 pb-20 transition-colors duration-500 font-['Raleway'] ${
@@ -79,11 +109,10 @@ export const PublicPageViewer: React.FC<PublicPageViewerProps> = ({
       {/* Full-width Screen Hero Banner Header (Matches Home Page Hero Screen Width) */}
       <header className="relative w-full overflow-hidden shadow-2xl mb-10">
         <div className="relative h-[440px] sm:h-[540px] md:h-[600px] w-full overflow-hidden">
-          {/* Dynamic Video or Image Hero Media */}
-          {frontmatter.coverImage && (frontmatter.coverImage.endsWith('.mp4') || frontmatter.coverImage.endsWith('.webm') || frontmatter.coverImage.endsWith('.mov')) ? (
+          {/* Dynamic Video (single or playlist) or Image Hero Media */}
+          {videoSrcs.length > 0 ? (
             <VideoHero
-              key={frontmatter.coverImage}
-              src={frontmatter.coverImage}
+              srcs={videoSrcs}
               className="w-full h-full object-cover brightness-[0.95] contrast-[1.05]"
             />
           ) : (
