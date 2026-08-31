@@ -1,13 +1,10 @@
 // Service Worker for Flame International PWA
-const CACHE_NAME = 'flame-pwa-v1';
+const CACHE_NAME = 'flame-pwa-v2';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
   '/manifest.json',
-  '/flame_logo_whiteBORDER.svg',
-  '/src/main.tsx',
-  '/src/index.css',
-  '/src/App.tsx'
+  '/flame_logo_whiteBORDER.svg'
 ];
 
 // Install Event
@@ -30,7 +27,7 @@ self.addEventListener('activate', (event) => {
       return Promise.all(
         cacheNames.map((cache) => {
           if (cache !== CACHE_NAME) {
-            console.log('[PWA SW] Deleting old cache:', cache);
+            console.log('[PWA SW] Purging outdated cache:', cache);
             return caches.delete(cache);
           }
         })
@@ -40,44 +37,37 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// Fetch Event - Network First with Cache Fallback for API/HTML, Cache First for Static Assets
+// Fetch Event - Network First for HTML/JS/API, Cache Fallback
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
   const url = new URL(event.request.url);
 
-  // API Requests: Network only / dynamic
+  // API Requests: Network only
   if (url.pathname.startsWith('/api/')) {
     return;
   }
 
+  // Network-First for Navigation, HTML, JS, and CSS so code updates show instantly
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) {
-        // Return cached asset and update cache in background
-        fetch(event.request).then((networkResponse) => {
-          if (networkResponse && networkResponse.status === 200) {
-            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, networkResponse));
-          }
-        }).catch(() => {});
-        return cachedResponse;
-      }
-
-      return fetch(event.request).then((networkResponse) => {
-        if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
-          return networkResponse;
+    fetch(event.request)
+      .then((networkResponse) => {
+        if (networkResponse && networkResponse.status === 200) {
+          const responseToCache = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, responseToCache);
+          });
         }
-        const responseToCache = networkResponse.clone();
-        caches.open(CACHE_NAME).then((cache) => {
-          cache.put(event.request, responseToCache);
-        });
         return networkResponse;
-      }).catch(() => {
-        // Fallback for HTML navigation offline
-        if (event.request.headers.get('accept')?.includes('text/html')) {
-          return caches.match('/index.html');
-        }
-      });
-    })
+      })
+      .catch(() => {
+        // Fallback to cache if network fails (offline)
+        return caches.match(event.request).then((cachedResponse) => {
+          if (cachedResponse) return cachedResponse;
+          if (event.request.headers.get('accept')?.includes('text/html')) {
+            return caches.match('/index.html');
+          }
+        });
+      })
   );
 });
